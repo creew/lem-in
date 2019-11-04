@@ -19,7 +19,7 @@ int		add_lem_list(t_lemin *lem, char *name, int x, int y)
 	 size_t 	len;
 
 	 len = ft_strlen(name);
-	 lst = ft_lstaddblank(&lem->lem_list, sizeof(t_ldata) + len);
+	 lst = ft_lstaddblank(&lem->lem_list, sizeof(t_ldata) + len * sizeof(char));
 	 if (!lst)
 	 	return (ERR_ENOMEM);
 	 ldata = (t_ldata *)lst->content;
