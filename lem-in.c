@@ -36,19 +36,14 @@ char	*get_next_word(char *str, int *last)
 	char	*end;
 
 	*last = 0;
-	while ((s = ft_strchr(str, ' ')))
+	while ((end = ft_strchr(str, ' ')))
 	{
-		s++;
-		if (s != (str + 1))
-		{
-			str = s;
+		if (end != str)
 			break;
-		}
-		str = s;
+		str = end + 1;
 	}
 	if (*str != '\0')
 	{
-		end = ft_strchr(str, ' ');
 		if (end == NULL)
 			*last = 1;
 		else
@@ -115,7 +110,7 @@ int		read_input(int fd, t_lemin *lem)
 
 	if (get_next_line(fd, &s) < 0)
 		return (ERR_READ_ANTS_NUMBER);
-	if (ft_safe_atoi(s, &lem->number_ants) != FT_ATOI_OK)
+	if (ft_safe_atoi(s, &lem->num_ants) != FT_ATOI_OK || lem->num_ants < 1)
 		return (ERR_WRONG_ANTS_NUMBER);
 	ft_strdel(&s);
 	return (read_rooms(fd, lem));
@@ -123,10 +118,17 @@ int		read_input(int fd, t_lemin *lem)
 
 int		main(int ac, char *av[])
 {
+	(void)ac;
+	(void)av;
 	t_lemin lem;
+	int 	ret;
 
 	ft_bzero(&lem, sizeof(lem));
-	if (read_input(0, &lem) != RET_OK)
-		ft_putendl("Error");
+	if ((ret = read_input(0, &lem)) != RET_OK)
+	{
+		ft_putstr("Error ");
+		ft_putnbr(ret);
+		ft_putendl("");
+	}
 	return (0);
 }

@@ -16,7 +16,8 @@ CC = gcc
 
 CC_FLAGS = -Wall -Wextra
 
-SRCS = lem-in.c
+SRCS =	lem-in.c \
+		lem_list.c
 
 OBJS = $(SRCS:.c=.o)
 

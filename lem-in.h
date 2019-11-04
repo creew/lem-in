@@ -39,7 +39,7 @@ typedef struct	s_rooms
 
 typedef struct	s_lemin
 {
-	int		number_ants;
+	int		num_ants;
 	t_list	*lem_list;
 }				t_lemin;
 
