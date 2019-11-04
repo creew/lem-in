@@ -19,12 +19,15 @@
 # define ERR_READ_ANTS_NUMBER	(-1)
 # define ERR_WRONG_ANTS_NUMBER	(-2)
 # define ERR_GNL_ERROR			(-3)
+# define ERR_ENOMEM				(-4)
+# define ERR_WRONG_ROOM_NAME	(-5)
+# define ERR_WRONG_ROOM_ARG		(-6)
 
 typedef struct	s_ldata
 {
-	char	*name;
 	int		x;
 	int		y;
+	char	name[1];
 }				t_ldata;
 
 typedef struct	s_rooms
@@ -37,6 +40,9 @@ typedef struct	s_rooms
 typedef struct	s_lemin
 {
 	int		number_ants;
+	t_list	*lem_list;
 }				t_lemin;
+
+int			add_lem_list(t_lemin *lem, char *name, int x, int y);
 
 #endif
