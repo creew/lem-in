@@ -1,18 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lem-in.c                                           :+:      :+:    :+:   */
+/*   lem-in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/04 12:23:00 by eklompus          #+#    #+#             */
-/*   Updated: 2019/11/04 12:23:02 by eklompus         ###   ########.fr       */
+/*   Created: 2019/11/04 14:03:20 by eklompus          #+#    #+#             */
+/*   Updated: 2019/11/04 14:03:21 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#ifndef _LEM_IN_H
+# define _LEM_IN_H
 
-int		main(int ac, char *av[])
+#include "libft.h"
+
+typedef struct	s_rooms
 {
-	return (0);
-}
+	struct s_rooms	*children;
+	struct s_rooms	*next;
+	int				x;
+	int				y;
+}				t_rooms;
+
+typedef struct	s_lemin
+{
+	int		number_ants;
+}				t_lemin;
+
+#endif

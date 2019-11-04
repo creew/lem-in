@@ -8,7 +8,8 @@ include_directories(.
         )
 
 add_executable(lem_in
-        lem-in.c)
+        lem-in.c
+        )
 
 add_dependencies(lem_in libft_target)
 find_library(FT ft ./libft)
