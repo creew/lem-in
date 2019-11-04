@@ -12,27 +12,32 @@
 
 #include "lem-in.h"
 
-int     count_numbers(char *str)
+int		free_return(void *data, int ret)
 {
-    char    *s;
-    int     count;
+	ft_memdel(&data);
+	return (ret);
+}
 
-    count = 0;
-    while ((s = ft_strchr(str, ' ')))
-    {
-        s++;
-        if (s != (str + 1))
-            count++;
-        str = s;
-    }
-    if (*str != '\0')
-        count++;
-    return (count);
+int		count_numbers(char *str)
+{
+	char	*s;
+	int		count;
+
+	count = 0;
+	while ((s = ft_strchr(str, ' ')))
+	{
+		s++;
+		if (s != (str + 1))
+			count++;
+		str = s;
+	}
+	if (*str != '\0')
+		count++;
+	return (count);
 }
 
 char	*get_next_word(char *str, int *last)
 {
-	char	*s;
 	char	*end;
 
 	*last = 0;
@@ -53,7 +58,7 @@ char	*get_next_word(char *str, int *last)
 	return (NULL);
 }
 
-int 	add_lem_room(t_lemin *lem, char *str)
+int		add_lem_room(t_lemin *lem, char *str)
 {
 	int		last;
 	int 	arg2;
@@ -76,7 +81,7 @@ int 	add_lem_room(t_lemin *lem, char *str)
 	return (add_lem_list(lem, name, last, arg2));
 }
 
-int     read_rooms(int fd, t_lemin *lem)
+int		read_rooms(int fd, t_lemin *lem)
 {
     int		is_rooms;
     char	*s;
@@ -85,14 +90,14 @@ int     read_rooms(int fd, t_lemin *lem)
     is_rooms = 1;
     while ((res = get_next_line(fd, &s)))
 	{
-    	if (res < 0)
-    		return (ERR_GNL_ERROR);
-    	if (*s != '#')
+		if (res < 0)
+			return (ERR_GNL_ERROR);
+		if (*s != '#')
 		{
 			if (is_rooms && count_numbers(s) == 3)
 			{
 				if ((res = add_lem_room(lem, s)) != RET_OK)
-					return (res);
+					return (free_return(s, res));
 			}
 			else
 			{
