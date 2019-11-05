@@ -9,7 +9,10 @@ include_directories(.
 
 add_executable(lem_in
         lem-in.c
+        read_input.c
         lem_list.c
+        rooms_parse.c
+        line_parse.c
         )
 
 add_dependencies(lem_in libft_target)

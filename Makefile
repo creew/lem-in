@@ -17,7 +17,10 @@ CC = gcc
 CC_FLAGS = -Wall -Wextra
 
 SRCS =	lem-in.c \
-		lem_list.c
+		lem_list.c \
+		read_input.c \
+		rooms_parse.c \
+		line_parse.c
 
 OBJS = $(SRCS:.c=.o)
 

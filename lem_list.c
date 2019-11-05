@@ -12,7 +12,7 @@
 
 #include "lem-in.h"
 
-int		add_lem_list(t_list **root, char *name, int x, int y)
+int		add_lem_list(t_list **root, const char *name, const int *xy, int cmd)
 {
 	 t_ldata	*ldata;
 	 t_list		*lst;
@@ -23,8 +23,9 @@ int		add_lem_list(t_list **root, char *name, int x, int y)
 	 if (!lst)
 	 	return (ERR_ENOMEM);
 	 ldata = (t_ldata *)lst->content;
-	 ldata->x = x;
-	 ldata->y = y;
+	 ldata->x = xy[0];
+	 ldata->y = xy[1];
+	 ldata->cmd = cmd;
 	 ft_strlcpy(ldata->name, name, len + 1);
 	 return (RET_OK);
 }
