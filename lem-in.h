@@ -22,6 +22,8 @@
 # define ERR_ENOMEM				(-4)
 # define ERR_WRONG_ROOM_NAME	(-5)
 # define ERR_WRONG_ROOM_ARG		(-6)
+# define ERR_WRONG_LINK			(-7)
+
 
 typedef struct	s_ldata
 {
@@ -43,6 +45,6 @@ typedef struct	s_lemin
 	t_list	*lem_list;
 }				t_lemin;
 
-int			add_lem_list(t_lemin *lem, char *name, int x, int y);
+int			add_lem_list(t_list **root, char *name, int x, int y);
 
 #endif

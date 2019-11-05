@@ -12,14 +12,14 @@
 
 #include "lem-in.h"
 
-int		add_lem_list(t_lemin *lem, char *name, int x, int y)
+int		add_lem_list(t_list **root, char *name, int x, int y)
 {
 	 t_ldata	*ldata;
 	 t_list		*lst;
 	 size_t 	len;
 
 	 len = ft_strlen(name);
-	 lst = ft_lstaddblank(&lem->lem_list, sizeof(t_ldata) + len * sizeof(char));
+	 lst = ft_lstaddblank(root, sizeof(t_ldata) + len * sizeof(char));
 	 if (!lst)
 	 	return (ERR_ENOMEM);
 	 ldata = (t_ldata *)lst->content;
