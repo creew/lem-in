@@ -12,6 +12,21 @@
 
 #include "lemin.h"
 
+static int		is_link_exist(t_list *lst, const char *l1, const char *l2)
+{
+	t_linkdata *ldata;
+
+	while (lst)
+	{
+		ldata = (t_linkdata *)lst->content;
+		if ((!ft_strcmp(l1, ldata->l1) && !ft_strcmp(l2, ldata->l2)) ||
+			(!ft_strcmp(l1, ldata->l2) && !ft_strcmp(l2, ldata->l1)))
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
+}
+
 static t_result	add_lemlink_list(t_list **root, const char *l1, const char *l2)
 {
 	t_linkdata	*linkdata;
@@ -19,10 +34,12 @@ static t_result	add_lemlink_list(t_list **root, const char *l1, const char *l2)
 	size_t		l1_len;
 	size_t		l2_len;
 
+	if (is_link_exist(*root, l1, l2))
+		return (ERR_WRONG_LINK_DUPL);
 	l1_len = ft_strlen(l1);
 	l2_len = ft_strlen(l2);
 	lst = ft_lstaddblank(root, sizeof(t_linkdata) +
-					(l1_len + l2_len) * sizeof(char));
+			(l1_len + l2_len) * sizeof(char));
 	if (!lst)
 		return (ERR_ENOMEM);
 	linkdata = (t_linkdata *)lst->content;
