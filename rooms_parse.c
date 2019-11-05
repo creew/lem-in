@@ -12,6 +12,20 @@
 
 #include "lemin.h"
 
+static int	check_room_xy_exist(t_list *rooms, int x, int y)
+{
+	t_roomdata *rdata;
+
+	while (rooms)
+	{
+		rdata = (t_roomdata *)rooms->content;
+		if (rdata->x == x && rdata->y == y)
+			return (1);
+		rooms = rooms->next;
+	}
+	return (0);
+}
+
 t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 {
 	int		last;
@@ -36,6 +50,8 @@ t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 	if (ft_safe_atoi(ft_trim_spaces(s1), &xy[0]) != FT_ATOI_OK ||
 		ft_safe_atoi(ft_trim_spaces(s2), &xy[1]) != FT_ATOI_OK)
 		return (ERR_WRONG_ROOM_ARG);
+	if (check_room_xy_exist(lem->rooms, xy[0], xy[1]))
+		return (ERR_WRONG_ROOM_XY_DUPL);
 	return (add_lem_list(&lem->rooms, name, xy, cmd));
 }
 
@@ -48,12 +64,12 @@ int			check_room_valid(const char *name)
 
 int			check_room_exist(t_list *rooms, const char *name)
 {
-	t_roomdata *ldata;
+	t_roomdata *rdata;
 
 	while (rooms)
 	{
-		ldata = (t_roomdata *)rooms->content;
-		if (ft_strcmp(name, ldata->name) == 0)
+		rdata = (t_roomdata *)rooms->content;
+		if (ft_strcmp(name, rdata->name) == 0)
 			return (1);
 		rooms = rooms->next;
 	}

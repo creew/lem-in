@@ -31,6 +31,7 @@ typedef	int		t_result;
 # define ERR_WRONG_LINK_TO_LINK	(-11)
 # define ERR_WRONG_START_END	(-12)
 # define ERR_WRONG_LINK_DUPL	(-13)
+# define ERR_WRONG_ROOM_XY_DUPL	(-14)
 
 # define LEM_CMD_NONE			(0)
 # define LEM_CMD_START			(1)
