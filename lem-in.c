@@ -16,15 +16,20 @@ int		main(int ac, char *av[])
 {
 	(void)ac;
 	(void)av;
-	t_lemin lem;
-	int 	ret;
+	t_lemin		lem;
+	t_result	ret;
 
 	ft_bzero(&lem, sizeof(lem));
-	if ((ret = read_input(0, &lem)) != RET_OK)
+	ret = read_input(0, &lem);
+	if (ret == RET_OK)
+		ret = check_all(&lem);
+	if (ret != RET_OK)
 	{
 		ft_putstr("Error ");
 		ft_putnbr(ret);
 		ft_putendl("");
 	}
+	print_rooms(lem.rooms);
+	print_links(lem.links);
 	return (0);
 }

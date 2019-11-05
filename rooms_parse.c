@@ -12,7 +12,7 @@
 
 #include "lem-in.h"
 
-int		add_lem_room(t_lemin *lem, char *str, int cmd)
+t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 {
 	int		last;
 	int 	xy[2];
@@ -48,11 +48,11 @@ int		check_room_valid(const char *name)
 
 int		check_room_exist(t_list *rooms, const char *name)
 {
-	t_ldata		*ldata;
+	t_roomdata *ldata;
 
 	while (rooms)
 	{
-		ldata = (t_ldata *)rooms->content;
+		ldata = (t_roomdata *)rooms->content;
 		if (ft_strcmp(name, ldata->name) == 0)
 			return (1);
 		rooms = rooms->next;

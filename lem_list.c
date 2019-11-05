@@ -12,20 +12,32 @@
 
 #include "lem-in.h"
 
-int		add_lem_list(t_list **root, const char *name, const int *xy, int cmd)
+t_result	add_lem_list(t_list **root, const char *name,
+						const int *xy, int cmd)
 {
-	 t_ldata	*ldata;
+	t_roomdata *ldata;
 	 t_list		*lst;
 	 size_t 	len;
 
 	 len = ft_strlen(name);
-	 lst = ft_lstaddblank(root, sizeof(t_ldata) + len * sizeof(char));
+	 lst = ft_lstaddblank(root, sizeof(t_roomdata) + len * sizeof(char));
 	 if (!lst)
 	 	return (ERR_ENOMEM);
-	 ldata = (t_ldata *)lst->content;
+	 ldata = (t_roomdata *)lst->content;
 	 ldata->x = xy[0];
 	 ldata->y = xy[1];
 	 ldata->cmd = cmd;
 	 ft_strlcpy(ldata->name, name, len + 1);
 	 return (RET_OK);
+}
+
+static void	del_list_elem(void *data, size_t size)
+{
+	(void)size;
+	ft_memdel(&data);
+}
+
+void		free_lem_list(t_list **root)
+{
+	ft_lstdel(root, del_list_elem);
 }

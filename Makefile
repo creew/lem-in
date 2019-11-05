@@ -20,7 +20,9 @@ SRCS =	lem-in.c \
 		lem_list.c \
 		read_input.c \
 		rooms_parse.c \
-		line_parse.c
+		line_parse.c \
+		links_parse.c \
+		print.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -28,13 +30,15 @@ INC_DIR = ./libft
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
+HEADERS = ./lem-in.h
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	make -C ./libft
 	$(CC) $(CC_FLAGS) $^ -L./libft -lft -o $@
 
-%.o: %.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CC_FLAGS) $(INC_FLAG) -c $< -o $@
 
 clean:

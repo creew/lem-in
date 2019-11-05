@@ -12,25 +12,7 @@
 
 #include "lem-in.h"
 
-int		add_lem_link(t_lemin *lem, char *str)
-{
-	char	*r1;
-	char	*r2;
-
-	r1 = str;
-	r2 = ft_strchr(str, '-');
-	if (!r2)
-		return (ERR_WRONG_LINK);
-	*r2++ = '\0';
-	if (!check_room_exist(lem->rooms, ft_trim_spaces(r1)) ||
-		!check_room_exist(lem->rooms, ft_trim_spaces(r2)))
-		return (ERR_WRONG_LINK_ROOM);
-	if (ft_strcmp(r1, r2) == 0)
-		return (ERR_WRONG_LINK_TO_LINK);
-	return (RET_OK);
-}
-
-int		get_lem_cmd(char *str)
+static t_result	get_lem_cmd(char *str)
 {
 	if (*str == '#' && *(str + 1) == '#')
 	{
@@ -43,7 +25,7 @@ int		get_lem_cmd(char *str)
 	return (LEM_CMD_NONE);
 }
 
-int		parse_not_comment_str(t_lemin *lem, char *s, int *is_rooms, int cmd)
+static t_result	parse_not_comment_str(t_lemin *lem, char *s, int *is_rooms, int cmd)
 {
 	if (*is_rooms && count_numbers(s) == 3)
 		return (add_lem_room(lem, s, cmd));
@@ -51,12 +33,12 @@ int		parse_not_comment_str(t_lemin *lem, char *s, int *is_rooms, int cmd)
 	return (add_lem_link(lem, s));
 }
 
-int		read_rooms_and_links(int fd, t_lemin *lem)
+static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 {
-	int		is_rooms;
-	char	*s;
-	int		res;
-	int		cmd;
+	int			is_rooms;
+	char		*s;
+	t_result	res;
+	int			cmd;
 
 	cmd = LEM_CMD_NONE;
 	is_rooms = 1;
@@ -80,7 +62,7 @@ int		read_rooms_and_links(int fd, t_lemin *lem)
 	return (RET_OK);
 }
 
-int		read_input(int fd, t_lemin *lem)
+t_result		read_input(int fd, t_lemin *lem)
 {
 	char	*s;
 

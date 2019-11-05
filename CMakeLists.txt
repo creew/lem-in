@@ -13,6 +13,8 @@ add_executable(lem_in
         lem_list.c
         rooms_parse.c
         line_parse.c
+        links_parse.c
+        print.c
         )
 
 add_dependencies(lem_in libft_target)
