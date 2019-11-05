@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lemin.h"
 
 int		count_numbers(char *str)
 {
@@ -38,7 +38,7 @@ char	*get_next_word(char *str, int *last)
 	while ((end = ft_strchr(str, ' ')))
 	{
 		if (end != str)
-			break;
+			break ;
 		str = end + 1;
 	}
 	if (*str != '\0')

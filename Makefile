@@ -16,13 +16,14 @@ CC = gcc
 
 CC_FLAGS = -Wall -Wextra
 
-SRCS =	lem-in.c \
+SRCS =	lemin.c \
 		lem_list.c \
 		read_input.c \
 		rooms_parse.c \
 		line_parse.c \
 		links_parse.c \
-		print.c
+		print.c \
+		check_all.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -30,7 +31,7 @@ INC_DIR = ./libft
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
-HEADERS = ./lem-in.h
+HEADERS = ./lemin.h
 
 all: $(NAME)
 

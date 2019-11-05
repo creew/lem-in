@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lemin.h"
 
 static t_result	add_lemlink_list(t_list **root, const char *l1, const char *l2)
 {

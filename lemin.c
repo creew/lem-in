@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lemin.h"
 
 int		main(int ac, char *av[])
 {
-	(void)ac;
-	(void)av;
 	t_lemin		lem;
 	t_result	ret;
 
+	(void)ac;
+	(void)av;
 	ft_bzero(&lem, sizeof(lem));
 	ret = read_input(0, &lem);
 	if (ret == RET_OK)

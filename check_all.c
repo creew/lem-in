@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lemin.h"
 
 t_result	is_start_end_exists(t_list *root)
 {
@@ -36,7 +36,7 @@ t_result	check_all(t_lemin *lem)
 {
 	t_result	res;
 
-	if ((res = is_start_end_exists(lem->rooms) != RET_OK)
+	if ((res = is_start_end_exists(lem->rooms)) != RET_OK)
 		return (res);
 	return (RET_OK);
 }

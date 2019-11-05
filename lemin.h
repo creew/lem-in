@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _LEM_IN_H
-# define _LEM_IN_H
+#ifndef _LEMIN_H
+# define _LEMIN_H
 
 # include "libft.h"
 
-typedef	int t_result;
+typedef	int		t_result;
 
 # define RET_OK					(0)
 # define ERR_READ_ANTS_NUMBER	(-1)
@@ -41,11 +41,11 @@ typedef struct	s_roomdata
 	int		y;
 	int		cmd;
 	char	name[1];
-} 				t_roomdata;
+}				t_roomdata;
 
 typedef struct	s_linkdata
 {
-	char 	*l1;
+	char	*l1;
 	char	*l2;
 	char	ldata[2];
 }				t_linkdata;
@@ -64,22 +64,22 @@ typedef struct	s_lemin
 	t_list	*links;
 }				t_lemin;
 
-t_result	add_lem_list(t_list **root, const char *name,
+t_result		add_lem_list(t_list **root, const char *name,
 							const int *xy, int cmd);
 
-t_result	read_input(int fd, t_lemin *lem);
+t_result		read_input(int fd, t_lemin *lem);
 
-t_result	add_lem_room(t_lemin *lem, char *str, int cmd);
-int			check_room_exist(t_list *rooms, const char *name);
-int			check_room_valid(const char *name);
+t_result		add_lem_room(t_lemin *lem, char *str, int cmd);
+int				check_room_exist(t_list *rooms, const char *name);
+int				check_room_valid(const char *name);
 
-t_result	add_lem_link(t_lemin *lem, char *str);
+t_result		add_lem_link(t_lemin *lem, char *str);
 
-int			count_numbers(char *str);
-char		*get_next_word(char *str, int *last);
+int				count_numbers(char *str);
+char			*get_next_word(char *str, int *last);
 
-void		print_rooms(t_list *rooms);
-void		print_links(t_list *links);
+void			print_rooms(t_list *rooms);
+void			print_links(t_list *links);
 
-t_result	check_all(t_lemin *lem);
+t_result		check_all(t_lemin *lem);
 #endif

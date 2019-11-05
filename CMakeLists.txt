@@ -8,13 +8,14 @@ include_directories(.
         )
 
 add_executable(lem_in
-        lem-in.c
+        lemin.c
         read_input.c
         lem_list.c
         rooms_parse.c
         line_parse.c
         links_parse.c
         print.c
+        check_all.c
         )
 
 add_dependencies(lem_in libft_target)

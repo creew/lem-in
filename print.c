@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lemin.h"
 
 void	print_rooms(t_list *rooms)
 {
-	t_list	*cur;
-	t_roomdata *data;
-	size_t	size;
+	t_list		*cur;
+	t_roomdata	*data;
+	size_t		size;
 
 	size = ft_lstsize(rooms);
 	while (size--)

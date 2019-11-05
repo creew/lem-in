@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lemin.h"
 
 t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 {
 	int		last;
-	int 	xy[2];
+	int		xy[2];
 	char	*name;
 	char	*s1;
 	char	*s2;
@@ -39,14 +39,14 @@ t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 	return (add_lem_list(&lem->rooms, name, xy, cmd));
 }
 
-int		check_room_valid(const char *name)
+int			check_room_valid(const char *name)
 {
 	if (!name || !*name || *name == 'L' || *name == '#')
 		return (0);
 	return (1);
 }
 
-int		check_room_exist(t_list *rooms, const char *name)
+int			check_room_exist(t_list *rooms, const char *name)
 {
 	t_roomdata *ldata;
 

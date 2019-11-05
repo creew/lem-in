@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lemin.h"
 
 static t_result	get_lem_cmd(char *str)
 {
@@ -25,7 +25,8 @@ static t_result	get_lem_cmd(char *str)
 	return (LEM_CMD_NONE);
 }
 
-static t_result	parse_not_comment_str(t_lemin *lem, char *s, int *is_rooms, int cmd)
+static t_result	parse_not_comment_str(t_lemin *lem, char *s,
+				int *is_rooms, int cmd)
 {
 	if (*is_rooms && count_numbers(s) == 3)
 		return (add_lem_room(lem, s, cmd));
