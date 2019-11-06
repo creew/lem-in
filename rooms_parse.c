@@ -40,7 +40,7 @@ t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 	if (!check_room_valid(ft_trim_spaces(name)))
 		return (ERR_WRONG_ROOM_NAME);
 	if (check_room_exist(lem->rooms, name))
-		return (ERR_WRONG_ROOM_DUPL);
+		return (ERR_ROOM_NAME_DUPL);
 	s1 = get_next_word(name + ft_strlen(name) + 1, &last);
 	if (!s1 || last)
 		return (ERR_WRONG_ROOM_ARG);
@@ -51,7 +51,7 @@ t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 		ft_safe_atoi(ft_trim_spaces(s2), &xy[1]) != FT_ATOI_OK)
 		return (ERR_WRONG_ROOM_ARG);
 	if (check_room_xy_exist(lem->rooms, xy[0], xy[1]))
-		return (ERR_WRONG_ROOM_XY_DUPL);
+		return (ERR_ROOM_XY_DUPL);
 	return (add_lem_list(&lem->rooms, name, xy, cmd));
 }
 

@@ -29,7 +29,7 @@ t_result	is_start_end_exists(t_list *root)
 			end_count++;
 		root = root->next;
 	}
-	return (start_count == 1 && end_count == 1 ? RET_OK : ERR_WRONG_START_END);
+	return (start_count == 1 && end_count == 1 ? RET_OK : ERR_NO_START_OR_END);
 }
 
 t_roomdata	*find_room_by_cmd(t_list *lst, int cmd)
@@ -49,6 +49,8 @@ t_result	check_all(t_lemin *lem)
 {
 	t_result	res;
 
+	if (ft_lstsize(lem->links) == 0)
+		return (ERR_NO_LINKS);
 	if ((res = is_start_end_exists(lem->rooms)) != RET_OK)
 		return (res);
 	return (RET_OK);
