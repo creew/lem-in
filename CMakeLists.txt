@@ -16,6 +16,7 @@ add_executable(lem_in
         links_parse.c
         print.c
         check_all.c
+        graph_create.c
         )
 
 add_dependencies(lem_in libft_target)

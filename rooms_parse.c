@@ -12,6 +12,33 @@
 
 #include "lemin.h"
 
+t_roomdata	*find_room_by_cmd(t_list *lst, int cmd)
+{
+	t_roomdata	*rdata;
+
+	while (lst)
+	{
+		rdata = (t_roomdata *)lst->content;
+		if (rdata->cmd == cmd)
+			return (rdata);
+	}
+	return (NULL);
+}
+
+t_roomdata	*find_room_by_name(t_roomlst *rooms, const char *name)
+{
+	t_roomdata *rdata;
+
+	while (rooms)
+	{
+		rdata = (t_roomdata *)rooms->content;
+		if (ft_strequ(name, rdata->name))
+			return (rdata);
+		rooms = rooms->next;
+	}
+	return (NULL);
+}
+
 static int	check_room_xy_exist(t_list *rooms, int x, int y)
 {
 	t_roomdata *rdata;
@@ -39,7 +66,7 @@ t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 		return (ERR_EMPTY_ROOM_NAME);
 	if (!check_room_valid(ft_trim_spaces(name)))
 		return (ERR_WRONG_ROOM_NAME);
-	if (check_room_exist(lem->rooms, name))
+	if (find_room_by_name(lem->rooms, name))
 		return (ERR_ROOM_NAME_DUPL);
 	s1 = get_next_word(name + ft_strlen(name) + 1, &last);
 	if (!s1 || last)
@@ -60,18 +87,4 @@ int			check_room_valid(const char *name)
 	if (!name || !*name || *name == 'L' || *name == '#')
 		return (0);
 	return (1);
-}
-
-int			check_room_exist(t_list *rooms, const char *name)
-{
-	t_roomdata *rdata;
-
-	while (rooms)
-	{
-		rdata = (t_roomdata *)rooms->content;
-		if (ft_strcmp(name, rdata->name) == 0)
-			return (1);
-		rooms = rooms->next;
-	}
-	return (0);
 }

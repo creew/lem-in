@@ -12,25 +12,48 @@
 
 #include "lemin.h"
 
-static int		is_link_exist(t_list *lst, const char *l1, const char *l2)
+char		*getlink_by_name(t_linklst *lst, const char *name, int n)
+{
+	t_linkdata	*ldata;
+
+	while (lst)
+	{
+		ldata = (t_linkdata *)lst->content;
+		if (ft_strequ(name, ldata->l1))
+		{
+			if (!n--)
+				return (ldata->l2);
+		}
+		if (ft_strequ(name, ldata->l2))
+		{
+			if (!n--)
+				return (ldata->l1);
+		}
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
+static int		is_link_exist(t_linklst *lst, const char *l1, const char *l2)
 {
 	t_linkdata *ldata;
 
 	while (lst)
 	{
 		ldata = (t_linkdata *)lst->content;
-		if ((!ft_strcmp(l1, ldata->l1) && !ft_strcmp(l2, ldata->l2)) ||
-			(!ft_strcmp(l1, ldata->l2) && !ft_strcmp(l2, ldata->l1)))
+		if ((ft_strequ(l1, ldata->l1) && ft_strequ(l2, ldata->l2)) ||
+			(ft_strequ(l1, ldata->l2) && ft_strequ(l2, ldata->l1)))
 			return (1);
 		lst = lst->next;
 	}
 	return (0);
 }
 
-static t_result	add_lemlink_list(t_list **root, const char *l1, const char *l2)
+static t_result	add_lemlink_list(t_linklst **root,
+	const char *l1, const char *l2)
 {
-	t_linkdata	* ldata;
-	t_list		*lst;
+	t_linkdata	*ldata;
+	t_linklst	*lst;
 	size_t		l1_len;
 	size_t		l2_len;
 
@@ -60,10 +83,10 @@ t_result		add_lem_link(t_lemin *lem, char *str)
 	if (!r2)
 		return (ERR_WRONG_LINK);
 	*r2++ = '\0';
-	if (!check_room_exist(lem->rooms, ft_trim_spaces(r1)) ||
-		!check_room_exist(lem->rooms, ft_trim_spaces(r2)))
+	if (!find_room_by_name(lem->rooms, ft_trim_spaces(r1)) ||
+		!find_room_by_name(lem->rooms, ft_trim_spaces(r2)))
 		return (ERR_WRONG_LINK_ROOM);
-	if (ft_strcmp(r1, r2) == 0)
+	if (ft_strequ(r1, r2))
 		return (ERR_WRONG_LINK_TO_LINK);
 	return (add_lemlink_list(&lem->links, r1, r2));
 }

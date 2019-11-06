@@ -32,19 +32,6 @@ t_result	is_start_end_exists(t_list *root)
 	return (start_count == 1 && end_count == 1 ? RET_OK : ERR_NO_START_OR_END);
 }
 
-t_roomdata	*find_room_by_cmd(t_list *lst, int cmd)
-{
-	t_roomdata	*rdata;
-
-	while (lst)
-	{
-		rdata = (t_roomdata *)lst->content;
-		if (rdata->cmd == cmd)
-			return (rdata);
-	}
-	return (NULL);
-}
-
 t_result	check_all(t_lemin *lem)
 {
 	t_result	res;
@@ -53,5 +40,6 @@ t_result	check_all(t_lemin *lem)
 		return (ERR_NO_LINKS);
 	if ((res = is_start_end_exists(lem->rooms)) != RET_OK)
 		return (res);
+	graph_create(lem);
 	return (RET_OK);
 }

@@ -12,11 +12,11 @@
 
 #include "lemin.h"
 
-t_result	add_lem_list(t_list **root, const char *name,
+t_result	add_lem_list(t_roomlst **root, const char *name,
 						const int *xy, int cmd)
 {
 	t_roomdata	*ldata;
-	t_list		*lst;
+	t_roomlst	*lst;
 	size_t		len;
 
 	len = ft_strlen(name);
@@ -37,7 +37,7 @@ static void	del_list_elem(void *data, size_t size)
 	ft_memdel(&data);
 }
 
-void		free_lem_list(t_list **root)
+void		free_lem_list(t_roomlst **root)
 {
 	ft_lstdel(root, del_list_elem);
 }

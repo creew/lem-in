@@ -12,9 +12,9 @@
 
 #include "lemin.h"
 
-void	print_rooms(t_list *rooms)
+void	print_rooms(t_roomlst *rooms)
 {
-	t_list		*cur;
+	t_roomlst	*cur;
 	t_roomdata	*data;
 	size_t		size;
 
@@ -36,11 +36,11 @@ void	print_rooms(t_list *rooms)
 	}
 }
 
-void	print_links(t_list *links)
+void	print_links(t_linklst *links)
 {
 	t_linkdata	*linkdata;
 	size_t		size;
-	t_list		*cur;
+	t_linklst	*cur;
 
 	size = ft_lstsize(links);
 	while (size--)

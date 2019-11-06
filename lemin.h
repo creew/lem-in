@@ -16,6 +16,8 @@
 # include "libft.h"
 
 typedef	int		t_result;
+typedef t_list	t_roomlst;
+typedef t_list	t_linklst;
 
 # define RET_OK					(0)
 # define ERR_READ_ANTS_NUMBER	(-1)
@@ -73,9 +75,10 @@ t_result		add_lem_list(t_list **root, const char *name,
 t_result		read_input(int fd, t_lemin *lem);
 
 t_result		add_lem_room(t_lemin *lem, char *str, int cmd);
-int				check_room_exist(t_list *rooms, const char *name);
+t_roomdata		*find_room_by_name(t_roomlst *rooms, const char *name);
 int				check_room_valid(const char *name);
 
+char			*getlink_by_name(t_linklst *lst, const char *name, int n);
 t_result		add_lem_link(t_lemin *lem, char *str);
 
 int				count_numbers(char *str);
@@ -85,4 +88,7 @@ void			print_rooms(t_list *rooms);
 void			print_links(t_list *links);
 
 t_result		check_all(t_lemin *lem);
+t_roomdata		*find_room_by_cmd(t_list *lst, int cmd);
+
+t_result		graph_create(t_lemin *lem);
 #endif

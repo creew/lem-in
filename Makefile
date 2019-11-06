@@ -23,7 +23,8 @@ SRCS =	lemin.c \
 		line_parse.c \
 		links_parse.c \
 		print.c \
-		check_all.c
+		check_all.c \
+		graph_create.c
 
 OBJS = $(SRCS:.c=.o)
 
