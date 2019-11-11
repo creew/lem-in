@@ -12,15 +12,16 @@
 
 #include "lemin.h"
 
-t_roomdata	*find_room_by_cmd(t_list *lst, int cmd)
+t_roomdata	*find_room_by_cmd(t_roomlst *rooms, int cmd)
 {
 	t_roomdata	*rdata;
 
-	while (lst)
+	while (rooms)
 	{
-		rdata = (t_roomdata *)lst->content;
+		rdata = (t_roomdata *)rooms->content;
 		if (rdata->cmd == cmd)
 			return (rdata);
+		rooms = rooms->next;
 	}
 	return (NULL);
 }

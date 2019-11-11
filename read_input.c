@@ -17,9 +17,9 @@ static t_result	get_lem_cmd(char *str)
 	if (*str == '#' && *(str + 1) == '#')
 	{
 		ft_trim_spaces(str + 2);
-		if (strcmp(str + 2, "start") == 0)
+		if (ft_strequ(str + 2, "start"))
 			return (LEM_CMD_START);
-		if (strcmp(str + 2, "end") == 0)
+		if (ft_strequ(str + 2, "end"))
 			return (LEM_CMD_END);
 	}
 	return (LEM_CMD_NONE);

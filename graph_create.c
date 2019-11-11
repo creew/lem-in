@@ -39,5 +39,6 @@ t_result	graph_create(t_lemin *lem)
 	if (!start)
 		return (ERR_NO_START_OR_END);
 
+
 	return (RET_OK);
 }

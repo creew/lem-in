@@ -11,16 +11,18 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
+#include <fcntl.h>
 
 int		main(int ac, char *av[])
 {
 	t_lemin		lem;
 	t_result	ret;
+	int 		fd;
 
-	(void)ac;
-	(void)av;
+	if (ac != 2 || (fd = open(av[1], O_RDONLY)) == -1)
+		fd = 0;
 	ft_bzero(&lem, sizeof(lem));
-	ret = read_input(0, &lem);
+	ret = read_input(fd, &lem);
 	if (ret == RET_OK)
 		ret = check_all(&lem);
 	if (ret != RET_OK)

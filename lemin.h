@@ -64,9 +64,9 @@ typedef struct	s_rooms
 
 typedef struct	s_lemin
 {
-	int		num_ants;
-	t_list	*rooms;
-	t_list	*links;
+	int			num_ants;
+	t_roomlst	*rooms;
+	t_linklst	*links;
 }				t_lemin;
 
 t_result		add_lem_list(t_list **root, const char *name,
