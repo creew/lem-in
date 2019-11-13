@@ -55,9 +55,9 @@ typedef struct	s_roomdata
 
 typedef struct	s_linkdata
 {
-	char	*l1;
-	char	*l2;
-	char	ldata[2];
+	char		*l1;
+	char		*l2;
+	char		ldata[2];
 }				t_linkdata;
 
 typedef struct	s_neigbor
