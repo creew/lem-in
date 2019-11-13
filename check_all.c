@@ -40,6 +40,7 @@ t_result	check_all(t_lemin *lem)
 		return (ERR_NO_LINKS);
 	if ((res = is_start_end_exists(lem->rooms)) != RET_OK)
 		return (res);
-	graph_create(lem);
+	if ((res = graph_create(lem)) != RET_OK)
+		return (res);
 	return (RET_OK);
 }

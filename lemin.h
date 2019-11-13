@@ -18,6 +18,7 @@
 typedef	int		t_result;
 typedef t_list	t_roomlst;
 typedef t_list	t_linklst;
+typedef t_list	t_neigborlst;
 
 # define RET_OK					(0)
 # define ERR_READ_ANTS_NUMBER	(-1)
@@ -42,10 +43,14 @@ typedef t_list	t_linklst;
 
 typedef struct	s_roomdata
 {
-	int		x;
-	int		y;
-	int		cmd;
-	char	name[1];
+	int					x;
+	int					y;
+	int					cmd;
+	int 				weigth;
+	struct s_roomdata	*prev;
+	int 				visited;
+	t_neigborlst		*lst;
+	char			name[1];
 }				t_roomdata;
 
 typedef struct	s_linkdata
@@ -55,12 +60,11 @@ typedef struct	s_linkdata
 	char	ldata[2];
 }				t_linkdata;
 
-typedef struct	s_rooms
+typedef struct	s_neigbor
 {
-	struct s_rooms	*children;
-	struct s_rooms	*next;
-	t_roomdata		*room;
-}				t_rooms;
+	t_roomdata	*room;
+	int 		weight;
+}				t_neigbor;
 
 typedef struct	s_lemin
 {
@@ -86,6 +90,7 @@ char			*get_next_word(char *str, int *last);
 
 void			print_rooms(t_list *rooms);
 void			print_links(t_list *links);
+void			print_neighbors(t_roomlst *rooms);
 
 t_result		check_all(t_lemin *lem);
 t_roomdata		*find_room_by_cmd(t_list *lst, int cmd);

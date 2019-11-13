@@ -27,6 +27,9 @@ t_result	add_lem_list(t_roomlst **root, const char *name,
 	ldata->x = xy[0];
 	ldata->y = xy[1];
 	ldata->cmd = cmd;
+	ldata->prev = NULL;
+	ldata->weigth = FT_INTMAX;
+	ldata->visited = 0;
 	ft_strlcpy(ldata->name, name, len + 1);
 	return (RET_OK);
 }

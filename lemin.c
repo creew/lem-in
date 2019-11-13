@@ -33,5 +33,6 @@ int		main(int ac, char *av[])
 	}
 	print_rooms(lem.rooms);
 	print_links(lem.links);
+	print_neighbors(lem.rooms);
 	return (0);
 }

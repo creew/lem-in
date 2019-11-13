@@ -14,7 +14,7 @@ NAME = lem-in
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra
+CC_FLAGS = -Wall -Wextra -g3
 
 SRCS =	lemin.c \
 		lem_list.c \

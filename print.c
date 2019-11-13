@@ -57,3 +57,40 @@ void	print_links(t_linklst *links)
 		}
 	}
 }
+
+void	print_neighbors(t_roomlst *rooms)
+{
+	t_roomlst	*cur;
+	t_roomdata	*data;
+	size_t		size;
+	size_t 		neighbors_size;
+	t_neigborlst *nlst;
+	t_neigbor		*neigbor;
+
+	size = ft_lstsize(rooms);
+	while (size--)
+	{
+		cur = ft_lstget(rooms, size);
+		if (cur)
+		{
+			data = (t_roomdata *)cur->content;
+			ft_putstr("name: \"");
+			ft_putstr(data->name);
+			ft_putstr("\", neighbors: ");
+			neighbors_size = ft_lstsize(data->lst);
+			while (neighbors_size--)
+			{
+				nlst = ft_lstget(data->lst, neighbors_size);
+				if (nlst)
+				{
+					neigbor = (t_neigbor *)nlst->content;
+					ft_putstr(neigbor->room->name);
+					ft_putstr(", ");
+				}
+			}
+			ft_putstr("len: ");
+			ft_putnbr(data->weigth);
+			ft_putendl("");
+		}
+	}
+}
