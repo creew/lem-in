@@ -47,6 +47,14 @@ typedef struct	s_ftstack
 	size_t	init_val;
 }				t_ftstack;
 
+typedef struct	s_ftarray
+{
+	void	**data;
+	size_t	num_elems;
+	size_t	max_elems;
+	size_t	init_val;
+}				t_ftarray;
+
 typedef	t_list	t_ftqueue;
 
 void			*ft_memset(void *b, int c, size_t len);
@@ -158,4 +166,8 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t size);
 int				ft_safe_atoi(const char *arg, int *res);
 char			*ft_strpbrk(const char *s, const char *charset);
 char			*ft_trim_spaces(char *str);
+
+int				ft_array_init(t_ftarray *ftarray, size_t init_val);
+int				ft_array_add(t_ftarray *arr, void *data);
+int				ft_array_get(t_ftarray *arr, size_t index, void **data);
 #endif
