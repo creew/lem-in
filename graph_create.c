@@ -26,21 +26,6 @@ static t_result	add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor)
 	return (RET_OK);
 }
 
-
-static int 		have_not_visited(t_roomlst *lst)
-{
-	t_roomdata *rdata;
-
-	while (lst)
-	{
-		rdata = (t_roomdata *)lst->content;
-		if (!rdata->visited)
-			return (1);
-		lst = lst->next;
-	}
-	return (0);
-}
-
 static t_roomdata *find_min_weight(t_roomlst *lst)
 {
 	t_roomdata *rdata;
