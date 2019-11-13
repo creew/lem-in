@@ -22,6 +22,9 @@ int		main(int ac, char *av[])
 	if (ac != 2 || (fd = open(av[1], O_RDONLY)) == -1)
 		fd = 0;
 	ft_bzero(&lem, sizeof(lem));
+	ft_array_init(&lem.rooms, 64);
+	ft_array_init(&lem.links, 64);
+
 	ret = read_input(fd, &lem);
 	if (ret == RET_OK)
 		ret = check_all(&lem);
@@ -31,8 +34,8 @@ int		main(int ac, char *av[])
 		ft_putnbr(ret);
 		ft_putendl("");
 	}
-	print_rooms(lem.rooms);
-	print_links(lem.links);
-	print_neighbors(lem.rooms);
+	print_rooms(&lem.rooms);
+	print_links(&lem.links);
+	print_neighbors(&lem.rooms);
 	return (0);
 }

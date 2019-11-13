@@ -15,10 +15,10 @@
 
 # include "libft.h"
 
-typedef	int		t_result;
-typedef t_list	t_roomlst;
-typedef t_list	t_linklst;
-typedef t_list	t_neigborlst;
+typedef	int			t_result;
+typedef t_ftarray	t_roomarr;
+typedef t_ftarray	t_linkarr;
+typedef t_list		t_neigborlst;
 
 # define RET_OK					(0)
 # define ERR_READ_ANTS_NUMBER	(-1)
@@ -49,7 +49,7 @@ typedef struct	s_roomdata
 	int 				weigth;
 	struct s_roomdata	*prev;
 	int 				visited;
-	t_neigborlst		*lst;
+	t_neigborlst		*neigborlst;
 	char			name[1];
 }				t_roomdata;
 
@@ -69,31 +69,31 @@ typedef struct	s_neigbor
 typedef struct	s_lemin
 {
 	int			num_ants;
-	t_roomlst	*rooms;
-	t_linklst	*links;
+	t_roomarr	rooms;
+	t_linkarr	links;
 }				t_lemin;
 
-t_result		add_lem_list(t_list **root, const char *name,
-							const int *xy, int cmd);
+t_result		add_lem_list(t_roomarr *arr, const char *name,
+						 const int *xy, int cmd);
 
 t_result		read_input(int fd, t_lemin *lem);
 
 t_result		add_lem_room(t_lemin *lem, char *str, int cmd);
-t_roomdata		*find_room_by_name(t_roomlst *rooms, const char *name);
+t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name);
 int				check_room_valid(const char *name);
 
-char			*getlink_by_name(t_linklst *lst, const char *name, int n);
+char			*getlink_by_name(t_linkarr *lst, const char *name, int n);
 t_result		add_lem_link(t_lemin *lem, char *str);
 
 int				count_numbers(char *str);
 char			*get_next_word(char *str, int *last);
 
-void			print_rooms(t_list *rooms);
-void			print_links(t_list *links);
-void			print_neighbors(t_roomlst *rooms);
+void			print_rooms(t_roomarr *rooms);
+void			print_links(t_linkarr *links);
+void			print_neighbors(t_roomarr *rooms);
 
 t_result		check_all(t_lemin *lem);
-t_roomdata		*find_room_by_cmd(t_list *lst, int cmd);
+t_roomdata		*find_room_by_cmd(t_roomarr *rooms, int cmd);
 
 t_result		graph_create(t_lemin *lem);
 #endif

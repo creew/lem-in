@@ -12,19 +12,16 @@
 
 #include "lemin.h"
 
-void	print_rooms(t_roomlst *rooms)
+void	print_rooms(t_roomarr *rooms)
 {
-	t_roomlst	*cur;
 	t_roomdata	*data;
-	size_t		size;
+	size_t		count;
 
-	size = ft_lstsize(rooms);
-	while (size--)
+	count = 0;
+	while (count < rooms->num_elems)
 	{
-		cur = ft_lstget(rooms, size);
-		if (cur)
+		if (ft_array_get(rooms, count, (void **)&data) == 0)
 		{
-			data = (t_roomdata *)cur->content;
 			ft_putstr("name: \"");
 			ft_putstr(data->name);
 			ft_putstr("\", x: ");
@@ -33,54 +30,50 @@ void	print_rooms(t_roomlst *rooms)
 			ft_putnbr(data->y);
 			ft_putendl("");
 		}
+		count++;
 	}
 }
 
-void	print_links(t_linklst *links)
+void	print_links(t_linkarr *links)
 {
 	t_linkdata	*linkdata;
-	size_t		size;
-	t_linklst	*cur;
+	size_t		count;
 
-	size = ft_lstsize(links);
-	while (size--)
+	count =0;
+	while (count < links->num_elems)
 	{
-		cur = ft_lstget(links, size);
-		if (cur)
+		if (ft_array_get(links, count, (void **)&linkdata) == 0)
 		{
-			linkdata = (t_linkdata *)cur->content;
 			ft_putstr("link 1: \"");
 			ft_putstr(linkdata->l1);
 			ft_putstr("\", link 2: \"");
 			ft_putstr(linkdata->l2);
 			ft_putendl("\"");
 		}
+		count++;
 	}
 }
 
-void	print_neighbors(t_roomlst *rooms)
+void	print_neighbors(t_roomarr *rooms)
 {
-	t_roomlst	*cur;
-	t_roomdata	*data;
-	size_t		size;
-	size_t 		neighbors_size;
-	t_neigborlst *nlst;
+	t_roomdata		*data;
+	size_t			count;
+	size_t			neighbors_size;
+	t_neigborlst	*nlst;
 	t_neigbor		*neigbor;
 
-	size = ft_lstsize(rooms);
-	while (size--)
+	count = 0;
+	while (count < rooms->num_elems)
 	{
-		cur = ft_lstget(rooms, size);
-		if (cur)
+		if (ft_array_get(rooms, count, (void **)&data) == 0)
 		{
-			data = (t_roomdata *)cur->content;
 			ft_putstr("name: \"");
 			ft_putstr(data->name);
 			ft_putstr("\", neighbors: ");
-			neighbors_size = ft_lstsize(data->lst);
+			neighbors_size = ft_lstsize(data->neigborlst);
 			while (neighbors_size--)
 			{
-				nlst = ft_lstget(data->lst, neighbors_size);
+				nlst = ft_lstget(data->neigborlst, neighbors_size);
 				if (nlst)
 				{
 					neigbor = (t_neigbor *)nlst->content;
@@ -92,5 +85,6 @@ void	print_neighbors(t_roomlst *rooms)
 			ft_putnbr(data->weigth);
 			ft_putendl("");
 		}
+		count++;
 	}
 }

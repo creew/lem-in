@@ -17,7 +17,7 @@ static t_result	add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor)
 	t_neigborlst	*neigh;
 	t_neigbor		*ndata;
 
-	neigh = ft_lstaddblank(&rdata->lst, sizeof(t_neigbor));
+	neigh = ft_lstaddblank(&rdata->neigborlst, sizeof(t_neigbor));
 	if (neigh == NULL)
 		return (ERR_ENOMEM);
 	ndata = (t_neigbor *)neigh->content;
@@ -26,21 +26,24 @@ static t_result	add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor)
 	return (RET_OK);
 }
 
-static t_roomdata *find_min_weight(t_roomlst *lst)
+static t_roomdata *find_min_weight(t_roomarr *arr)
 {
-	t_roomdata *rdata;
-	t_roomdata *cur;
+	t_roomdata	*rdata;
+	t_roomdata	*cur;
+	size_t 		size;
 
 	rdata = NULL;
-	while (lst)
+	size = arr->num_elems;
+	while (size--)
 	{
-		cur = (t_roomdata *)lst->content;
-		if (cur->visited == 0 && cur->weigth != FT_INTMAX)
+		if (ft_array_get(arr, size, (void **)&cur) == 0)
 		{
-			if (rdata == NULL || cur->weigth < rdata->weigth)
-				rdata = cur;
+			if (cur->visited == 0 && cur->weigth != FT_INTMAX)
+			{
+				if (rdata == NULL || cur->weigth < rdata->weigth)
+					rdata = cur;
+			}
 		}
-		lst = lst->next;
 	}
 	return (rdata);
 }
@@ -51,11 +54,11 @@ static t_result	dijkstra_algo(t_lemin *lem)
 	t_neigborlst	*neigborlst;
 	t_neigbor		*neigbor;
 
-	rdata = find_room_by_cmd(lem->rooms, LEM_CMD_START);
+	rdata = find_room_by_cmd(&lem->rooms, LEM_CMD_START);
 	rdata->weigth = 0;
-	while ((rdata = find_min_weight(lem->rooms)))
+	while ((rdata = find_min_weight(&lem->rooms)))
 	{
-		neigborlst = rdata->lst;
+		neigborlst = rdata->neigborlst;
 		while (neigborlst)
 		{
 			neigbor = (t_neigbor *)neigborlst->content;
@@ -73,28 +76,29 @@ static t_result	dijkstra_algo(t_lemin *lem)
 
 t_result		graph_create(t_lemin *lem)
 {
-	t_roomlst	*rlst;
 	t_roomdata	*rdata;
 	char 		*oppname;
 	int 		count;
 	t_roomdata	*rdata2;
+	size_t		size;
 
-	rlst = lem->rooms;
-	while (rlst)
+	size = lem->rooms.num_elems;
+	while (size--)
 	{
 		count = 0;
-		rdata = (t_roomdata *)rlst->content;
-		while ((oppname = getlink_by_name(lem->links, rdata->name, count))
-			!= NULL)
+		if (ft_array_get(&lem->rooms, size, (void **)&rdata) == 0)
 		{
-			rdata2 = find_room_by_name(lem->rooms, oppname);
-			if (rdata2 == NULL)
-				return (ERR_WRONG_LINK_ROOM);
-			if (add_neigbor_room(rdata, rdata2) != RET_OK)
-				return (ERR_ENOMEM);
-			count++;
+			while ((oppname = getlink_by_name(&lem->links, rdata->name, count))
+				   != NULL)
+			{
+				rdata2 = find_room_by_name(&lem->rooms, oppname);
+				if (rdata2 == NULL)
+					return (ERR_WRONG_LINK_ROOM);
+				if (add_neigbor_room(rdata, rdata2) != RET_OK)
+					return (ERR_ENOMEM);
+				count++;
+			}
 		}
-		rlst = rlst->next;
 	}
 	dijkstra_algo(lem);
 	return (RET_OK);

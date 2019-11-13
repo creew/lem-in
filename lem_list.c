@@ -12,25 +12,28 @@
 
 #include "lemin.h"
 
-t_result	add_lem_list(t_roomlst **root, const char *name,
+t_result	add_lem_list(t_roomarr *arr, const char *name,
 						const int *xy, int cmd)
 {
-	t_roomdata	*ldata;
-	t_roomlst	*lst;
+	t_roomdata	*rdata;
 	size_t		len;
 
 	len = ft_strlen(name);
-	lst = ft_lstaddblank(root, sizeof(t_roomdata) + len * sizeof(char));
-	if (!lst)
+	rdata = ft_memalloc(sizeof(t_roomdata) + len * sizeof(char));
+	if (rdata == NULL)
 		return (ERR_ENOMEM);
-	ldata = (t_roomdata *)lst->content;
-	ldata->x = xy[0];
-	ldata->y = xy[1];
-	ldata->cmd = cmd;
-	ldata->prev = NULL;
-	ldata->weigth = FT_INTMAX;
-	ldata->visited = 0;
-	ft_strlcpy(ldata->name, name, len + 1);
+	if (ft_array_add(arr, rdata) != 0)
+	{
+		ft_memdel((void **)&rdata);
+		return (ERR_ENOMEM);
+	}
+	rdata->x = xy[0];
+	rdata->y = xy[1];
+	rdata->cmd = cmd;
+	rdata->prev = NULL;
+	rdata->weigth = FT_INTMAX;
+	rdata->visited = 0;
+	ft_strlcpy(rdata->name, name, len + 1);
 	return (RET_OK);
 }
 
@@ -39,8 +42,8 @@ static void	del_list_elem(void *data, size_t size)
 	(void)size;
 	ft_memdel(&data);
 }
-
-void		free_lem_list(t_roomlst **root)
-{
-	ft_lstdel(root, del_list_elem);
-}
+//
+//void		free_lem_list(t_roomlst **root)
+//{
+//	ft_lstdel(root, del_list_elem);
+//}
