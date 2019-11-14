@@ -14,21 +14,5 @@
 
 int			ft_stack_push(t_ftstack *stack, void *data)
 {
-	void	**newstack;
-	void	**old;
-
-	if (stack->pos >= stack->size)
-	{
-		newstack = ft_calloc(stack->size + stack->init_val, sizeof(void *));
-		if (!newstack)
-			return (1);
-		if (stack->data)
-			ft_voidcpy(newstack, stack->data, stack->size);
-		old = stack->data;
-		stack->data = newstack;
-		stack->size += stack->init_val;
-		ft_memdel((void **)&old);
-	}
-	stack->data[stack->pos++] = data;
-	return (0);
+	return (ft_array_add(stack, data));
 }

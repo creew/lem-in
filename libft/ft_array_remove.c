@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void	ft_array_remove(t_ftarray *arr, size_t index, void (*f)(void *))
+int		ft_array_remove(t_ftarray *arr, size_t index, void (*f)(void *))
 {
 	void	*data;
 
@@ -26,5 +26,7 @@ void	ft_array_remove(t_ftarray *arr, size_t index, void (*f)(void *))
 				arr->num_elems - index);
 		}
 		f(data);
+		return (0);
 	}
+	return (1);
 }

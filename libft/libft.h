@@ -39,14 +39,6 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
-typedef struct	s_ftstack
-{
-	void	**data;
-	size_t	size;
-	size_t	pos;
-	size_t	init_val;
-}				t_ftstack;
-
 typedef struct	s_ftarray
 {
 	void	**data;
@@ -55,7 +47,9 @@ typedef struct	s_ftarray
 	size_t	init_val;
 }				t_ftarray;
 
-typedef	t_list	t_ftqueue;
+typedef t_ftarray	t_ftstack;
+
+typedef	t_list		t_ftqueue;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -172,6 +166,8 @@ void			ft_voidcpy(void **dst, void **src, size_t size);
 int				ft_array_init(t_ftarray *ftarray, size_t init_val);
 int				ft_array_add(t_ftarray *arr, void *data);
 int				ft_array_get(t_ftarray *arr, size_t index, void **data);
-void			ft_array_remove(t_ftarray *arr, size_t index,
+int				ft_array_remove(t_ftarray *arr, size_t index,
 						void (*f)(void *));
+void			ft_array_remove_all(t_ftarray *arr, void (*f)(void *));
+size_t			ft_array_size(t_ftarray *arr);
 #endif

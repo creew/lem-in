@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stack_init.c                                    :+:      :+:    :+:   */
+/*   ft_array_remove_all.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/05 12:44:12 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 12:54:39 by eklompus         ###   ########.fr       */
+/*   Created: 2019/11/14 12:06:51 by eklompus          #+#    #+#             */
+/*   Updated: 2019/11/14 12:06:51 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_stack_init(t_ftstack *stack, size_t init_val)
+void	ft_array_remove_all(t_ftarray *arr, void (*f)(void *))
 {
-	return (ft_array_init(stack, init_val));
+	while (arr->num_elems)
+	{
+		if (f)
+			f(arr->data[arr->num_elems - 1]);
+		arr->num_elems--;
+	}
+	ft_memdel((void **)&arr->data);
+	arr->max_elems = 0;
+	return (0);
 }

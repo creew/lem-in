@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stack_init.c                                    :+:      :+:    :+:   */
+/*   ft_array_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/05 12:44:12 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 12:54:39 by eklompus         ###   ########.fr       */
+/*   Created: 2019/11/14 12:14:36 by eklompus          #+#    #+#             */
+/*   Updated: 2019/11/14 12:14:36 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_stack_init(t_ftstack *stack, size_t init_val)
+size_t		ft_array_size(t_ftarray *arr)
 {
-	return (ft_array_init(stack, init_val));
+	return (arr->num_elems);
 }
