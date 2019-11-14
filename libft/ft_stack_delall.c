@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int		ft_stack_delall(t_ftstack *stack, void (*f)(void *))
+void		ft_stack_delall(t_ftstack *stack, void (*f)(void *))
 {
 	ft_array_remove_all(stack, f);
 }

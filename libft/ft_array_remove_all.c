@@ -22,5 +22,4 @@ void	ft_array_remove_all(t_ftarray *arr, void (*f)(void *))
 	}
 	ft_memdel((void **)&arr->data);
 	arr->max_elems = 0;
-	return (0);
 }

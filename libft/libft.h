@@ -141,7 +141,7 @@ t_list			*ft_lstget(t_list *lst, int	index);
 int				ft_stack_init(t_ftstack *stack, size_t init_val);
 int				ft_stack_pop(t_ftstack *stack, void **data);
 int				ft_stack_push(t_ftstack *stack, void *data);
-int				ft_stack_delall(t_ftstack *stack, void (*f)(void *));
+void			ft_stack_delall(t_ftstack *stack, void (*f)(void *));
 size_t			ft_stack_size(t_ftstack *stack);
 
 int				ft_queue_add(t_ftqueue **queue, void *data);

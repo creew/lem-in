@@ -15,6 +15,7 @@
 int		ft_stack_pop(t_ftstack *stack, void **data)
 {
 	void	*d;
+
 	if (ft_array_size(stack))
 	{
 		if (ft_array_get(stack, stack->num_elems - 1, &d) == 0)
