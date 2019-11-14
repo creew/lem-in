@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-t_result	add_lem_list(t_roomarr *arr, const char *name,
+t_result	add_roomdata(t_roomarr *arr, const char *name,
 						const int *xy, int cmd)
 {
 	t_roomdata	*rdata;

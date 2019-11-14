@@ -39,19 +39,17 @@ static void delroomlinkarr(void *data)
 	ft_memdel(&data);
 }
 
-void	delete_all(t_lemin *lem)
+static void	dellsts(void *data)
 {
-	size_t		size;
 	t_roomdata	*rdata;
 
-	size = ft_array_size(&lem->rooms);
-	while (size--)
-	{
-		if (ft_array_get(&lem->rooms, size, (void **)&rdata))
-		{
-			ft_lstdel(&rdata->neigborlst, delneighlst);
-		}
-	}
+	rdata = (t_roomdata *)data;
+	ft_lstdel(&rdata->neigborlst, delneighlst);
+}
+
+void	delete_all(t_lemin *lem)
+{
+	ft_array_foreach(&lem->rooms, dellsts);
 	ft_array_remove_all(&lem->rooms, delroomlinkarr);
 	ft_array_remove_all(&lem->links, delroomlinkarr);
 }

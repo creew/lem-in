@@ -74,7 +74,7 @@ typedef struct	s_lemin
 	t_linkarr	links;
 }				t_lemin;
 
-t_result		add_lem_list(t_roomarr *arr, const char *name,
+t_result		add_roomdata(t_roomarr *arr, const char *name,
 						 const int *xy, int cmd);
 
 t_result		read_input(int fd, t_lemin *lem);

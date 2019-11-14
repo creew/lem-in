@@ -34,7 +34,7 @@ static t_roomdata	*find_min_weight(t_roomarr *arr)
 
 	rdata = NULL;
 	size = arr->num_elems;
-	while (size--)l
+	while (size--)
 	{
 		if (ft_array_get(arr, size, (void **)&cur) == 0)
 		{
@@ -54,7 +54,7 @@ static t_result		dijkstra_algo(t_lemin *lem)
 	t_neigborlst	*neigborlst;
 	t_neigbor		*neigbor;
 
-	rdata = find_room_by_cmd(&lem->rooms, LEM_CMD_START);
+	rdata = find_room_by_cmd(&lem->rooms, LEM_CMD_END);
 	rdata->weigth = 0;
 	while ((rdata = find_min_weight(&lem->rooms)))
 	{

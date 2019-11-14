@@ -39,7 +39,7 @@ static int	is_path_exists(t_roomarr *rooms)
 {
 	t_roomdata *end;
 
-	end = find_room_by_cmd(rooms, LEM_CMD_END);
+	end = find_room_by_cmd(rooms, LEM_CMD_START);
 	if (end)
 	{
 		if (end->prev != NULL)
