@@ -34,7 +34,7 @@ static t_roomdata	*find_min_weight(t_roomarr *arr)
 
 	rdata = NULL;
 	size = arr->num_elems;
-	while (size--)
+	while (size--)l
 	{
 		if (ft_array_get(arr, size, (void **)&cur) == 0)
 		{
