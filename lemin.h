@@ -36,6 +36,7 @@ typedef t_list		t_neigborlst;
 # define ERR_LINK_DUPL 			(-13)
 # define ERR_ROOM_XY_DUPL		(-14)
 # define ERR_NO_LINKS			(-15)
+# define ERR_NO_PATH			(-16)
 
 # define LEM_CMD_NONE			(0)
 # define LEM_CMD_START			(1)
@@ -50,7 +51,7 @@ typedef struct	s_roomdata
 	struct s_roomdata	*prev;
 	int 				visited;
 	t_neigborlst		*neigborlst;
-	char			name[1];
+	char				name[1];
 }				t_roomdata;
 
 typedef struct	s_linkdata

@@ -28,6 +28,34 @@ void	init_lem(t_lemin *lem)
 	ft_array_init(&lem->links, 128);
 }
 
+static void	delneighlst(void *data, size_t size)
+{
+	(void)size;
+	ft_memdel(&data);
+}
+
+static void delroomlinkarr(void *data)
+{
+	ft_memdel(&data);
+}
+
+void	delete_all(t_lemin *lem)
+{
+	size_t		size;
+	t_roomdata	*rdata;
+
+	size = ft_array_size(&lem->rooms);
+	while (size--)
+	{
+		if (ft_array_get(&lem->rooms, size, (void **)&rdata))
+		{
+			ft_lstdel(&rdata->neigborlst, delneighlst);
+		}
+	}
+	ft_array_remove_all(&lem->rooms, delroomlinkarr);
+	ft_array_remove_all(&lem->links, delroomlinkarr);
+}
+
 int		main(int ac, char *av[])
 {
 	t_lemin		lem;
@@ -47,5 +75,6 @@ int		main(int ac, char *av[])
 		ft_putendl("");
 	}
 	print_all(&lem);
-	return (EXIT_FAILURE);
+	delete_all(&lem);
+	return (EXIT_SUCCESS);
 }
