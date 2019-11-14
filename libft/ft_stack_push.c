@@ -12,15 +12,6 @@
 
 #include "libft.h"
 
-static void	voidcpy(void **dst, void **src, size_t size)
-{
-	while (size)
-	{
-		*dst++ = *src++;
-		size--;
-	}
-}
-
 int			ft_stack_push(t_ftstack *stack, void *data)
 {
 	void	**newstack;
@@ -28,12 +19,11 @@ int			ft_stack_push(t_ftstack *stack, void *data)
 
 	if (stack->pos >= stack->size)
 	{
-		newstack = ft_memalloc(
-			sizeof(void *) * (stack->size + stack->init_val));
+		newstack = ft_calloc(stack->size + stack->init_val, sizeof(void *));
 		if (!newstack)
 			return (1);
 		if (stack->data)
-			voidcpy(newstack, stack->data, stack->size);
+			ft_voidcpy(newstack, stack->data, stack->size);
 		old = stack->data;
 		stack->data = newstack;
 		stack->size += stack->init_val;

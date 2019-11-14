@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_array_add.c                                     :+:      :+:    :+:   */
+/*   ft_array_remove.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 16:16:20 by eklompus          #+#    #+#             */
-/*   Updated: 2019/11/13 16:16:20 by eklompus         ###   ########.fr       */
+/*   Created: 2019/11/14 11:46:17 by eklompus          #+#    #+#             */
+/*   Updated: 2019/11/14 11:46:18 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			ft_array_add(t_ftarray *arr, void *data)
+void	ft_array_remove(t_ftarray *arr, size_t index, void (*f)(void *))
 {
-	void	**newarr;
-	void	**old;
+	void	*data;
 
-	if (arr->num_elems >= arr->max_elems)
+	if (index < arr->num_elems)
 	{
-		newarr = ft_calloc(arr->max_elems + arr->init_val, sizeof(void *));
-		if (!newarr)
-			return (1);
-		if (arr->data)
-			ft_voidcpy(newarr, arr->data, arr->max_elems);
-		old = arr->data;
-		arr->data = newarr;
-		arr->max_elems += arr->init_val;
-		ft_memdel((void **)&old);
+		data = arr->data[index];
+		arr->num_elems--;
+		if (arr->num_elems - index > 0)
+		{
+			ft_voidcpy(arr->data + index, arr->data + index + 1,
+				arr->num_elems - index);
+		}
+		f(data);
 	}
-	arr->data[arr->num_elems++] = data;
-	return (0);
 }

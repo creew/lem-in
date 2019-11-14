@@ -167,7 +167,11 @@ int				ft_safe_atoi(const char *arg, int *res);
 char			*ft_strpbrk(const char *s, const char *charset);
 char			*ft_trim_spaces(char *str);
 
+void			ft_voidcpy(void **dst, void **src, size_t size);
+
 int				ft_array_init(t_ftarray *ftarray, size_t init_val);
 int				ft_array_add(t_ftarray *arr, void *data);
 int				ft_array_get(t_ftarray *arr, size_t index, void **data);
+void			ft_array_remove(t_ftarray *arr, size_t index,
+						void (*f)(void *));
 #endif
