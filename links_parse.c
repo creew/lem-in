@@ -12,12 +12,12 @@
 
 #include "lemin.h"
 
-char		*getlink_by_name(t_linkarr *larr, const char *name, int n)
+char			*getlink_by_name(t_linkarr *larr, const char *name, int n)
 {
 	t_linkdata	*ldata;
-	size_t 		size;
+	size_t		size;
 
-	size = larr->num_elems;
+	size = ft_array_size(larr);
 	while (size--)
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
@@ -39,10 +39,10 @@ char		*getlink_by_name(t_linkarr *larr, const char *name, int n)
 
 static int		is_link_exist(t_linkarr *larr, const char *l1, const char *l2)
 {
-	t_linkdata *ldata;
-	size_t 		size;
+	t_linkdata	*ldata;
+	size_t		size;
 
-	size = larr->num_elems;
+	size = ft_array_size(larr);
 	while (size--)
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)

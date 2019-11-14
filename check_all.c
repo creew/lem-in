@@ -19,7 +19,7 @@ t_result	is_start_end_exists(t_roomarr *arr)
 	t_roomdata	*rdata;
 	size_t		size;
 
-	size = arr->num_elems;
+	size = ft_array_size(arr);
 	start_count = 0;
 	end_count = 0;
 	while (size--)

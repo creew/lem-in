@@ -17,7 +17,7 @@ t_roomdata	*find_room_by_cmd(t_roomarr *rooms, int cmd)
 	t_roomdata	*rdata;
 	size_t		count;
 
-	count = rooms->num_elems;
+	count = ft_array_size(rooms);
 	while (count--)
 	{
 		if (ft_array_get(rooms, count, (void **)&rdata) == 0)
@@ -34,7 +34,7 @@ t_roomdata	*find_room_by_name(t_roomarr *rooms, const char *name)
 	t_roomdata	*rdata;
 	size_t		count;
 
-	count = rooms->num_elems;
+	count = ft_array_size(rooms);
 	while (count--)
 	{
 		if (ft_array_get(rooms, count, (void **)&rdata) == 0)
@@ -48,10 +48,10 @@ t_roomdata	*find_room_by_name(t_roomarr *rooms, const char *name)
 
 static int	check_room_xy_exist(t_roomarr *rooms, int x, int y)
 {
-	t_roomdata *rdata;
+	t_roomdata	*rdata;
 	size_t		count;
 
-	count = rooms->num_elems;
+	count = ft_array_size(rooms);
 	while (count--)
 	{
 		if (ft_array_get(rooms, count, (void **)&rdata) == 0)

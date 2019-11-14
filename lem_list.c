@@ -36,14 +36,3 @@ t_result	add_lem_list(t_roomarr *arr, const char *name,
 	ft_strlcpy(rdata->name, name, len + 1);
 	return (RET_OK);
 }
-
-static void	del_list_elem(void *data, size_t size)
-{
-	(void)size;
-	ft_memdel(&data);
-}
-//
-//void		free_lem_list(t_roomlst **root)
-//{
-//	ft_lstdel(root, del_list_elem);
-//}

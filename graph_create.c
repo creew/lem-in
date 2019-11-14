@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-static t_result	add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor)
+static t_result		add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor)
 {
 	t_neigborlst	*neigh;
 	t_neigbor		*ndata;
@@ -26,11 +26,11 @@ static t_result	add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor)
 	return (RET_OK);
 }
 
-static t_roomdata *find_min_weight(t_roomarr *arr)
+static t_roomdata	*find_min_weight(t_roomarr *arr)
 {
 	t_roomdata	*rdata;
 	t_roomdata	*cur;
-	size_t 		size;
+	size_t		size;
 
 	rdata = NULL;
 	size = arr->num_elems;
@@ -48,7 +48,7 @@ static t_roomdata *find_min_weight(t_roomarr *arr)
 	return (rdata);
 }
 
-static t_result	dijkstra_algo(t_lemin *lem)
+static t_result		dijkstra_algo(t_lemin *lem)
 {
 	t_roomdata		*rdata;
 	t_neigborlst	*neigborlst;
@@ -74,29 +74,28 @@ static t_result	dijkstra_algo(t_lemin *lem)
 	return (RET_OK);
 }
 
-t_result		graph_create(t_lemin *lem)
+t_result			graph_create(t_lemin *lem)
 {
 	t_roomdata	*rdata;
-	char 		*oppname;
-	int 		count;
+	char		*oppname;
+	int			count;
 	t_roomdata	*rdata2;
 	size_t		size;
 
-	size = lem->rooms.num_elems;
+	size = ft_array_size(&lem->rooms);
 	while (size--)
 	{
 		count = 0;
 		if (ft_array_get(&lem->rooms, size, (void **)&rdata) == 0)
 		{
-			while ((oppname = getlink_by_name(&lem->links, rdata->name, count))
-				   != NULL)
+			while ((oppname =
+				getlink_by_name(&lem->links, rdata->name, count++)) != NULL)
 			{
 				rdata2 = find_room_by_name(&lem->rooms, oppname);
 				if (rdata2 == NULL)
 					return (ERR_WRONG_LINK_ROOM);
 				if (add_neigbor_room(rdata, rdata2) != RET_OK)
 					return (ERR_ENOMEM);
-				count++;
 			}
 		}
 	}

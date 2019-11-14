@@ -18,7 +18,7 @@ void	print_rooms(t_roomarr *rooms)
 	size_t		count;
 
 	count = 0;
-	while (count < rooms->num_elems)
+	while (count < ft_array_size(rooms))
 	{
 		if (ft_array_get(rooms, count, (void **)&data) == 0)
 		{
@@ -39,8 +39,8 @@ void	print_links(t_linkarr *links)
 	t_linkdata	*linkdata;
 	size_t		count;
 
-	count =0;
-	while (count < links->num_elems)
+	count = 0;
+	while (count < ft_array_size(links))
 	{
 		if (ft_array_get(links, count, (void **)&linkdata) == 0)
 		{
@@ -63,7 +63,7 @@ void	print_neighbors(t_roomarr *rooms)
 	t_neigbor		*neigbor;
 
 	count = 0;
-	while (count < rooms->num_elems)
+	while (count < ft_array_size(rooms))
 	{
 		if (ft_array_get(rooms, count, (void **)&data) == 0)
 		{

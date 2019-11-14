@@ -32,7 +32,7 @@ int		main(int ac, char *av[])
 {
 	t_lemin		lem;
 	t_result	ret;
-	int 		fd;
+	int			fd;
 
 	if (ac != 2 || (fd = open(av[1], O_RDONLY)) == -1)
 		fd = 0;
@@ -40,7 +40,6 @@ int		main(int ac, char *av[])
 	ret = read_input(fd, &lem);
 	if (ret == RET_OK)
 		ret = check_all(&lem);
-
 	if (ret != RET_OK)
 	{
 		ft_putstr("Error ");
