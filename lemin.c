@@ -14,14 +14,14 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-void	print_all(t_lemin *lem)
+void		print_all(t_lemin *lem)
 {
 	print_rooms(&lem->rooms);
 	print_links(&lem->links);
 	print_neighbors(&lem->rooms);
 }
 
-void	init_lem(t_lemin *lem)
+void		init_lem(t_lemin *lem)
 {
 	ft_bzero(lem, sizeof(*lem));
 	ft_array_init(&lem->rooms, 128);
@@ -35,7 +35,7 @@ static void	delneighlst(void *data, size_t size)
 	ft_memdel(&data);
 }
 
-static void delroomlinkarr(void *data)
+static void	delroomlinkarr(void *data)
 {
 	ft_memdel(&data);
 }
@@ -48,7 +48,7 @@ static void	dellsts(void *data)
 	ft_lstdel(&rdata->neigborlst, delneighlst);
 }
 
-void	delete_all(t_lemin *lem)
+void		delete_all(t_lemin *lem)
 {
 	ft_array_foreach(&lem->rooms, dellsts);
 	ft_array_remove_all(&lem->rooms, delroomlinkarr);
@@ -56,7 +56,7 @@ void	delete_all(t_lemin *lem)
 	remove_all_paths(&lem->paths);
 }
 
-int		main(int ac, char *av[])
+int			main(int ac, char *av[])
 {
 	t_lemin		lem;
 	t_result	ret;

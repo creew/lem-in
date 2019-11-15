@@ -34,6 +34,11 @@ static t_result	parse_not_comment_str(t_lemin *lem, char *s,
 	return (add_lem_link(lem, s));
 }
 
+/*
+** FIXME: Error reading comments after "##start" or "##end" (flag is missing)
+** -----
+*/
+
 static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 {
 	int			is_rooms;
@@ -62,6 +67,11 @@ static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 	}
 	return (RET_OK);
 }
+
+/*
+** FIXME: Error reading comments before ants number
+** -----
+*/
 
 t_result		read_input(int fd, t_lemin *lem)
 {

@@ -20,7 +20,7 @@ static void			mark_elem_unvisited(void *data)
 	pdata->visited = 0;
 }
 
-static t_result		mark_all_unvisited(t_patharr *paths)
+static void			mark_all_unvisited(t_patharr *paths)
 {
 	ft_array_foreach(paths, mark_elem_unvisited);
 }
@@ -47,22 +47,23 @@ static t_pathdata	*get_min_path(t_patharr *paths)
 	return (pmin);
 }
 
-int		calc_total_len(t_patharr *paths, int count)
+int					calc_total_len(t_patharr *paths, int count)
 {
 	int			sum_size;
 	t_pathdata	*pdata;
-	int 		threads;
-	int 		total_len;
+	int			threads;
+	int			total_len;
 
 	sum_size = 0;
 	threads = 0;
 	total_len = FT_INTMAX;
+	mark_all_unvisited(paths);
 	while ((pdata = get_min_path(paths)) != NULL)
 	{
 		pdata->visited = 1;
 		sum_size += pdata->size;
 		if (((count + sum_size + threads) / (threads + 1) - 1) >= total_len)
-			break;
+			break ;
 		total_len = (count + sum_size + threads) / (threads + 1) - 1;
 		threads++;
 	}
