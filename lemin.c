@@ -26,6 +26,7 @@ void	init_lem(t_lemin *lem)
 	ft_bzero(lem, sizeof(*lem));
 	ft_array_init(&lem->rooms, 128);
 	ft_array_init(&lem->links, 128);
+	ft_array_init(&lem->paths, 128);
 }
 
 static void	delneighlst(void *data, size_t size)
@@ -52,6 +53,7 @@ void	delete_all(t_lemin *lem)
 	ft_array_foreach(&lem->rooms, dellsts);
 	ft_array_remove_all(&lem->rooms, delroomlinkarr);
 	ft_array_remove_all(&lem->links, delroomlinkarr);
+	remove_all_paths(&lem->paths);
 }
 
 int		main(int ac, char *av[])

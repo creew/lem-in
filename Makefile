@@ -14,7 +14,7 @@ NAME = lem-in
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -g3
+CC_FLAGS = -Wall -Wextra -g3 -O3
 
 SRCS =	lemin.c \
 		lem_list.c \
@@ -24,7 +24,9 @@ SRCS =	lemin.c \
 		links_parse.c \
 		print.c \
 		check_all.c \
-		graph_create.c
+		graph_create.c \
+		calc_total_len.c \
+		paths_work.c
 
 OBJS = $(SRCS:.c=.o)
 

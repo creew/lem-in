@@ -18,7 +18,9 @@
 typedef	int			t_result;
 typedef t_ftarray	t_roomarr;
 typedef t_ftarray	t_linkarr;
+typedef t_ftarray	t_patharr;
 typedef t_list		t_neigborlst;
+typedef t_list		t_path;
 
 # define RET_OK					(0)
 # define ERR_READ_ANTS_NUMBER	(-1)
@@ -72,7 +74,15 @@ typedef struct	s_lemin
 	int			num_ants;
 	t_roomarr	rooms;
 	t_linkarr	links;
+	t_patharr	paths;
 }				t_lemin;
+
+typedef struct	s_pathdata
+{
+	int			visited;
+	size_t		size;
+	t_path		*path;
+}				t_pathdata;
 
 t_result		add_roomdata(t_roomarr *arr, const char *name,
 						 const int *xy, int cmd);
@@ -97,4 +107,7 @@ t_result		check_all(t_lemin *lem);
 t_roomdata		*find_room_by_cmd(t_roomarr *rooms, int cmd);
 
 t_result		graph_create(t_lemin *lem);
+
+void 			remove_all_paths(t_patharr *parr);
+t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 #endif

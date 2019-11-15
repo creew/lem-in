@@ -17,6 +17,8 @@ add_executable(lem_in
         print.c
         check_all.c
         graph_create.c
+        calc_total_len.c
+        paths_work.c
         )
 
 add_dependencies(lem_in libft_target)
