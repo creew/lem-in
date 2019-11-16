@@ -52,6 +52,7 @@ typedef struct	s_roomdata
 	int 				weigth;
 	struct s_roomdata	*prev;
 	int 				visited;
+	int 				meh_visit;
 	t_neigborlst		*neigborlst;
 	char				name[1];
 }				t_roomdata;
@@ -84,6 +85,11 @@ typedef struct	s_pathdata
 	t_path		*path;
 }				t_pathdata;
 
+typedef struct	s_pathelem
+{
+	t_roomdata	*data;
+}				t_pathelem;
+
 t_result		add_roomdata(t_roomarr *arr, const char *name,
 						 const int *xy, int cmd);
 
@@ -102,6 +108,7 @@ char			*get_next_word(char *str, int *last);
 void			print_rooms(t_roomarr *rooms);
 void			print_links(t_linkarr *links);
 void			print_neighbors(t_roomarr *rooms);
+void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
 t_roomdata		*find_room_by_cmd(t_roomarr *rooms, int cmd);
@@ -110,4 +117,7 @@ t_result		graph_create(t_lemin *lem);
 
 void 			remove_all_paths(t_patharr *parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
+
+t_result		mehmet_algo(t_lemin *lem);
+t_result		add_room_to_path(t_path **path, t_roomdata *room);
 #endif

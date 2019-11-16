@@ -19,6 +19,7 @@ add_executable(lem_in
         graph_create.c
         calc_total_len.c
         paths_work.c
+        mehmet_algo.c
         )
 
 add_dependencies(lem_in libft_target)

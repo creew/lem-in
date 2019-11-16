@@ -19,6 +19,7 @@ void		print_all(t_lemin *lem)
 	print_rooms(&lem->rooms);
 	print_links(&lem->links);
 	print_neighbors(&lem->rooms);
+	print_paths(&lem->paths);
 }
 
 void		init_lem(t_lemin *lem)
@@ -68,6 +69,8 @@ int			main(int ac, char *av[])
 	ret = read_input(fd, &lem);
 	if (ret == RET_OK)
 		ret = check_all(&lem);
+	if (ret == RET_OK)
+		ret = mehmet_algo(&lem);
 	if (ret != RET_OK)
 	{
 		ft_putstr("Error ");

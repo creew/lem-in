@@ -88,3 +88,34 @@ void	print_neighbors(t_roomarr *rooms)
 		count++;
 	}
 }
+
+void	print_paths(t_patharr *parr)
+{
+	size_t		count;
+	t_pathdata	*pdata;
+	t_path		*path;
+	t_roomdata	*room;
+
+	count = 0;
+	while (count < ft_array_size(parr))
+	{
+		if (ft_array_get(parr, count, (void **)&pdata) == 0)
+		{
+			path = pdata->path;
+			while (path)
+			{
+				room = (t_roomdata *)path->content;
+				ft_putstr("\"");
+				ft_putstr(room->name);
+				ft_putstr("\", ");
+				path = path->next;
+			}
+			ft_putendl("");
+		}
+		count++;
+	}
+
+
+
+
+}

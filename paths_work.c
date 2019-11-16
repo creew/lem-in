@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-static void	remove_pathlst(void *data, size_t size)
+static void	remove_pathlst_callback(void *data, size_t size)
 {
 	(void)data;
 	(void)size;
@@ -23,7 +23,7 @@ static void	remove_pdata(void *data)
 	t_pathdata *pdata;
 
 	pdata = (t_pathdata *)data;
-	ft_lstdel(&pdata->path, remove_pathlst);
+	ft_lstdel(&pdata->path, remove_pathlst_callback);
 	ft_memdel(&data);
 }
 
@@ -47,5 +47,17 @@ t_result	add_path_to_arr(t_patharr *parr, t_path *path)
 		ft_memdel((void **)&pdata);
 		return (ERR_ENOMEM);
 	}
+	return (RET_OK);
+}
+
+t_result	add_room_to_path(t_path **path, t_roomdata *room)
+{
+	t_path	*pathelem;
+
+	pathelem = ft_lstnewblank(0);
+	if (!pathelem)
+		return (ERR_ENOMEM);
+	pathelem->content = room;
+	ft_lstadd_back(path, pathelem);
 	return (RET_OK);
 }
