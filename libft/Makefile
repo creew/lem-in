@@ -38,7 +38,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_bubble_sort.c ft_calloc.c ft_strlcpy.c ft_safe_atoi.c \
 		ft_strpbrk.c ft_trim_spaces.c ft_array_init.c ft_array_add.c \
 		ft_array_get.c ft_voidcpy.c ft_array_remove.c ft_array_remove_all.c \
-		ft_array_size.c ft_array_foreach.c
+		ft_array_size.c ft_array_foreach.c ft_lstadd_back.c
 
 INCLUDES = libft.h get_next_line.h
 
