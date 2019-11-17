@@ -176,4 +176,5 @@ void			ft_lstadd_back(t_list **alst, t_list *new);
 t_list			*ft_lstremove_if(t_list **root, int (*cmp)(void *, void *),
 						void *sec);
 t_ftarray		*ft_array_new(size_t init_val);
+void			ft_array_delete_all(t_ftarray **arr, void (*f)(void *));
 #endif
