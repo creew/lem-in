@@ -60,9 +60,8 @@ typedef struct	s_roomdata
 
 typedef struct	s_linkdata
 {
-	char		*l1;
-	char		*l2;
-	char		ldata[2];
+	t_roomdata	*rdata1;
+	t_roomdata	*rdata2;
 }				t_linkdata;
 
 typedef struct	s_neigbor
@@ -100,7 +99,8 @@ t_result		add_lem_room(t_lemin *lem, char *str, int cmd);
 t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name);
 int				check_room_valid(const char *name);
 
-char			*getlink_by_name(t_linkarr *lst, const char *name, int n);
+t_roomdata		*get_opposite_roomlink_by_name(
+					t_linkarr *larr, const char *name, int n);
 t_result		add_lem_link(t_lemin *lem, char *str);
 
 int				count_numbers(char *str);
@@ -119,7 +119,14 @@ t_result		graph_create(t_lemin *lem);
 void 			remove_all_paths(t_patharr *parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
-t_result		mehmet_algo(t_lemin *lem);
+t_result		mehmet_algo(t_roomarr *rooms, t_patharr *paths);
 t_result		add_room_to_path(t_path **path, t_roomdata *room);
 t_result		find_all_paths(t_lemin *lem);
+
+int				calc_total_len(t_patharr *paths, int count);
+t_result		dijkstra_algo(t_roomarr *rooms);
+
+t_result		add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor);
+
+void			delete_all(t_lemin *lem);
 #endif

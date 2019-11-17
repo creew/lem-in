@@ -42,13 +42,14 @@ static void	remove_pathlst(t_path *path)
 	ft_lstdel(&path, remove_pathlst_callback);
 }
 
-t_result	mehmet_algo(t_lemin *lem)
+t_result	mehmet_algo(t_roomarr *rooms, t_patharr *paths)
 {
 	t_roomdata	*start;
 	t_roomdata	*preroot;
 	t_path		*path;
 
-	start = find_room_by_cmd(&lem->rooms, LEM_CMD_START);
+	remove_all_paths(paths);
+	start = find_room_by_cmd(rooms, LEM_CMD_START);
 	if (!start)
 		return (ERR_NO_START_OR_END);
 	start->meh_visit = 1;
@@ -65,7 +66,7 @@ t_result	mehmet_algo(t_lemin *lem)
 			preroot = get_min_weight_neighbor(preroot->neigborlst);
 		}
 		if (preroot != NULL && preroot->cmd == LEM_CMD_END)
-			add_path_to_arr(&lem->paths, path);
+			add_path_to_arr(paths, path);
 		else
 			remove_pathlst(path);
 	}

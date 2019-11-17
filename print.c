@@ -45,9 +45,9 @@ void	print_links(t_linkarr *links)
 		if (ft_array_get(links, count, (void **)&linkdata) == 0)
 		{
 			ft_putstr("link 1: \"");
-			ft_putstr(linkdata->l1);
+			ft_putstr(linkdata->rdata1->name);
 			ft_putstr("\", link 2: \"");
-			ft_putstr(linkdata->l2);
+			ft_putstr(linkdata->rdata2->name);
 			ft_putendl("\"");
 		}
 		count++;

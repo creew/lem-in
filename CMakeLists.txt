@@ -21,6 +21,8 @@ add_executable(lem_in
         paths_work.c
         mehmet_algo.c
         find_all_paths.c
+        dijkstra_algo.c
+        destroy.c
         )
 
 add_dependencies(lem_in libft_target)

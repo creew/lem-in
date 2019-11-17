@@ -35,7 +35,7 @@ static t_pathdata	*get_min_path(t_patharr *paths)
 	size = ft_array_size(paths);
 	while (size--)
 	{
-		if (ft_array_get(paths, size, (void **)&pd))
+		if (ft_array_get(paths, size, (void **)&pd) == 0)
 		{
 			if (pd->visited == 0)
 			{
@@ -61,13 +61,11 @@ int					calc_total_len(t_patharr *paths, int count)
 	while ((pdata = get_min_path(paths)) != NULL)
 	{
 		pdata->visited = 1;
-		sum_size += pdata->size;
+		sum_size += ((int)pdata->size - 1);
 		if (((count + sum_size + threads) / (threads + 1) - 1) >= total_len)
 			break ;
 		total_len = (count + sum_size + threads) / (threads + 1) - 1;
 		threads++;
 	}
-	if (threads == 0)
-		return (-1);
 	return (total_len);
 }

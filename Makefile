@@ -28,7 +28,9 @@ SRCS =	lemin.c \
 		calc_total_len.c \
 		paths_work.c \
 		mehmet_algo.c \
-		find_all_paths.c
+		find_all_paths.c \
+		dijkstra_algo.c \
+		destroy.c
 
 OBJS = $(SRCS:.c=.o)
 
