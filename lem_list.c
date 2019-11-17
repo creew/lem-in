@@ -27,6 +27,7 @@ t_result	add_roomdata(t_roomarr *arr, const char *name,
 		ft_memdel((void **)&rdata);
 		return (ERR_ENOMEM);
 	}
+	rdata->index = ft_array_size(arr) - 1;
 	rdata->x = xy[0];
 	rdata->y = xy[1];
 	rdata->cmd = cmd;

@@ -42,7 +42,7 @@ static int	is_path_exists(t_roomarr *rooms)
 	end = find_room_by_cmd(rooms, LEM_CMD_START);
 	if (end)
 	{
-		if (end->prev != NULL)
+		if (end->weigth != FT_INTMAX)
 			return (1);
 	}
 	return (0);

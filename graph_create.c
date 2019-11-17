@@ -12,41 +12,34 @@
 
 #include "lemin.h"
 
-t_result		add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor)
-{
-	t_neigborlst	*neigh;
-	t_neigbor		*ndata;
-
-	neigh = ft_lstaddblank(&rdata->neigborlst, sizeof(t_neigbor));
-	if (neigh == NULL)
-		return (ERR_ENOMEM);
-	ndata = (t_neigbor *)neigh->content;
-	ndata->room = neigbor;
-	ndata->weight = 1;
-	return (RET_OK);
-}
-
 t_result		graph_create(t_lemin *lem)
 {
 	t_roomdata	*rdata;
 	int			count;
-	t_roomdata	*rdata2;
 	size_t		size;
+	size_t		index;
+	size_t		index2;
 
+	index = 0;
+	index2 = 0;
 	size = ft_array_size(&lem->rooms);
-	while (size--)
+	lem->matrix = ft_calloc(size * size, sizeof(char));
+	if (!lem->matrix)
+		return (ERR_ENOMEM);
+	while (index < size)
 	{
 		count = 0;
 		if (ft_array_get(&lem->rooms, size, (void **)&rdata) == 0)
 		{
-			while ((rdata2 = get_opposite_roomlink_by_name(
-				&lem->links, rdata->name, count++)) != NULL)
+			while ((get_opposite_roomlink(
+				&lem->links, rdata, count++, &index2)) != NULL)
 			{
-				if (add_neigbor_room(rdata, rdata2) != RET_OK)
-					return (ERR_ENOMEM);
+				lem->matrix[index * size + index2] = 1;
+				lem->matrix[index2 + size * index] = 1;
 			}
 		}
+		index++;
 	}
-	dijkstra_algo(&lem->rooms);
+	dijkstra_algo(lem->matrix, &lem->rooms);
 	return (RET_OK);
 }

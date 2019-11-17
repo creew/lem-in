@@ -22,10 +22,6 @@ static int 	rem_from_neighbor(void *data1, void *data2)
 	return (neighbor->room == rdata ? 0 : 1);
 }
 
-/*
-** FIXME: Freeing memory neighborlist elem
-*/
-
 t_result	remove_path(t_path **path, size_t sindex, size_t eindex, t_linkdata *link)
 {
 	size_t		size;
@@ -98,7 +94,7 @@ t_result	find_all_paths(t_lemin *lem)
 	size_t 		psize;
 	t_roomdata	*afterstart;
 
-	mehmet_algo(&lem->rooms, &lem->paths);
+	mehmet_algo(lem->matrix, &lem->rooms, &lem->paths);
 	len = calc_total_len(&lem->paths, lem->num_ants);
 	ft_putstr("Total len before:");
 	ft_putnbr(len);
@@ -116,15 +112,15 @@ t_result	find_all_paths(t_lemin *lem)
 			{
 				afterstart = (t_roomdata *)ft_lstget(pdata->path, 1)->content;
 				remove_path(&pdata->path, pindex, pindex + 1, &link);
-				dijkstra_algo(&lem->rooms);
-				mehmet_algo(&lem->rooms, &lem->paths);
+				dijkstra_algo(lem->matrix, &lem->rooms);
+				mehmet_algo(lem->matrix, &lem->rooms, &lem->paths);
 				next_len = calc_total_len(&lem->paths, lem->num_ants);
 				if (next_len >= len)
 				{
 					add_neigbor_room(link.rdata1, link.rdata2);
 					add_neigbor_room(link.rdata2, link.rdata1);
-					dijkstra_algo(&lem->rooms);
-					mehmet_algo(&lem->rooms, &lem->paths);
+					dijkstra_algo(lem->matrix, &lem->rooms);
+					mehmet_algo(lem->matrix, &lem->rooms, &lem->paths);
 					sort_path_arr(&lem->paths);
 					pdata = find_pathdata_by_room(&lem->paths, afterstart);
 				}
@@ -139,7 +135,6 @@ t_result	find_all_paths(t_lemin *lem)
 		}
 		index++;
 	}
-
 	ft_putstr("Total len after:");
 	ft_putnbr(len);
 	ft_putendl("");

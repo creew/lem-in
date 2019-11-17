@@ -12,21 +12,30 @@
 
 #include "lemin.h"
 
-t_roomdata	*get_min_weight_neighbor(t_neigborlst *nlst)
+t_roomdata	*get_min_weight_neighbor(const char *matrix,
+	t_roomarr *rooms, size_t index)
 {
+	t_roomdata	*data;
 	t_roomdata	*min;
-	t_neigbor	*data;
+	size_t		rooms_count;
+	size_t		count;
 
 	min = NULL;
-	while (nlst)
+	count = 0;
+	rooms_count = ft_array_size(rooms);
+	matrix += rooms_count * index;
+	while (count < rooms_count)
 	{
-		data = (t_neigbor *)nlst->content;
-		if (!data->room->meh_visit && data->room->weigth != FT_INTMAX)
+		if (matrix[count])
 		{
-			if (min == NULL || data->room->weigth < min->weigth)
-				min = data->room;
+			if (ft_array_get(rooms, count, (void **)&data))
+			if (!data->meh_visit && data->weigth != FT_INTMAX)
+			{
+				if (min == NULL || data->weigth < min->weigth)
+					min = data;
+			}
 		}
-		nlst = nlst->next;
+		count++;
 	}
 	return (min);
 }
@@ -42,7 +51,7 @@ static void	remove_pathlst(t_path *path)
 	ft_lstdel(&path, remove_pathlst_callback);
 }
 
-t_result	mehmet_algo(t_roomarr *rooms, t_patharr *paths)
+t_result	mehmet_algo(char *matrix, t_roomarr *rooms, t_patharr *paths)
 {
 	t_roomdata	*start;
 	t_roomdata	*preroot;
@@ -53,7 +62,7 @@ t_result	mehmet_algo(t_roomarr *rooms, t_patharr *paths)
 	if (!start)
 		return (ERR_NO_START_OR_END);
 	start->meh_visit = 1;
-	while ((preroot = get_min_weight_neighbor(start->neigborlst)))
+	while ((preroot = get_min_weight_neighbor(matrix, rooms, start->index)))
 	{
 		path = NULL;
 		add_room_to_path(&path, start);
@@ -63,7 +72,7 @@ t_result	mehmet_algo(t_roomarr *rooms, t_patharr *paths)
 			if (preroot->cmd == LEM_CMD_END)
 				break;
 			preroot->meh_visit = 1;
-			preroot = get_min_weight_neighbor(preroot->neigborlst);
+			preroot = get_min_weight_neighbor(matrix, rooms, preroot->index);
 		}
 		if (preroot != NULL && preroot->cmd == LEM_CMD_END)
 			add_path_to_arr(paths, path);

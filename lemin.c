@@ -18,7 +18,7 @@ void		print_all(t_lemin *lem)
 {
 	print_rooms(&lem->rooms);
 	print_links(&lem->links);
-	print_neighbors(&lem->rooms);
+	print_neighbors(lem->matrix, &lem->rooms);
 	print_paths(&lem->paths);
 }
 

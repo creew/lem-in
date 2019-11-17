@@ -12,8 +12,8 @@
 
 #include "lemin.h"
 
-t_roomdata		*get_opposite_roomlink_by_name(
-	t_linkarr *larr, const char *name, int n)
+t_roomdata		*get_opposite_roomlink(
+	t_linkarr *larr, t_roomdata *room, int n, size_t *index)
 {
 	t_linkdata	*ldata;
 	size_t		size;
@@ -21,14 +21,15 @@ t_roomdata		*get_opposite_roomlink_by_name(
 	size = ft_array_size(larr);
 	while (size--)
 	{
+		*index = size;
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if (ft_strequ(name, ldata->rdata1->name))
+			if (room == ldata->rdata1)
 			{
 				if (!n--)
 					return (ldata->rdata2);
 			}
-			if (ft_strequ(name, ldata->rdata2->name))
+			if (room == ldata->rdata2)
 			{
 				if (!n--)
 					return (ldata->rdata1);
