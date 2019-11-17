@@ -89,7 +89,7 @@ t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 		return (ERR_WRONG_ROOM_ARG);
 	if (check_room_xy_exist(&lem->rooms, xy[0], xy[1]))
 		return (ERR_ROOM_XY_DUPL);
-	return (add_lem_list(&lem->rooms, name, xy, cmd));
+	return (add_roomdata(&lem->rooms, name, xy, cmd));
 }
 
 int			check_room_valid(const char *name)

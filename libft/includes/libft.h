@@ -170,4 +170,9 @@ int				ft_array_remove(t_ftarray *arr, size_t index,
 						void (*f)(void *));
 void			ft_array_remove_all(t_ftarray *arr, void (*f)(void *));
 size_t			ft_array_size(t_ftarray *arr);
+int				ft_array_foreach(t_ftarray *arr, void (*f)(void *data));
+
+void			ft_lstadd_back(t_list **alst, t_list *new);
+t_list			*ft_lstremove_if(t_list **root, int (*cmp)(void *, void *),
+						void *sec);
 #endif

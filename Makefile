@@ -6,11 +6,17 @@
 #    By: eklompus <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 12:15:31 by eklompus          #+#    #+#              #
-#    Updated: 2019/11/17 13:47:33 by eleonard         ###   ########.fr        #
+#    Updated: 2019/11/04 12:22:47 by eklompus         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-ALL_C =	lemin.c \
+NAME = lem-in
+
+CC = gcc
+
+CC_FLAGS = -Wall -Wextra -g3 -O3
+
+SRCS =	lemin.c \
 		lem_list.c \
 		read_input.c \
 		rooms_parse.c \
@@ -18,44 +24,37 @@ ALL_C =	lemin.c \
 		links_parse.c \
 		print.c \
 		check_all.c \
-		graph_create.c
+		graph_create.c \
+		calc_total_len.c \
+		paths_work.c \
+		mehmet_algo.c \
+		find_all_paths.c \
+		dijkstra_algo.c \
+		destroy.c
 
-SRCDIR = srcs/
-OBJDIR = objs/
+OBJS = $(SRCS:.c=.o)
 
-ALL_OBJ = $(ALL_C:%.c=%.o)
+INC_DIR = ./libft
 
-OBJS = $(addprefix $(OBJDIR), $(ALL_OBJ))
+INC_FLAG = $(addprefix -I,$(INC_DIR))
 
-NAME = lem-in
+HEADERS = ./lemin.h
 
-INCLUDES = ./includes/lemin.h ./libft/includes/libft.h ./libft/includes/get_next_line.h
-
-COMP_LIB = make -C libft/
-
-FLAGS = -Wall -Wextra -Werror
-
-all: lib $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJS)
-	gcc $(FLAGS) $^ -L ./libft -lft -o $@
+	make -C ./libft
+	$(CC) $(CC_FLAGS) $^ -L./libft -lft -o $@
 
-$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES)
-	@/bin/mkdir -p $(OBJDIR)
-	gcc $(FLAGS) -I./includes -I./libft/includes -c $< -o $@
-
-lib:
-	@$(COMP_LIB)
+%.o: %.c $(HEADERS)
+	$(CC) $(CC_FLAGS) $(INC_FLAG) -c $< -o $@
 
 clean:
-	@/bin/rm -rf $(OBJDIR)
-	@$(COMP_LIB) clean
+	make clean -C ./libft
+	rm -f $(OBJS)
 
 fclean: clean
-	@/bin/rm -rf $(NAME)
-	@$(COMP_LIB) fclean
+	rm -f ./libft/libft.a
+	rm -f $(NAME)
 
 re: fclean all
-
-.PHONY: lib clean fclean all re
-

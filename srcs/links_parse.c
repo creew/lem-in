@@ -12,7 +12,8 @@
 
 #include "lemin.h"
 
-char			*getlink_by_name(t_linkarr *larr, const char *name, int n)
+t_result	get_opposite_roomlink(
+	t_linkarr *larr, size_t	room_index, int n, size_t *index)
 {
 	t_linkdata	*ldata;
 	size_t		size;
@@ -22,22 +23,28 @@ char			*getlink_by_name(t_linkarr *larr, const char *name, int n)
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if (ft_strequ(name, ldata->l1))
+			if (room_index == ldata->left)
 			{
 				if (!n--)
-					return (ldata->l2);
+				{
+					*index = ldata->right;
+					return (RET_OK);
+				}
 			}
-			if (ft_strequ(name, ldata->l2))
+			if (room_index == ldata->right)
 			{
 				if (!n--)
-					return (ldata->l1);
+				{
+					*index = ldata->left;
+					return (RET_OK);
+				}
 			}
 		}
 	}
-	return (NULL);
+	return (ERR_WRONG_LINK);
 }
 
-static int		is_link_exist(t_linkarr *larr, const char *l1, const char *l2)
+static int		is_link_exist(t_linkarr *larr, t_roomdata *l1, t_roomdata *l2)
 {
 	t_linkdata	*ldata;
 	size_t		size;
@@ -47,8 +54,8 @@ static int		is_link_exist(t_linkarr *larr, const char *l1, const char *l2)
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if ((ft_strequ(l1, ldata->l1) && ft_strequ(l2, ldata->l2)) ||
-				(ft_strequ(l1, ldata->l2) && ft_strequ(l2, ldata->l1)))
+			if ((l1->index == ldata->left && l2->index == ldata->right) ||
+				(l1->index == ldata->right && l2->index == ldata->left))
 				return (1);
 		}
 	}
@@ -56,17 +63,13 @@ static int		is_link_exist(t_linkarr *larr, const char *l1, const char *l2)
 }
 
 static t_result	add_lemlink_list(t_linkarr *larr,
-					const char *l1, const char *l2)
+					t_roomdata *l1, t_roomdata *l2)
 {
 	t_linkdata	*ldata;
-	size_t		l1_len;
-	size_t		l2_len;
 
 	if (!is_link_exist(larr, l1, l2))
 	{
-		l1_len = ft_strlen(l1);
-		l2_len = ft_strlen(l2);
-		ldata = ft_memalloc(sizeof(*ldata) + (l1_len + l2_len) * sizeof(char));
+		ldata = ft_memalloc(sizeof(*ldata));
 		if (!ldata)
 			return (ERR_ENOMEM);
 		if (ft_array_add(larr, ldata) != 0)
@@ -74,28 +77,33 @@ static t_result	add_lemlink_list(t_linkarr *larr,
 			ft_memdel((void **)&ldata);
 			return (ERR_ENOMEM);
 		}
-		ldata->l1 = ldata->ldata;
-		ft_strlcpy(ldata->l1, l1, l1_len + 1);
-		ldata->l2 = ldata->ldata + l1_len + 1;
-		ft_strlcpy(ldata->l2, l2, l2_len + 1);
+		ldata->left = l1->index;
+		ldata->right = l2->index;
 	}
 	return (RET_OK);
 }
 
+/*
+** FIXME: Wrong parsing links like "abc - def" and "a-b-c-def"
+** -----
+*/
+
 t_result		add_lem_link(t_lemin *lem, char *str)
 {
-	char	*r1;
-	char	*r2;
+	char		*r1;
+	char		*r2;
+	t_roomdata	*room1;
+	t_roomdata	*room2;
 
 	r1 = str;
 	r2 = ft_strchr(str, '-');
 	if (!r2)
 		return (ERR_WRONG_LINK);
 	*r2++ = '\0';
-	if (!find_room_by_name(&lem->rooms, ft_trim_spaces(r1)) ||
-		!find_room_by_name(&lem->rooms, ft_trim_spaces(r2)))
+	if (!(room1 = find_room_by_name(&lem->rooms, ft_trim_spaces(r1))) ||
+		!(room2 = find_room_by_name(&lem->rooms, ft_trim_spaces(r2))))
 		return (ERR_WRONG_LINK_ROOM);
 	if (ft_strequ(r1, r2))
 		return (ERR_WRONG_LINK_TO_LINK);
-	return (add_lemlink_list(&lem->links, r1, r2));
+	return (add_lemlink_list(&lem->links, room1, room2));
 }

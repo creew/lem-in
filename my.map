@@ -1,0 +1,35 @@
+6
+##start
+start 0 0
+room1 1 1
+room2 2 2
+room3 3 3
+room4 4 4
+room5 5 5
+room6 6 6
+room7 7 7
+room8 8 8
+room9 9 9
+room10 10 10
+room11 11 11
+room12 12 12
+##end
+end 13 13
+start-room1
+start-room2
+start-room3
+start-room4
+room1-room5
+room2-room9
+room2-room6
+room3-room7
+room3-room12
+room4-room8
+room5-room9
+room6-room10
+room7-room11
+room8-room12
+room9-end
+room10-end
+room11-end
+room12-end

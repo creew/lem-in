@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-t_result	add_lem_list(t_roomarr *arr, const char *name,
+t_result	add_roomdata(t_roomarr *arr, const char *name,
 						const int *xy, int cmd)
 {
 	t_roomdata	*rdata;
@@ -27,10 +27,10 @@ t_result	add_lem_list(t_roomarr *arr, const char *name,
 		ft_memdel((void **)&rdata);
 		return (ERR_ENOMEM);
 	}
+	rdata->index = ft_array_size(arr) - 1;
 	rdata->x = xy[0];
 	rdata->y = xy[1];
 	rdata->cmd = cmd;
-	rdata->prev = NULL;
 	rdata->weigth = FT_INTMAX;
 	rdata->visited = 0;
 	ft_strlcpy(rdata->name, name, len + 1);

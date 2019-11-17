@@ -14,49 +14,23 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-void	print_all(t_lemin *lem)
+void		print_all(t_lemin *lem)
 {
 	print_rooms(&lem->rooms);
-	print_links(&lem->links);
-	print_neighbors(&lem->rooms);
+	print_links(&lem->rooms, &lem->links);
+	print_neighbors(lem->matrix, &lem->rooms);
+	print_paths(&lem->paths);
 }
 
-void	init_lem(t_lemin *lem)
+void		init_lem(t_lemin *lem)
 {
 	ft_bzero(lem, sizeof(*lem));
 	ft_array_init(&lem->rooms, 128);
 	ft_array_init(&lem->links, 128);
+	ft_array_init(&lem->paths, 128);
 }
 
-static void	delneighlst(void *data, size_t size)
-{
-	(void)size;
-	ft_memdel(&data);
-}
-
-static void delroomlinkarr(void *data)
-{
-	ft_memdel(&data);
-}
-
-void	delete_all(t_lemin *lem)
-{
-	size_t		size;
-	t_roomdata	*rdata;
-
-	size = ft_array_size(&lem->rooms);
-	while (size--)
-	{
-		if (ft_array_get(&lem->rooms, size, (void **)&rdata))
-		{
-			ft_lstdel(&rdata->neigborlst, delneighlst);
-		}
-	}
-	ft_array_remove_all(&lem->rooms, delroomlinkarr);
-	ft_array_remove_all(&lem->links, delroomlinkarr);
-}
-
-int		main(int ac, char *av[])
+int			main(int ac, char *av[])
 {
 	t_lemin		lem;
 	t_result	ret;
@@ -68,6 +42,8 @@ int		main(int ac, char *av[])
 	ret = read_input(fd, &lem);
 	if (ret == RET_OK)
 		ret = check_all(&lem);
+	if (ret == RET_OK)
+		ret = find_all_paths(&lem);
 	if (ret != RET_OK)
 	{
 		ft_putstr("Error ");

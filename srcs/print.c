@@ -34,10 +34,12 @@ void	print_rooms(t_roomarr *rooms)
 	}
 }
 
-void	print_links(t_linkarr *links)
+void	print_links(t_roomarr *arr, t_linkarr *links)
 {
 	t_linkdata	*linkdata;
 	size_t		count;
+	t_roomdata	*room;
+
 
 	count = 0;
 	while (count < ft_array_size(links))
@@ -45,41 +47,46 @@ void	print_links(t_linkarr *links)
 		if (ft_array_get(links, count, (void **)&linkdata) == 0)
 		{
 			ft_putstr("link 1: \"");
-			ft_putstr(linkdata->l1);
+			if (ft_array_get(arr, linkdata->left, (void **)&room) == 0)
+				ft_putstr(room->name);
 			ft_putstr("\", link 2: \"");
-			ft_putstr(linkdata->l2);
+			if (ft_array_get(arr, linkdata->right, (void **)&room) == 0)
+				ft_putstr(room->name);
 			ft_putendl("\"");
 		}
 		count++;
 	}
 }
 
-void	print_neighbors(t_roomarr *rooms)
+void	print_neighbors(char *matrix, t_roomarr *rooms)
 {
 	t_roomdata		*data;
+	t_roomdata		*neig;
 	size_t			count;
-	size_t			neighbors_size;
-	t_neigborlst	*nlst;
-	t_neigbor		*neigbor;
+	size_t			neighb_index;
+	size_t			rooms_count;
 
+	neighb_index = 0;
+	rooms_count = ft_array_size(rooms);
 	count = 0;
-	while (count < ft_array_size(rooms))
+	while (count < rooms_count)
 	{
 		if (ft_array_get(rooms, count, (void **)&data) == 0)
 		{
 			ft_putstr("name: \"");
 			ft_putstr(data->name);
 			ft_putstr("\", neighbors: ");
-			neighbors_size = ft_lstsize(data->neigborlst);
-			while (neighbors_size--)
+			while (neighb_index < rooms_count)
 			{
-				nlst = ft_lstget(data->neigborlst, neighbors_size);
-				if (nlst)
+				if (matrix[count * rooms_count + neighb_index])
 				{
-					neigbor = (t_neigbor *)nlst->content;
-					ft_putstr(neigbor->room->name);
-					ft_putstr(", ");
+					if (ft_array_get(rooms, neighb_index, (void **)&neig) == 0)
+					{
+						ft_putstr(neig->name);
+						ft_putstr(", ");
+					}
 				}
+				neighb_index++;
 			}
 			ft_putstr("len: ");
 			ft_putnbr(data->weigth);
@@ -87,4 +94,35 @@ void	print_neighbors(t_roomarr *rooms)
 		}
 		count++;
 	}
+}
+
+void	print_paths(t_patharr *parr)
+{
+	size_t		count;
+	t_pathdata	*pdata;
+	t_path		*path;
+	t_roomdata	*room;
+
+	count = 0;
+	while (count < ft_array_size(parr))
+	{
+		if (ft_array_get(parr, count, (void **)&pdata) == 0)
+		{
+			path = pdata->path;
+			while (path)
+			{
+				room = (t_roomdata *)path->content;
+				ft_putstr("\"");
+				ft_putstr(room->name);
+				ft_putstr("\", ");
+				path = path->next;
+			}
+			ft_putendl("");
+		}
+		count++;
+	}
+
+
+
+
 }
