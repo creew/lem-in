@@ -26,6 +26,7 @@ add_executable(lem_in
         srcs/find_all_paths.c
         srcs/dijkstra_algo.c
         srcs/destroy.c
+        srcs/ants_walk.c
         )
 
 add_dependencies(lem_in libft_target)

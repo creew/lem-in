@@ -23,19 +23,12 @@ t_result	get_opposite_roomlink(
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if (room_index == ldata->left)
+			if (room_index == ldata->left || room_index == ldata->right)
 			{
 				if (!n--)
 				{
-					*index = ldata->right;
-					return (RET_OK);
-				}
-			}
-			if (room_index == ldata->right)
-			{
-				if (!n--)
-				{
-					*index = ldata->left;
+					*index = room_index == ldata->left ?
+						ldata->right : ldata->left;
 					return (RET_OK);
 				}
 			}

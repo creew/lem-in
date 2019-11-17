@@ -47,14 +47,15 @@ typedef t_list		t_path;
 
 typedef struct	s_roomdata
 {
-	size_t				index;
-	int					x;
-	int					y;
-	int					cmd;
-	int 				weigth;
-	int 				visited;
-	int 				meh_visit;
-	char				name[1];
+	size_t		index;
+	int			x;
+	int			y;
+	int 		weigth;
+	char		cmd;
+	char 		visited;
+	char 		meh_visit;
+	int			ant_index;
+	char		name[1];
 }				t_roomdata;
 
 typedef struct	s_linkdata
@@ -80,7 +81,7 @@ typedef struct	s_pathdata
 }				t_pathdata;
 
 t_result		add_roomdata(t_roomarr *arr, const char *name,
-						 const int *xy, int cmd);
+					const int *xy, int cmd);
 
 t_result		read_input(int fd, t_lemin *lem);
 

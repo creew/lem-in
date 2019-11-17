@@ -121,8 +121,4 @@ void	print_paths(t_patharr *parr)
 		}
 		count++;
 	}
-
-
-
-
 }

@@ -24,7 +24,8 @@ ALL_C =	lemin.c \
         		mehmet_algo.c \
         		find_all_paths.c \
         		dijkstra_algo.c \
-        		destroy.c
+        		destroy.c \
+        		ants_walk.c
 
 SRCDIR = srcs/
 OBJDIR = objs/
