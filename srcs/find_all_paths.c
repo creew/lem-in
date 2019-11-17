@@ -70,7 +70,7 @@ t_pathdata	*find_pathdata_by_room(t_patharr *parr, t_roomdata *room)
 	return (NULL);
 }
 
-t_result		add_neigbor_room(t_lemin *lem, t_linkdata *link)
+void		add_neigbor_room(t_lemin *lem, t_linkdata *link)
 {
 	char	*matrix;
 	size_t	size;
@@ -81,7 +81,7 @@ t_result		add_neigbor_room(t_lemin *lem, t_linkdata *link)
 	matrix[size * link->right + link->left] = 1;
 }
 
-t_result		rem_neigbor_room(t_lemin *lem, t_linkdata *link)
+void		rem_neigbor_room(t_lemin *lem, t_linkdata *link)
 {
 	char	*matrix;
 	size_t	size;

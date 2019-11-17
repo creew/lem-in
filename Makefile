@@ -10,51 +10,57 @@
 #                                                                              #
 #******************************************************************************#
 
+ALL_C =	lemin.c \
+        		lem_list.c \
+        		read_input.c \
+        		rooms_parse.c \
+        		line_parse.c \
+        		links_parse.c \
+        		print.c \
+        		check_all.c \
+        		graph_create.c \
+        		calc_total_len.c \
+        		paths_work.c \
+        		mehmet_algo.c \
+        		find_all_paths.c \
+        		dijkstra_algo.c \
+        		destroy.c
+
+SRCDIR = srcs/
+OBJDIR = objs/
+
+ALL_OBJ = $(ALL_C:%.c=%.o)
+
+OBJS = $(addprefix $(OBJDIR), $(ALL_OBJ))
+
 NAME = lem-in
 
-CC = gcc
+INCLUDES = ./includes/lemin.h ./libft/includes/libft.h ./libft/includes/get_next_line.h
 
-CC_FLAGS = -Wall -Wextra -g3 -O3
+COMP_LIB = make -C libft/
 
-SRCS =	lemin.c \
-		lem_list.c \
-		read_input.c \
-		rooms_parse.c \
-		line_parse.c \
-		links_parse.c \
-		print.c \
-		check_all.c \
-		graph_create.c \
-		calc_total_len.c \
-		paths_work.c \
-		mehmet_algo.c \
-		find_all_paths.c \
-		dijkstra_algo.c \
-		destroy.c
+FLAGS = -Wall -Wextra -Werror
 
-OBJS = $(SRCS:.c=.o)
-
-INC_DIR = ./libft
-
-INC_FLAG = $(addprefix -I,$(INC_DIR))
-
-HEADERS = ./lemin.h
-
-all: $(NAME)
+all: lib $(NAME)
 
 $(NAME): $(OBJS)
-	make -C ./libft
-	$(CC) $(CC_FLAGS) $^ -L./libft -lft -o $@
+	gcc $(FLAGS) $^ -L ./libft -lft -o $@
 
-%.o: %.c $(HEADERS)
-	$(CC) $(CC_FLAGS) $(INC_FLAG) -c $< -o $@
+$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES)
+	@/bin/mkdir -p $(OBJDIR)
+	gcc $(FLAGS) -I./includes -I./libft/includes -c $< -o $@
+
+lib:
+	@$(COMP_LIB)
 
 clean:
-	make clean -C ./libft
-	rm -f $(OBJS)
+	@/bin/rm -rf $(OBJDIR)
+	@$(COMP_LIB) clean
 
 fclean: clean
-	rm -f ./libft/libft.a
-	rm -f $(NAME)
+	@/bin/rm -rf $(NAME)
+	@$(COMP_LIB) fclean
 
 re: fclean all
+
+.PHONY: lib clean fclean all re

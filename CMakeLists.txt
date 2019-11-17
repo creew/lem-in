@@ -5,24 +5,26 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(.
         ./libft
+        ./libft/includes
+        ./includes
         )
 
 add_executable(lem_in
-        lemin.c
-        read_input.c
-        lem_list.c
-        rooms_parse.c
-        line_parse.c
-        links_parse.c
-        print.c
-        check_all.c
-        graph_create.c
-        calc_total_len.c
-        paths_work.c
-        mehmet_algo.c
-        find_all_paths.c
-        dijkstra_algo.c
-        destroy.c
+        srcs/lemin.c
+        srcs/read_input.c
+        srcs/lem_list.c
+        srcs/rooms_parse.c
+        srcs/line_parse.c
+        srcs/links_parse.c
+        srcs/print.c
+        srcs/check_all.c
+        srcs/graph_create.c
+        srcs/calc_total_len.c
+        srcs/paths_work.c
+        srcs/mehmet_algo.c
+        srcs/find_all_paths.c
+        srcs/dijkstra_algo.c
+        srcs/destroy.c
         )
 
 add_dependencies(lem_in libft_target)
