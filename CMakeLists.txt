@@ -20,6 +20,7 @@ add_executable(lem_in
         calc_total_len.c
         paths_work.c
         mehmet_algo.c
+        find_all_paths.c
         )
 
 add_dependencies(lem_in libft_target)

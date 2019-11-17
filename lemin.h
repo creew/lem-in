@@ -22,23 +22,24 @@ typedef t_ftarray	t_patharr;
 typedef t_list		t_neigborlst;
 typedef t_list		t_path;
 
-# define RET_OK					(0)
-# define ERR_READ_ANTS_NUMBER	(-1)
-# define ERR_WRONG_ANTS_NUMBER	(-2)
-# define ERR_GNL_ERROR			(-3)
-# define ERR_ENOMEM				(-4)
-# define ERR_WRONG_ROOM_NAME	(-5)
-# define ERR_WRONG_ROOM_ARG		(-6)
-# define ERR_WRONG_LINK			(-7)
-# define ERR_WRONG_LINK_ROOM	(-8)
-# define ERR_ROOM_NAME_DUPL 	(-9)
-# define ERR_EMPTY_ROOM_NAME	(-10)
-# define ERR_WRONG_LINK_TO_LINK	(-11)
-# define ERR_NO_START_OR_END 	(-12)
-# define ERR_LINK_DUPL 			(-13)
-# define ERR_ROOM_XY_DUPL		(-14)
-# define ERR_NO_LINKS			(-15)
-# define ERR_NO_PATH			(-16)
+# define RET_OK						(0)
+# define ERR_READ_ANTS_NUMBER		(-1)
+# define ERR_WRONG_ANTS_NUMBER		(-2)
+# define ERR_GNL_ERROR				(-3)
+# define ERR_ENOMEM					(-4)
+# define ERR_WRONG_ROOM_NAME		(-5)
+# define ERR_WRONG_ROOM_ARG			(-6)
+# define ERR_WRONG_LINK				(-7)
+# define ERR_WRONG_LINK_ROOM		(-8)
+# define ERR_ROOM_NAME_DUPL 		(-9)
+# define ERR_EMPTY_ROOM_NAME		(-10)
+# define ERR_WRONG_LINK_TO_LINK		(-11)
+# define ERR_NO_START_OR_END 		(-12)
+# define ERR_LINK_DUPL 				(-13)
+# define ERR_ROOM_XY_DUPL			(-14)
+# define ERR_NO_LINKS				(-15)
+# define ERR_NO_PATH				(-16)
+# define ERR_INCORRECT_PATH_REMOVE	(-17)
 
 # define LEM_CMD_NONE			(0)
 # define LEM_CMD_START			(1)
@@ -120,4 +121,5 @@ t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
 t_result		mehmet_algo(t_lemin *lem);
 t_result		add_room_to_path(t_path **path, t_roomdata *room);
+t_result		find_all_paths(t_lemin *lem);
 #endif

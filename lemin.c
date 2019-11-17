@@ -70,7 +70,7 @@ int			main(int ac, char *av[])
 	if (ret == RET_OK)
 		ret = check_all(&lem);
 	if (ret == RET_OK)
-		ret = mehmet_algo(&lem);
+		ret = find_all_paths(&lem);
 	if (ret != RET_OK)
 	{
 		ft_putstr("Error ");
