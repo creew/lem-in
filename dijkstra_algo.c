@@ -52,12 +52,12 @@ t_result			dijkstra_algo(const char *matrix, t_roomarr *rooms)
 	t_roomdata		*neig;
 
 	rooms_count = ft_array_size(rooms);
-	count = 0;
 	ft_array_foreach(rooms, reset_one_elem);
 	rdata = find_room_by_cmd(rooms, LEM_CMD_END);
 	rdata->weigth = 0;
 	while ((rdata = find_min_weight(rooms)))
 	{
+		count = 0;
 		while (count < rooms_count)
 		{
 			if (matrix[rdata->index * rooms_count + count])
@@ -65,10 +65,7 @@ t_result			dijkstra_algo(const char *matrix, t_roomarr *rooms)
 				if (ft_array_get(rooms, count, (void **)&neig) == 0)
 				{
 					if (rdata->weigth + 1 < neig->weigth)
-					{
 						neig->weigth = rdata->weigth + 1;
-						neig->prev = rdata;
-					}
 				}
 			}
 			count++;

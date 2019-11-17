@@ -52,7 +52,6 @@ typedef struct	s_roomdata
 	int					y;
 	int					cmd;
 	int 				weigth;
-	struct s_roomdata	*prev;
 	int 				visited;
 	int 				meh_visit;
 	char				name[1];
@@ -60,8 +59,8 @@ typedef struct	s_roomdata
 
 typedef struct	s_linkdata
 {
-	t_roomdata	*rdata1;
-	t_roomdata	*rdata2;
+	size_t		left;
+	size_t		right;
 }				t_linkdata;
 
 typedef struct	s_lemin
@@ -80,11 +79,6 @@ typedef struct	s_pathdata
 	t_path		*path;
 }				t_pathdata;
 
-typedef struct	s_pathelem
-{
-	t_roomdata	*data;
-}				t_pathelem;
-
 t_result		add_roomdata(t_roomarr *arr, const char *name,
 						 const int *xy, int cmd);
 
@@ -94,15 +88,15 @@ t_result		add_lem_room(t_lemin *lem, char *str, int cmd);
 t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name);
 int				check_room_valid(const char *name);
 
-t_roomdata		*get_opposite_roomlink(
-					t_linkarr *larr, t_roomdata *room, int n, size_t *index);
+t_result		get_opposite_roomlink(
+					t_linkarr *larr, size_t	room_index, int n, size_t *index);
 t_result		add_lem_link(t_lemin *lem, char *str);
 
 int				count_numbers(char *str);
 char			*get_next_word(char *str, int *last);
 
 void			print_rooms(t_roomarr *rooms);
-void			print_links(t_linkarr *links);
+void			print_links(t_roomarr *arr, t_linkarr *links);
 void			print_neighbors(char *matrix, t_roomarr *rooms);
 void			print_paths(t_patharr *parr);
 
@@ -120,8 +114,6 @@ t_result		find_all_paths(t_lemin *lem);
 
 int				calc_total_len(t_patharr *paths, int count);
 t_result		dijkstra_algo(const char *matrix, t_roomarr *rooms);
-
-t_result		add_neigbor_room(t_roomdata *rdata, t_roomdata *neigbor);
 
 void			delete_all(t_lemin *lem);
 #endif

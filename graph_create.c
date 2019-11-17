@@ -14,29 +14,25 @@
 
 t_result		graph_create(t_lemin *lem)
 {
-	t_roomdata	*rdata;
 	int			count;
-	size_t		size;
+	size_t		rooms_count;
 	size_t		index;
 	size_t		index2;
 
 	index = 0;
 	index2 = 0;
-	size = ft_array_size(&lem->rooms);
-	lem->matrix = ft_calloc(size * size, sizeof(char));
+	rooms_count = ft_array_size(&lem->rooms);
+	lem->matrix = ft_calloc(rooms_count * rooms_count, sizeof(char));
 	if (!lem->matrix)
 		return (ERR_ENOMEM);
-	while (index < size)
+	while (index < rooms_count)
 	{
 		count = 0;
-		if (ft_array_get(&lem->rooms, size, (void **)&rdata) == 0)
+		while ((get_opposite_roomlink(
+			&lem->links, index, count++, &index2)) == RET_OK)
 		{
-			while ((get_opposite_roomlink(
-				&lem->links, rdata, count++, &index2)) != NULL)
-			{
-				lem->matrix[index * size + index2] = 1;
-				lem->matrix[index2 + size * index] = 1;
-			}
+			lem->matrix[index * rooms_count + index2] = 1;
+			lem->matrix[index2 * rooms_count + index] = 1;
 		}
 		index++;
 	}

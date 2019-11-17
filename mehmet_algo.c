@@ -28,11 +28,13 @@ t_roomdata	*get_min_weight_neighbor(const char *matrix,
 	{
 		if (matrix[count])
 		{
-			if (ft_array_get(rooms, count, (void **)&data))
-			if (!data->meh_visit && data->weigth != FT_INTMAX)
+			if (ft_array_get(rooms, count, (void **)&data) == 0)
 			{
-				if (min == NULL || data->weigth < min->weigth)
-					min = data;
+				if (!data->meh_visit && data->weigth != FT_INTMAX)
+				{
+					if (min == NULL || data->weigth < min->weigth)
+						min = data;
+				}
 			}
 		}
 		count++;

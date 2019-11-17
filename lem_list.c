@@ -31,7 +31,6 @@ t_result	add_roomdata(t_roomarr *arr, const char *name,
 	rdata->x = xy[0];
 	rdata->y = xy[1];
 	rdata->cmd = cmd;
-	rdata->prev = NULL;
 	rdata->weigth = FT_INTMAX;
 	rdata->visited = 0;
 	ft_strlcpy(rdata->name, name, len + 1);

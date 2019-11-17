@@ -12,8 +12,8 @@
 
 #include "lemin.h"
 
-t_roomdata		*get_opposite_roomlink(
-	t_linkarr *larr, t_roomdata *room, int n, size_t *index)
+t_result	get_opposite_roomlink(
+	t_linkarr *larr, size_t	room_index, int n, size_t *index)
 {
 	t_linkdata	*ldata;
 	size_t		size;
@@ -21,22 +21,27 @@ t_roomdata		*get_opposite_roomlink(
 	size = ft_array_size(larr);
 	while (size--)
 	{
-		*index = size;
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if (room == ldata->rdata1)
+			if (room_index == ldata->left)
 			{
 				if (!n--)
-					return (ldata->rdata2);
+				{
+					*index = ldata->right;
+					return (RET_OK);
+				}
 			}
-			if (room == ldata->rdata2)
+			if (room_index == ldata->right)
 			{
 				if (!n--)
-					return (ldata->rdata1);
+				{
+					*index = ldata->left;
+					return (RET_OK);
+				}
 			}
 		}
 	}
-	return (NULL);
+	return (ERR_WRONG_LINK);
 }
 
 static int		is_link_exist(t_linkarr *larr, t_roomdata *l1, t_roomdata *l2)
@@ -49,8 +54,8 @@ static int		is_link_exist(t_linkarr *larr, t_roomdata *l1, t_roomdata *l2)
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if ((l1 == ldata->rdata1 && l2 == ldata->rdata2) ||
-				(l1 == ldata->rdata2 && l2 == ldata->rdata1))
+			if ((l1->index == ldata->left && l2->index == ldata->right) ||
+				(l1->index == ldata->right && l2->index == ldata->left))
 				return (1);
 		}
 	}
@@ -72,8 +77,8 @@ static t_result	add_lemlink_list(t_linkarr *larr,
 			ft_memdel((void **)&ldata);
 			return (ERR_ENOMEM);
 		}
-		ldata->rdata1 = l1;
-		ldata->rdata2 = l2;
+		ldata->left = l1->index;
+		ldata->right = l2->index;
 	}
 	return (RET_OK);
 }

@@ -12,16 +12,6 @@
 
 #include "lemin.h"
 
-static int 	rem_from_neighbor(void *data1, void *data2)
-{
-	t_neigbor	*neighbor;
-	t_roomdata	*rdata;
-
-	neighbor = (t_neigbor *)data1;
-	rdata = (t_roomdata *)data2;
-	return (neighbor->room == rdata ? 0 : 1);
-}
-
 t_result	remove_path(t_path **path, size_t sindex, size_t eindex, t_linkdata *link)
 {
 	size_t		size;
@@ -34,11 +24,8 @@ t_result	remove_path(t_path **path, size_t sindex, size_t eindex, t_linkdata *li
 	if ((slst = ft_lstget(*path, sindex)) == NULL ||
 		(elst = ft_lstget(*path, eindex)) == NULL)
 		return (ERR_INCORRECT_PATH_REMOVE);
-	link->rdata1 = (t_roomdata *)slst->content;
-	link->rdata2 = (t_roomdata *)elst->content;
-
-	ft_lstremove_if(&link->rdata1->neigborlst, rem_from_neighbor, link->rdata2);
-	ft_lstremove_if(&link->rdata2->neigborlst, rem_from_neighbor, link->rdata1);
+	link->left = ((t_roomdata *)slst->content)->index;
+	link->right = ((t_roomdata *)elst->content)->index;
 	return (RET_OK);
 }
 
@@ -83,6 +70,28 @@ t_pathdata	*find_pathdata_by_room(t_patharr *parr, t_roomdata *room)
 	return (NULL);
 }
 
+t_result		add_neigbor_room(t_lemin *lem, t_linkdata *link)
+{
+	char	*matrix;
+	size_t	size;
+
+	matrix = lem->matrix;
+	size = ft_array_size(&lem->rooms);
+	matrix[size * link->left + link->right] = 1;
+	matrix[size * link->right + link->left] = 1;
+}
+
+t_result		rem_neigbor_room(t_lemin *lem, t_linkdata *link)
+{
+	char	*matrix;
+	size_t	size;
+
+	matrix = lem->matrix;
+	size = ft_array_size(&lem->rooms);
+	matrix[size * link->left + link->right] = 0;
+	matrix[size * link->right + link->left] = 0;
+}
+
 t_result	find_all_paths(t_lemin *lem)
 {
 	int			len;
@@ -112,13 +121,13 @@ t_result	find_all_paths(t_lemin *lem)
 			{
 				afterstart = (t_roomdata *)ft_lstget(pdata->path, 1)->content;
 				remove_path(&pdata->path, pindex, pindex + 1, &link);
+				rem_neigbor_room(lem, &link);
 				dijkstra_algo(lem->matrix, &lem->rooms);
 				mehmet_algo(lem->matrix, &lem->rooms, &lem->paths);
 				next_len = calc_total_len(&lem->paths, lem->num_ants);
 				if (next_len >= len)
 				{
-					add_neigbor_room(link.rdata1, link.rdata2);
-					add_neigbor_room(link.rdata2, link.rdata1);
+					add_neigbor_room(lem, &link);
 					dijkstra_algo(lem->matrix, &lem->rooms);
 					mehmet_algo(lem->matrix, &lem->rooms, &lem->paths);
 					sort_path_arr(&lem->paths);
