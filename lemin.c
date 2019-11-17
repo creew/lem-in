@@ -30,7 +30,6 @@ void		init_lem(t_lemin *lem)
 	ft_array_init(&lem->paths, 128);
 }
 
-
 int			main(int ac, char *av[])
 {
 	t_lemin		lem;
@@ -51,7 +50,7 @@ int			main(int ac, char *av[])
 		ft_putnbr(ret);
 		ft_putendl("");
 	}
-	//print_all(&lem);
+	print_all(&lem);
 	delete_all(&lem);
 	return (EXIT_SUCCESS);
 }
