@@ -6,7 +6,7 @@
 #    By: eklompus <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/04 12:15:31 by eklompus          #+#    #+#              #
-#    Updated: 2019/11/04 12:22:47 by eklompus         ###   ########.fr        #
+#    Updated: 2019/11/17 15:55:14 by eleonard         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -35,7 +35,7 @@ OBJS = $(addprefix $(OBJDIR), $(ALL_OBJ))
 
 NAME = lem-in
 
-INCLUDES = ./includes/lemin.h ./libft/includes/libft.h ./libft/includes/get_next_line.h
+INCLUDES = ./includes/lemin.h
 
 COMP_LIB = make -C libft/
 
@@ -46,7 +46,7 @@ all: lib $(NAME)
 $(NAME): $(OBJS)
 	gcc $(FLAGS) $^ -L ./libft -lft -o $@
 
-$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES)
+$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES) ./libft/libft.a
 	@/bin/mkdir -p $(OBJDIR)
 	gcc $(FLAGS) -I./includes -I./libft/includes -c $< -o $@
 

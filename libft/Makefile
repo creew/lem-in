@@ -1,15 +1,3 @@
-#******************************************************************************#
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: eklompus <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/09/03 09:49:46 by eklompus          #+#    #+#              #
-#    Updated: 2019/11/17 14:02:30 by eleonard         ###   ########.fr        #
-#                                                                              #
-#******************************************************************************#
-
 SRC = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_isdigit.c ft_isprint.c ft_isspace.c ft_itoa.c ft_lstadd.c \
 		ft_lstaddblank.c ft_lstdel.c ft_lstdelone.c ft_lstfind.c ft_lstiter.c \
@@ -28,38 +16,38 @@ SRC = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_stack_delall.c ft_stack_size.c ft_queue_add.c ft_queue_poll.c \
 		ft_lstaddrevsorted.c ft_strtol.c ft_abs.c ft_min.c ft_max.c \
 		ft_bubble_sort.c ft_calloc.c ft_strlcpy.c ft_safe_atoi.c \
-		ft_strpbrk.c ft_trim_spaces.c ft_array_init.c ft_array_add.c \
-		ft_array_get.c ft_voidcpy.c ft_array_remove.c ft_array_remove_all.c \
-		ft_array_size.c ft_array_foreach.c ft_lstadd_back.c ft_lstremove_if.c \
+		ft_strpbrk.c ft_trim_spaces.c ft_array_add.c ft_array_foreach.c \
+		ft_array_get.c ft_array_init.c ft_array_remove_all.c ft_array_size.c \
+		ft_lstadd_back.c ft_voidcpy.c
 
 NAME	= libft.a
 
-OBJ		= $(SRC:%.c=%.o)
-INCLUDES	= -I includes
-FLAGS		= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror
+
+INCLUDES = ./includes/libft.h ./includes/get_next_line.h
 
 SRCDIR	= srcs/
 OBJDIR	= objs/
-SRCS	= $(addprefix $(SRCDIR), $(SRC))
-OBJS	= $(addprefix $(OBJDIR), $(OBJ))
+
+ALL_OBJ	= $(SRC:%.c=%.o)
+OBJS	= $(addprefix $(OBJDIR), $(ALL_OBJ))
 
 all: $(NAME)
 
-$(OBJS): $(SRCS)
-	@/bin/mkdir -p $(OBJDIR)
-	gcc -c $(FLAGS) $(SRCS) $(INCLUDES)
-	@/bin/mv $(OBJ) $(OBJDIR)
-
 $(NAME): $(OBJS)
-	@ar rc $@ $^
-	@ranlib $@
+	@ar rc $(NAME) $(OBJS)
+	ranlib $(NAME)
+
+$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES)
+	@/bin/mkdir -p $(OBJDIR)
+	@gcc $(FLAGS) -I./includes -c $< -o $@
 
 clean:
-		@/bin/rm -rf $(OBJDIR)
+	@/bin/rm -rf $(OBJDIR)
 
 fclean: clean
-		@/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 
 re: fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:	all clean fclean re
