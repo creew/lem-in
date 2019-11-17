@@ -32,9 +32,9 @@ void		init_lem(t_lemin *lem)
 
 int			main(int ac, char *av[])
 {
-	t_lemin		lem;
-	t_result	ret;
-	int			fd;
+	t_lemin	 lem;
+	t_result ret;
+	int		 fd;
 
 	if (ac != 2 || (fd = open(av[1], O_RDONLY)) == -1)
 		fd = 0;
@@ -44,6 +44,8 @@ int			main(int ac, char *av[])
 		ret = check_all(&lem);
 	if (ret == RET_OK)
 		ret = find_all_paths(&lem);
+	if (ret == RET_OK)
+		start_ants(&lem);
 	if (ret != RET_OK)
 	{
 		ft_putstr("Error ");

@@ -121,4 +121,5 @@ void			delete_all(t_lemin *lem);
 
 void			add_neigbor_room(t_lemin *lem, t_linkdata *link);
 void			rem_neigbor_room(t_lemin *lem, t_linkdata *link);
+void			start_ants(t_lemin *lem);
 #endif
