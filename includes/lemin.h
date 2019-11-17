@@ -97,7 +97,7 @@ char			*get_next_word(char *str, int *last);
 
 void			print_rooms(t_roomarr *rooms);
 void			print_links(t_roomarr *arr, t_linkarr *links);
-void			print_neighbors(char *matrix, t_roomarr *rooms);
+void			print_neighbors(const char *matrix, t_roomarr *rooms);
 void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
@@ -116,4 +116,7 @@ int				calc_total_len(t_patharr *paths, int count);
 t_result		dijkstra_algo(const char *matrix, t_roomarr *rooms);
 
 void			delete_all(t_lemin *lem);
+
+void			add_neigbor_room(t_lemin *lem, t_linkdata *link);
+void			rem_neigbor_room(t_lemin *lem, t_linkdata *link);
 #endif

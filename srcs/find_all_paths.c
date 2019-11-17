@@ -12,7 +12,8 @@
 
 #include "lemin.h"
 
-t_result	remove_path(t_path **path, size_t sindex, size_t eindex, t_linkdata *link)
+t_result	remove_path(t_path **path, size_t sindex, size_t eindex,
+	t_linkdata *link)
 {
 	size_t		size;
 	t_path		*slst;
@@ -68,28 +69,6 @@ t_pathdata	*find_pathdata_by_room(t_patharr *parr, t_roomdata *room)
 		count++;
 	}
 	return (NULL);
-}
-
-void		add_neigbor_room(t_lemin *lem, t_linkdata *link)
-{
-	char	*matrix;
-	size_t	size;
-
-	matrix = lem->matrix;
-	size = ft_array_size(&lem->rooms);
-	matrix[size * link->left + link->right] = 1;
-	matrix[size * link->right + link->left] = 1;
-}
-
-void		rem_neigbor_room(t_lemin *lem, t_linkdata *link)
-{
-	char	*matrix;
-	size_t	size;
-
-	matrix = lem->matrix;
-	size = ft_array_size(&lem->rooms);
-	matrix[size * link->left + link->right] = 0;
-	matrix[size * link->right + link->left] = 0;
 }
 
 t_result	find_all_paths(t_lemin *lem)

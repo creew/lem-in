@@ -58,7 +58,7 @@ void	print_links(t_roomarr *arr, t_linkarr *links)
 	}
 }
 
-void	print_neighbors(char *matrix, t_roomarr *rooms)
+void	print_neighbors(const char *matrix, t_roomarr *rooms)
 {
 	t_roomdata		*data;
 	t_roomdata		*neig;

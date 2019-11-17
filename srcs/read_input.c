@@ -68,17 +68,19 @@ static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 	return (RET_OK);
 }
 
-/*
-** FIXME: Error reading comments before ants number
-** -----
-*/
-
 t_result		read_input(int fd, t_lemin *lem)
 {
 	char	*s;
+	int		res;
 
-	if (get_next_line(fd, &s) < 0)
-		return (ERR_READ_ANTS_NUMBER);
+	while ((res = get_next_line(fd, &s)))
+	{
+		if (res < 0)
+			return (ERR_READ_ANTS_NUMBER);
+		if (*s != '#')
+			break;
+		ft_strdel(&s);
+	}
 	if (ft_safe_atoi(s, &lem->num_ants) != FT_ATOI_OK || lem->num_ants < 1)
 		return (ERR_WRONG_ANTS_NUMBER);
 	ft_strdel(&s);

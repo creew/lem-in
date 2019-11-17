@@ -12,6 +12,28 @@
 
 #include "lemin.h"
 
+void			add_neigbor_room(t_lemin *lem, t_linkdata *link)
+{
+	char	*matrix;
+	size_t	size;
+
+	matrix = lem->matrix;
+	size = ft_array_size(&lem->rooms);
+	matrix[size * link->left + link->right] = 1;
+	matrix[size * link->right + link->left] = 1;
+}
+
+void			rem_neigbor_room(t_lemin *lem, t_linkdata *link)
+{
+	char	*matrix;
+	size_t	size;
+
+	matrix = lem->matrix;
+	size = ft_array_size(&lem->rooms);
+	matrix[size * link->left + link->right] = 0;
+	matrix[size * link->right + link->left] = 0;
+}
+
 t_result		graph_create(t_lemin *lem)
 {
 	int			count;
