@@ -21,7 +21,7 @@ t_result	add_path_to_arr(t_patharr *parr, t_path *path)
 		return (ERR_ENOMEM);
 	pdata->visited = 0;
 	pdata->path = path;
-	pdata->size = ft_lstsize(path);
+	pdata->size = ft_array_size(path);
 	if (ft_array_add(parr, pdata) != 0)
 	{
 		ft_memdel((void **)&pdata);
@@ -30,14 +30,8 @@ t_result	add_path_to_arr(t_patharr *parr, t_path *path)
 	return (RET_OK);
 }
 
-t_result	add_room_to_path(t_path **path, t_roomdata *room)
+t_result	add_room_to_path(t_path *path, t_roomdata *room)
 {
-	t_path	*pathelem;
-
-	pathelem = ft_lstnewblank(0);
-	if (!pathelem)
-		return (ERR_ENOMEM);
-	pathelem->content = room;
-	ft_lstadd_back(path, pathelem);
+	ft_array_add(path, (void *)room);
 	return (RET_OK);
 }

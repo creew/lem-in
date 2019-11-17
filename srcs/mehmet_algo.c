@@ -42,16 +42,15 @@ t_roomdata	*get_min_weight_neighbor(const char *matrix,
 	return (min);
 }
 
-static void	remove_pathlst_callback(void *data, size_t size)
+static void	remove_pathlst_callback(void *data)
 {
-	(void)size;
 	(void)data;
 }
 
-static void	remove_pathlst(t_path *path)
-{
-	ft_lstdel(&path, remove_pathlst_callback);
-}
+/*
+** FIXME: ATTENTION!!! BIG TROUBLE WITH ZERO LEN PATHS
+** -----
+*/
 
 t_result	mehmet_algo(char *matrix, t_roomarr *rooms, t_patharr *paths)
 {
@@ -66,11 +65,13 @@ t_result	mehmet_algo(char *matrix, t_roomarr *rooms, t_patharr *paths)
 	start->meh_visit = 1;
 	while ((preroot = get_min_weight_neighbor(matrix, rooms, start->index)))
 	{
-		path = NULL;
-		add_room_to_path(&path, start);
+		path = ft_array_new(0);
+		if (!path)
+			return (ERR_ENOMEM);
+		add_room_to_path(path, start);
 		while (preroot)
 		{
-			add_room_to_path(&path, preroot);
+			add_room_to_path(path, preroot);
 			if (preroot->cmd == LEM_CMD_END)
 				break;
 			preroot->meh_visit = 1;
@@ -79,7 +80,7 @@ t_result	mehmet_algo(char *matrix, t_roomarr *rooms, t_patharr *paths)
 		if (preroot != NULL && preroot->cmd == LEM_CMD_END)
 			add_path_to_arr(paths, path);
 		else
-			remove_pathlst(path);
+			ft_array_delete_all(&path, remove_pathlst_callback);
 	}
 	return (RET_OK);
 }

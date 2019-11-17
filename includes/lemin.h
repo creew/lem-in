@@ -19,7 +19,7 @@ typedef	int			t_result;
 typedef t_ftarray	t_roomarr;
 typedef t_ftarray	t_linkarr;
 typedef t_ftarray	t_patharr;
-typedef t_list		t_path;
+typedef t_ftarray	t_path;
 
 # define RET_OK						(0)
 # define ERR_READ_ANTS_NUMBER		(-1)
@@ -55,6 +55,7 @@ typedef struct	s_roomdata
 	char 		visited;
 	char 		meh_visit;
 	int			ant_index;
+	int 		ant_count;
 	char		name[1];
 }				t_roomdata;
 
@@ -110,7 +111,7 @@ void 			remove_all_paths(t_patharr *parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
 t_result		mehmet_algo(char *matrix, t_roomarr *rooms, t_patharr *paths);
-t_result		add_room_to_path(t_path **path, t_roomdata *room);
+t_result		add_room_to_path(t_path *path, t_roomdata *room);
 t_result		find_all_paths(t_lemin *lem);
 
 int				calc_total_len(t_patharr *paths, int count);

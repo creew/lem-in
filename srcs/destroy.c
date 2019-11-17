@@ -12,10 +12,9 @@
 
 #include "lemin.h"
 
-static void	remove_pathlst_callback(void *data, size_t size)
+static void	remove_pathlst_callback(void *data)
 {
 	(void)data;
-	(void)size;
 }
 
 static void	remove_pdata(void *data)
@@ -23,7 +22,7 @@ static void	remove_pdata(void *data)
 	t_pathdata *pdata;
 
 	pdata = (t_pathdata *)data;
-	ft_lstdel(&pdata->path, remove_pathlst_callback);
+	ft_array_delete_all(&pdata->path, remove_pathlst_callback);
 	ft_memdel(&data);
 }
 
