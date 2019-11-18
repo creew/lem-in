@@ -28,41 +28,49 @@ ALL_C =	lemin.c \
         		ants_walk.c \
         		print_given_data.c
 
-SRCDIR = srcs/
-OBJDIR = objs/
+SRCDIR = ./srcs
+OBJDIR = ./objs
 
 ALL_OBJ = $(ALL_C:%.c=%.o)
 
-OBJS = $(addprefix $(OBJDIR), $(ALL_OBJ))
+OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
 NAME = lem-in
 
 INCLUDES = ./includes/lemin.h
 
-COMP_LIB = make -C libft/
+COMP_LIB = make -C libft
+COMP_PRINTF = make -C ft_printf
 
 FLAGS = -Wall -Wextra -Werror
 
-all: lib $(NAME)
+all: lib ft_printf $(NAME)
 
 $(NAME): $(OBJS)
-	gcc $(FLAGS) $^ -L ./libft -lft -o $@
+	gcc $(FLAGS) $^ -L./libft -lft -L./ft_printf -lftprintf -o $@
 
-$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES) ./libft/libft.a
-	@/bin/mkdir -p $(OBJDIR)
-	gcc $(FLAGS) -I./includes -I./libft/includes -c $< -o $@
+$(OBJDIR):
+	/bin/mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES) ./libft/libft.a ./ft_printf/libftprintf.a | $(OBJDIR)
+	gcc $(FLAGS) -I./includes -I./libft/includes -I./ft_printf/includes -c $< -o $@
 
 lib:
-	@$(COMP_LIB)
+	$(COMP_LIB)
+
+ft_printf:
+	$(COMP_PRINTF)
 
 clean:
-	@/bin/rm -rf $(OBJDIR)
-	@$(COMP_LIB) clean
+	/bin/rm -rf $(OBJDIR)
+	$(COMP_LIB) clean
+	$(COMP_PRINTF) clean
 
 fclean: clean
-	@/bin/rm -rf $(NAME)
-	@$(COMP_LIB) fclean
+	/bin/rm -rf $(NAME)
+	$(COMP_LIB) fclean
+	$(COMP_PRINTF) fclean
 
 re: fclean all
 
-.PHONY: lib clean fclean all re
+.PHONY: lib ft_printf clean fclean all re
