@@ -61,9 +61,15 @@ typedef struct	s_roomdata
 
 typedef struct	s_linkdata
 {
-	size_t		left;
-	size_t		right;
+	t_roomdata	*left;
+	t_roomdata	*right;
 }				t_linkdata;
+
+typedef	struct	s_borders
+{
+	t_roomdata	*start;
+	t_roomdata	*end;
+}				t_borders;
 
 typedef struct	s_lemin
 {
@@ -71,6 +77,7 @@ typedef struct	s_lemin
 	t_roomarr	rooms;
 	t_linkarr	links;
 	t_patharr	paths;
+	t_borders	se;
 	char 		*matrix;
 }				t_lemin;
 
@@ -98,7 +105,7 @@ int				count_numbers(char *str);
 char			*get_next_word(char *str, int *last);
 
 void			print_rooms(t_roomarr *rooms);
-void			print_links(t_roomarr *arr, t_linkarr *links);
+void			print_links(t_linkarr *links);
 void			print_neighbors(const char *matrix, t_roomarr *rooms);
 void			print_paths(t_patharr *parr);
 
@@ -110,7 +117,8 @@ t_result		graph_create(t_lemin *lem);
 void 			remove_all_paths(t_patharr *parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
-t_result		mehmet_algo(char *matrix, t_roomarr *rooms, t_patharr *paths);
+t_result		mehmet_algo(char *matrix, t_roomarr *rooms,
+					t_patharr *paths, t_borders *se);
 t_result		add_room_to_path(t_path *path, t_roomdata *room);
 t_result		find_all_paths(t_lemin *lem);
 

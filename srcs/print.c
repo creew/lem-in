@@ -34,12 +34,10 @@ void	print_rooms(t_roomarr *rooms)
 	}
 }
 
-void	print_links(t_roomarr *arr, t_linkarr *links)
+void	print_links(t_linkarr *links)
 {
 	t_linkdata	*linkdata;
 	size_t		count;
-	t_roomdata	*room;
-
 
 	count = 0;
 	while (count < ft_array_size(links))
@@ -47,11 +45,9 @@ void	print_links(t_roomarr *arr, t_linkarr *links)
 		if (ft_array_get(links, count, (void **)&linkdata) == 0)
 		{
 			ft_putstr("link 1: \"");
-			if (ft_array_get(arr, linkdata->left, (void **)&room) == 0)
-				ft_putstr(room->name);
+			ft_putstr(linkdata->left->name);
 			ft_putstr("\", link 2: \"");
-			if (ft_array_get(arr, linkdata->right, (void **)&room) == 0)
-				ft_putstr(room->name);
+			ft_putstr(linkdata->right->name);
 			ft_putendl("\"");
 		}
 		count++;

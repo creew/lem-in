@@ -23,46 +23,56 @@ void		print_move(t_roomdata *cur, int *is_not_first)
 	ft_putstr(cur->name);
 }
 
-int			push_one_path(t_path *path, t_lemin *lem, int *is_not_first)
+int			push_one_path(size_t index, t_lemin *lem, int *is_not_first, size_t *sum)
 {
 	size_t		size;
 	t_roomdata	*cur;
 	t_roomdata	*prev;
+	t_pathdata	*pdata;
 
-	size = ft_array_size(path);
-	while (size--)
+	if (ft_array_get(&lem->paths, index, (void **)&pdata) == 0)
 	{
-		if (ft_array_get(path, size, (void **)&cur) == 0 &&
-			ft_array_get(path, size - 1, (void **)&prev) == 0)
+		size = ft_array_size(pdata->path);
+		while (size--)
 		{
-			if (prev->ant_count)
+			if (ft_array_get(pdata->path, size, (void **)&cur) == 0 &&
+				ft_array_get(pdata->path, size - 1, (void **)&prev) == 0)
 			{
-				cur->ant_index = prev->ant_index;
-				cur->ant_count++;
-				prev->ant_count--;
-				if (size == 1)
-					cur->ant_index = lem->num_ants - prev->ant_count;
-				print_move(cur, is_not_first);
+				if (prev->ant_count)
+				{
+					if (size == 1)
+					{
+						if (index != 0 && prev->ant_count <= (int)((ft_array_size(pdata->path) - 1) * index) - (int)*sum)
+							break ;
+						cur->ant_index = lem->num_ants - prev->ant_count;
+					}
+					else
+						cur->ant_index = prev->ant_index;
+					cur->ant_count++;
+					prev->ant_count--;
+					print_move(cur, is_not_first);
+				}
 			}
 		}
+		*sum = *sum + (ft_array_size(pdata->path) - 1);
 	}
 	return (0);
 }
 
-int			push_ants(t_patharr *arr, t_lemin *lem, int *is_not_first)
+int			push_ants(t_patharr *arr, t_lemin *lem)
 {
 	size_t		path_count;
 	size_t		count;
-	t_pathdata	*pathdata;
+	size_t 		total_size;
+	int			is_not_first;
 
 	count = 0;
+	total_size = 0;
+	is_not_first = 0;
 	path_count = ft_array_size(arr);
 	while (count < path_count)
 	{
-		if (ft_array_get(arr, count, (void **)&pathdata) == 0)
-		{
-			push_one_path(pathdata->path, lem, is_not_first);
-		}
+		push_one_path(count, lem, &is_not_first, &total_size);
 		count++;
 	}
 	return (0);
@@ -70,20 +80,10 @@ int			push_ants(t_patharr *arr, t_lemin *lem, int *is_not_first)
 
 void	start_ants(t_lemin *lem)
 {
-	t_roomdata	*rdata;
-	t_roomdata	*edata;
-	int 		is_not_first;
-
-	rdata = find_room_by_cmd(&lem->rooms, LEM_CMD_START);
-	edata = find_room_by_cmd(&lem->rooms, LEM_CMD_END);
-	if (rdata && edata)
+	lem->se.start->ant_count = lem->num_ants;
+	while (lem->se.end->ant_count != lem->num_ants)
 	{
-		rdata->ant_count = lem->num_ants;
-		while (edata->ant_count != lem->num_ants)
-		{
-			is_not_first = 0;
-			push_ants(&lem->paths, lem, &is_not_first);
-			ft_putendl("");
-		}
+		push_ants(&lem->paths, lem);
+		ft_putendl("");
 	}
 }

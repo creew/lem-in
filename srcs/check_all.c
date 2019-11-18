@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-t_result	is_start_end_exists(t_roomarr *arr)
+t_result	is_start_end_exists(t_roomarr *arr, t_borders *se)
 {
 	int			start_count;
 	int			end_count;
@@ -27,9 +27,15 @@ t_result	is_start_end_exists(t_roomarr *arr)
 		if (ft_array_get(arr, size, (void **)&rdata) == 0)
 		{
 			if (rdata->cmd == LEM_CMD_START)
+			{
+				se->start = rdata;
 				start_count++;
+			}
 			if (rdata->cmd == LEM_CMD_END)
+			{
+				se->end = rdata;
 				end_count++;
+			}
 		}
 	}
 	return (start_count == 1 && end_count == 1 ? RET_OK : ERR_NO_START_OR_END);
@@ -54,7 +60,7 @@ t_result	check_all(t_lemin *lem)
 
 	if (lem->links.num_elems == 0)
 		return (ERR_NO_LINKS);
-	if ((res = is_start_end_exists(&lem->rooms)) != RET_OK)
+	if ((res = is_start_end_exists(&lem->rooms, &lem->se)) != RET_OK)
 		return (res);
 	if ((res = graph_create(lem)) != RET_OK)
 		return (res);

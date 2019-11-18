@@ -23,12 +23,13 @@ t_result	get_opposite_roomlink(
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if (room_index == ldata->left || room_index == ldata->right)
+			if (room_index == ldata->left->index ||
+				room_index == ldata->right->index)
 			{
 				if (!n--)
 				{
-					*index = room_index == ldata->left ?
-						ldata->right : ldata->left;
+					*index = room_index == ldata->left->index ?
+						ldata->right->index : ldata->left->index;
 					return (RET_OK);
 				}
 			}
@@ -47,8 +48,8 @@ static int		is_link_exist(t_linkarr *larr, t_roomdata *l1, t_roomdata *l2)
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if ((l1->index == ldata->left && l2->index == ldata->right) ||
-				(l1->index == ldata->right && l2->index == ldata->left))
+			if ((l1 == ldata->left && l2 == ldata->right) ||
+				(l1 == ldata->right && l2 == ldata->left))
 				return (1);
 		}
 	}
@@ -70,8 +71,8 @@ static t_result	add_lemlink_list(t_linkarr *larr,
 			ft_memdel((void **)&ldata);
 			return (ERR_ENOMEM);
 		}
-		ldata->left = l1->index;
-		ldata->right = l2->index;
+		ldata->left = l1;
+		ldata->right = l2;
 	}
 	return (RET_OK);
 }
