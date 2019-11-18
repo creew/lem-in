@@ -1,4 +1,3 @@
-  
 cmake_minimum_required(VERSION 3.14)
 project(lem_in C)
 
@@ -8,6 +7,7 @@ include_directories(.
         ./libft
         ./libft/includes
         ./ft_printf/includes
+        ./ft_printf
         ./includes
         )
 
@@ -31,12 +31,20 @@ add_executable(lem_in
         srcs/print_given_data.c
         )
 
-add_dependencies(lem_in libft_target)
+add_dependencies(lem_in libftprintf_target libft_target)
+
+find_library(FTPR ftprintf ./ft_printf)
 find_library(FT ft ./libft)
-target_link_libraries(lem_in PUBLIC ${FT})
+target_link_libraries(lem_in PUBLIC ${FTPR} ${FT})
 
 add_custom_target(
         libft_target
         COMMAND make
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/libft
+)
+
+add_custom_target(
+        libftprintf_target
+        COMMAND make
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/ft_printf
 )

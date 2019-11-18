@@ -32,7 +32,7 @@ static t_roomdata	*get_min_weight_neighbor(const char *matrix,
 			{
 				if (!data->meh_visit && data->weigth != FT_INTMAX)
 				{
-					if (!excl_one_len || data->weigth > 1)
+					if (!excl_one_len || data->weigth > 0)
 						if (min == NULL || data->weigth < min->weigth)
 							min = data;
 				}
