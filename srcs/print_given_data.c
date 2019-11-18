@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
+#include "ft_printf.h"
 
 static void	print_room_cmd(int cmd)
 {
@@ -27,12 +28,7 @@ static void	print_one_room(t_roomarr *arr, size_t index)
 	if (ft_array_get(arr, index, (void **)&rdata) == 0)
 	{
 		print_room_cmd(rdata->cmd);
-		ft_putstr(rdata->name);
-		ft_putchar(' ');
-		ft_putnbr(rdata->x);
-		ft_putchar(' ');
-		ft_putnbr(rdata->y);
-		ft_putchar('\n');
+		ft_printf("%s %d %d\n", rdata->name, rdata->x, rdata->y);
 	}
 }
 
@@ -41,12 +37,7 @@ static void	print_one_link(t_linkarr *larr, size_t index)
 	t_linkdata	*ldata;
 
 	if (ft_array_get(larr, index, (void **)&ldata) == 0)
-	{
-		ft_putstr(ldata->left->name);
-		ft_putchar('-');
-		ft_putstr(ldata->right->name);
-		ft_putchar('\n');
-	}
+		ft_printf("%s-%s\n", ldata->left->name, ldata->right->name);
 }
 
 void		print_given_data(t_lemin *lem)
@@ -54,8 +45,7 @@ void		print_given_data(t_lemin *lem)
 	size_t	index;
 	size_t	size;
 
-	ft_putnbr(lem->num_ants);
-	ft_putchar('\n');
+	ft_printf("%d\n", lem->num_ants);
 	index = -1;
 	size = ft_array_size(&lem->rooms);
 	while (++index < size)

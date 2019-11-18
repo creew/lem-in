@@ -7,6 +7,7 @@ set(CMAKE_C_STANDARD 11)
 include_directories(.
         ./libft
         ./libft/includes
+        ./ft_printf/includes
         ./includes
         )
 

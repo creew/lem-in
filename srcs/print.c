@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
+#include "ft_printf.h"
 
 void	print_rooms(t_roomarr *rooms)
 {
@@ -43,11 +44,8 @@ void	print_links(t_linkarr *links)
 	{
 		if (ft_array_get(links, count, (void **)&linkdata) == 0)
 		{
-			ft_putstr("link 1: \"");
-			ft_putstr(linkdata->left->name);
-			ft_putstr("\", link 2: \"");
-			ft_putstr(linkdata->right->name);
-			ft_putendl("\"");
+			ft_printf("link 1: \"%s\", link2: \"%s\"\n", linkdata->left->name,
+				linkdata->right->name);
 		}
 	}
 }

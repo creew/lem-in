@@ -11,16 +11,14 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
+#include "ft_printf.h"
 
 static void	print_move(t_roomdata *cur, int *is_not_first)
 {
 	if (*is_not_first)
 		ft_putstr(" ");
 	*is_not_first = 1;
-	ft_putstr("L");
-	ft_putnbr(cur->ant_index);
-	ft_putstr("-");
-	ft_putstr(cur->name);
+	ft_printf("L%d-%s", cur->ant_index, cur->name);
 }
 
 static int	push_one_path(size_t index, t_lemin *lem,
