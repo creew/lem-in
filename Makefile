@@ -11,7 +11,6 @@
 #******************************************************************************#
 
 ALL_C =	lemin.c \
-        		lem_list.c \
         		read_input.c \
         		rooms_parse.c \
         		line_parse.c \

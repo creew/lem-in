@@ -14,7 +14,6 @@ include_directories(.
 add_executable(lem_in
         srcs/lemin.c
         srcs/read_input.c
-        srcs/lem_list.c
         srcs/rooms_parse.c
         srcs/line_parse.c
         srcs/links_parse.c

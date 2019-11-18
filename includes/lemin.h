@@ -89,14 +89,10 @@ typedef struct	s_pathdata
 	t_path		*path;
 }				t_pathdata;
 
-t_result		add_roomdata(t_roomarr *arr, const char *name,
-					const int *xy, int cmd);
-
 t_result		read_input(int fd, t_lemin *lem);
 
 t_result		add_lem_room(t_lemin *lem, char *str, int cmd);
 t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name);
-int				check_room_valid(const char *name);
 
 t_result		get_opposite_roomlink(
 					t_linkarr *larr, size_t	room_index, int n, size_t *index);
@@ -111,7 +107,6 @@ void			print_neighbors(const char *matrix, t_roomarr *rooms);
 void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
-t_roomdata		*find_room_by_cmd(t_roomarr *rooms, int cmd);
 
 t_result		graph_create(t_lemin *lem);
 

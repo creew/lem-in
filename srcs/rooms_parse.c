@@ -12,24 +12,7 @@
 
 #include "lemin.h"
 
-t_roomdata	*find_room_by_cmd(t_roomarr *rooms, int cmd)
-{
-	t_roomdata	*rdata;
-	size_t		count;
-
-	count = ft_array_size(rooms);
-	while (count--)
-	{
-		if (ft_array_get(rooms, count, (void **)&rdata) == 0)
-		{
-			if (rdata->cmd == cmd)
-				return (rdata);
-		}
-	}
-	return (NULL);
-}
-
-t_roomdata	*find_room_by_name(t_roomarr *rooms, const char *name)
+t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name)
 {
 	t_roomdata	*rdata;
 	size_t		count;
@@ -46,7 +29,7 @@ t_roomdata	*find_room_by_name(t_roomarr *rooms, const char *name)
 	return (NULL);
 }
 
-static int	check_room_xy_exist(t_roomarr *rooms, int x, int y)
+static int		check_room_xy_exist(t_roomarr *rooms, int x, int y)
 {
 	t_roomdata	*rdata;
 	size_t		count;
@@ -63,7 +46,39 @@ static int	check_room_xy_exist(t_roomarr *rooms, int x, int y)
 	return (0);
 }
 
-t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
+static int		check_room_valid(const char *name)
+{
+	if (!name || !*name || *name == 'L' || *name == '#')
+		return (0);
+	return (1);
+}
+
+static t_result	add_roomdata(t_roomarr *arr, const char *name,
+						 const int *xy, int cmd)
+{
+	t_roomdata	*rdata;
+	size_t		len;
+
+	len = ft_strlen(name);
+	rdata = ft_memalloc(sizeof(t_roomdata) + len * sizeof(char));
+	if (rdata == NULL)
+		return (ERR_ENOMEM);
+	if (ft_array_add(arr, rdata) != 0)
+	{
+		ft_memdel((void **)&rdata);
+		return (ERR_ENOMEM);
+	}
+	rdata->index = ft_array_size(arr) - 1;
+	rdata->x = xy[0];
+	rdata->y = xy[1];
+	rdata->cmd = cmd;
+	rdata->weigth = FT_INTMAX;
+	rdata->visited = 0;
+	ft_strlcpy(rdata->name, name, len + 1);
+	return (RET_OK);
+}
+
+t_result		add_lem_room(t_lemin *lem, char *str, int cmd)
 {
 	int		last;
 	int		xy[2];
@@ -90,11 +105,4 @@ t_result	add_lem_room(t_lemin *lem, char *str, int cmd)
 	if (check_room_xy_exist(&lem->rooms, xy[0], xy[1]))
 		return (ERR_ROOM_XY_DUPL);
 	return (add_roomdata(&lem->rooms, name, xy, cmd));
-}
-
-int			check_room_valid(const char *name)
-{
-	if (!name || !*name || *name == 'L' || *name == '#')
-		return (0);
-	return (1);
 }

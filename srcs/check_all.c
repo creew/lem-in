@@ -41,17 +41,9 @@ t_result	is_start_end_exists(t_roomarr *arr, t_borders *se)
 	return (start_count == 1 && end_count == 1 ? RET_OK : ERR_NO_START_OR_END);
 }
 
-static int	is_path_exists(t_roomarr *rooms)
+static int	is_path_exists(t_borders *se)
 {
-	t_roomdata *end;
-
-	end = find_room_by_cmd(rooms, LEM_CMD_START);
-	if (end)
-	{
-		if (end->weigth != FT_INTMAX)
-			return (1);
-	}
-	return (0);
+	return (se->start->weigth != FT_INTMAX);
 }
 
 t_result	check_all(t_lemin *lem)
@@ -64,7 +56,7 @@ t_result	check_all(t_lemin *lem)
 		return (res);
 	if ((res = graph_create(lem)) != RET_OK)
 		return (res);
-	if (!is_path_exists(&lem->rooms))
+	if (!is_path_exists(&lem->se))
 		return (ERR_NO_PATH);
 	return (RET_OK);
 }
