@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
+#include "ants_walk.h"
 #include "ft_printf.h"
 
 static void	print_move(t_roomdata *cur, int *is_not_first)
@@ -21,41 +22,48 @@ static void	print_move(t_roomdata *cur, int *is_not_first)
 	ft_printf("L%d-%s", cur->ant_index, cur->name);
 }
 
+static int	push_one_move(t_push_move *pm, int *is_not_first, const size_t *sum)
+{
+	if (pm->prev->ant_count)
+	{
+		if (pm->prev->cmd == LEM_CMD_START)
+		{
+			if (pm->index != 0 && pm->prev->ant_count <=
+			(int)((ft_array_size(pm->pdata->path) - 1) * pm->index) - (int)*sum)
+				return (1);
+			pm->cur->ant_index = pm->num_ants - pm->prev->ant_count + 1;
+		}
+		else
+			pm->cur->ant_index = pm->prev->ant_index;
+		pm->cur->ant_count++;
+		pm->prev->ant_count--;
+		print_move(pm->cur, is_not_first);
+	}
+	return (0);
+}
+
 static int	push_one_path(size_t index, t_lemin *lem,
 	int *is_not_first, size_t *sum)
 {
-	size_t		size;
-	t_pathdata	*pdata;
-	t_roomdata	*cur;
-	t_roomdata	*prev;
+	t_push_move		pm;
+	size_t			size;
 
-	if (ft_array_get(&lem->paths, index, (void **)&pdata) == 0)
+	pm.index = index;
+	pm.num_ants = lem->num_ants;
+	if (ft_array_get(&lem->paths, index, (void **)&pm.pdata) == 0)
 	{
-		size = ft_array_size(pdata->path);
+		size = ft_array_size(pm.pdata->path);
 		while (size > 1)
 		{
 			size--;
-			if (ft_array_get(pdata->path, size, (void **)&cur) == 0 &&
-				ft_array_get(pdata->path, size - 1, (void **)&prev) == 0)
+			if (ft_array_get(pm.pdata->path, size, (void **)&pm.cur) == 0 &&
+				ft_array_get(pm.pdata->path, size - 1, (void **)&pm.prev) == 0)
 			{
-				if (prev->ant_count)
-				{
-					if (size == 1)
-					{
-						if (index != 0 && prev->ant_count <=
-						(int)((ft_array_size(pdata->path) - 1) * index) - (int)*sum)
-							break ;
-						cur->ant_index = lem->num_ants - prev->ant_count + 1;
-					}
-					else
-						cur->ant_index = prev->ant_index;
-					cur->ant_count++;
-					prev->ant_count--;
-					print_move(cur, is_not_first);
-				}
+				if (push_one_move(&pm, is_not_first, sum))
+					break ;
 			}
 		}
-		*sum = *sum + (ft_array_size(pdata->path) - 1);
+		*sum = *sum + (ft_array_size(pm.pdata->path) - 1);
 	}
 	return (0);
 }

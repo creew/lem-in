@@ -22,15 +22,8 @@ void	print_rooms(t_roomarr *rooms)
 	while (++count < ft_array_size(rooms))
 	{
 		if (ft_array_get(rooms, count, (void **)&data) == 0)
-		{
-			ft_putstr("name: \"");
-			ft_putstr(data->name);
-			ft_putstr("\", x: ");
-			ft_putnbr(data->x);
-			ft_putstr(", y: ");
-			ft_putnbr(data->y);
-			ft_putendl("");
-		}
+			ft_printf("name: \"%s\", x: %d, y: %d\n",
+				data->name, data->x, data->y);
 	}
 }
 
@@ -65,23 +58,16 @@ void	print_neighbors(const char *matrix, t_roomarr *rooms)
 		if (ft_array_get(rooms, count, (void **)&data) == 0)
 		{
 			neighb_index = -1;
-			ft_putstr("name: \"");
-			ft_putstr(data->name);
-			ft_putstr("\", neighbors: ");
+			ft_printf("name: \"%s\", neighbors: ", data->name);
 			while (++neighb_index < rooms_count)
 			{
 				if (matrix[count * rooms_count + neighb_index])
 				{
 					if (ft_array_get(rooms, neighb_index, (void **)&neig) == 0)
-					{
-						ft_putstr(neig->name);
-						ft_putstr(", ");
-					}
+						ft_printf("%s, ", neig->name);
 				}
 			}
-			ft_putstr("len: ");
-			ft_putnbr(data->weigth);
-			ft_putendl("");
+			ft_printf("len: %d\n", data->weigth);
 		}
 	}
 }
@@ -105,9 +91,7 @@ void	print_paths(t_patharr *parr)
 				{
 					if (pcount != 0)
 						ft_putstr(", ");
-					ft_putstr("\"");
-					ft_putstr(room->name);
-					ft_putstr("\"");
+					ft_printf("\"%s\"", room->name);
 				}
 			}
 			ft_putendl("");

@@ -36,7 +36,8 @@ OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
 NAME = lem-in
 
-INCLUDES = ./includes/lemin.h
+INCLUDES = ./includes/lemin.h \
+			./includes/ants_walk.h
 
 COMP_LIB = make -C libft
 COMP_PRINTF = make -C ft_printf

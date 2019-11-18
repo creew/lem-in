@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-static void		get_lem_cmd(char *str, int *cmd)
+static void		get_lem_cmd(char *str, char *cmd)
 {
 	if (*str == '#' && *(str + 1) == '#')
 	{
@@ -27,7 +27,7 @@ static void		get_lem_cmd(char *str, int *cmd)
 }
 
 static t_result	parse_not_comment_str(t_lemin *lem, char *s,
-				int *is_rooms, int cmd)
+				int *is_rooms, char cmd)
 {
 	if (*is_rooms && count_numbers(s) == 3)
 		return (add_lem_room(lem, s, cmd));
@@ -40,7 +40,7 @@ static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 	int			is_rooms;
 	char		*s;
 	t_result	res;
-	int			cmd;
+	char		cmd;
 
 	cmd = LEM_CMD_NONE;
 	is_rooms = 1;

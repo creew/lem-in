@@ -54,7 +54,7 @@ static int		check_room_valid(const char *name)
 }
 
 static t_result	add_roomdata(t_roomarr *arr, const char *name,
-						 const int *xy, int cmd)
+					const int *xy, char cmd)
 {
 	t_roomdata	*rdata;
 	size_t		len;
@@ -78,7 +78,7 @@ static t_result	add_roomdata(t_roomarr *arr, const char *name,
 	return (RET_OK);
 }
 
-t_result		add_lem_room(t_lemin *lem, char *str, int cmd)
+t_result		add_lem_room(t_lemin *lem, char *str, char cmd)
 {
 	int		last;
 	int		xy[2];

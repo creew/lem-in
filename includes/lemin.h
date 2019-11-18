@@ -51,12 +51,12 @@ typedef struct	s_roomdata
 	size_t		index;
 	int			x;
 	int			y;
-	int 		weigth;
+	int			weigth;
 	char		cmd;
-	char 		visited;
-	char 		meh_visit;
+	char		visited;
+	char		meh_visit;
 	int			ant_index;
-	int 		ant_count;
+	int			ant_count;
 	char		name[1];
 }				t_roomdata;
 
@@ -79,7 +79,7 @@ typedef struct	s_lemin
 	t_linkarr	links;
 	t_patharr	paths;
 	t_borders	se;
-	char 		*matrix;
+	char		*matrix;
 }				t_lemin;
 
 typedef struct	s_pathdata
@@ -91,7 +91,7 @@ typedef struct	s_pathdata
 
 t_result		read_input(int fd, t_lemin *lem);
 
-t_result		add_lem_room(t_lemin *lem, char *str, int cmd);
+t_result		add_lem_room(t_lemin *lem, char *str, char cmd);
 t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name);
 
 t_result		get_opposite_roomlink(
@@ -110,7 +110,7 @@ t_result		check_all(t_lemin *lem);
 
 t_result		graph_create(t_lemin *lem);
 
-void 			remove_all_paths(t_patharr *parr);
+void			remove_all_paths(t_patharr *parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
 t_result		mehmet_algo(char *matrix, t_roomarr *rooms,

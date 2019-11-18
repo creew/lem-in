@@ -32,6 +32,5 @@ t_result	add_path_to_arr(t_patharr *parr, t_path *path)
 
 t_result	add_room_to_path(t_path *path, t_roomdata *room)
 {
-	ft_array_add(path, (void *)room);
-	return (RET_OK);
+	return (ft_array_add(path, (void *)room) == 0 ? RET_OK : ERR_ENOMEM);
 }
