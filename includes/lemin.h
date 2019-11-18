@@ -44,6 +44,7 @@ typedef t_ftarray	t_path;
 # define LEM_CMD_NONE			(0)
 # define LEM_CMD_START			(1)
 # define LEM_CMD_END			(2)
+# define LEM_CMD_UNKNOWN		(3)
 
 typedef struct	s_roomdata
 {
@@ -130,5 +131,7 @@ void			delete_all(t_lemin *lem);
 
 void			add_neigbor_room(t_lemin *lem, t_linkdata *link);
 void			rem_neigbor_room(t_lemin *lem, t_linkdata *link);
-void			start_ants(t_lemin *lem);
+
+void			print_given_data(t_lemin *lem);
+void			print_solution(t_lemin *lem);
 #endif

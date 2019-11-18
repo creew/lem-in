@@ -62,7 +62,7 @@ static int	push_one_path(size_t index, t_lemin *lem,
 	return (0);
 }
 
-void		start_ants(t_lemin *lem)
+void		print_solution(t_lemin *lem)
 {
 	size_t		path_count;
 	size_t		count;

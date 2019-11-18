@@ -12,17 +12,18 @@
 
 #include "lemin.h"
 
-static t_result	get_lem_cmd(char *str)
+static void		get_lem_cmd(char *str, int *cmd)
 {
 	if (*str == '#' && *(str + 1) == '#')
 	{
 		ft_trim_spaces(str + 2);
 		if (ft_strequ(str + 2, "start"))
-			return (LEM_CMD_START);
-		if (ft_strequ(str + 2, "end"))
-			return (LEM_CMD_END);
+			*cmd = LEM_CMD_START;
+		else if (ft_strequ(str + 2, "end"))
+			*cmd = LEM_CMD_END;
+		else
+			*cmd = LEM_CMD_UNKNOWN;
 	}
-	return (LEM_CMD_NONE);
 }
 
 static t_result	parse_not_comment_str(t_lemin *lem, char *s,
@@ -33,11 +34,6 @@ static t_result	parse_not_comment_str(t_lemin *lem, char *s,
 	*is_rooms = 0;
 	return (add_lem_link(lem, s));
 }
-
-/*
-** FIXME: Error reading comments after "##start" or "##end" (flag is missing)
-** -----
-*/
 
 static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 {
@@ -62,7 +58,7 @@ static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 			cmd = LEM_CMD_NONE;
 		}
 		else
-			cmd = get_lem_cmd(s);
+			get_lem_cmd(s, &cmd);
 		ft_strdel(&s);
 	}
 	return (RET_OK);

@@ -12,7 +12,6 @@
 
 #include "lemin.h"
 #include <fcntl.h>
-#include <stdlib.h>
 
 void		print_all(t_lemin *lem)
 {
@@ -45,8 +44,8 @@ int			main(int ac, char *av[])
 	if (ret == RET_OK)
 		ret = find_all_paths(&lem);
 	if (ret == RET_OK)
-		start_ants(&lem);
-	if (ret != RET_OK)
+		print_given_data(&lem);
+	else
 	{
 		ft_putstr("Error ");
 		ft_putnbr(ret);
@@ -54,5 +53,5 @@ int			main(int ac, char *av[])
 	}
 	//print_all(&lem);
 	delete_all(&lem);
-	return (EXIT_SUCCESS);
+	return (0);
 }
