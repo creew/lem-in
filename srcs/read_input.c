@@ -78,7 +78,7 @@ t_result		read_input(int fd, t_lemin *lem)
 		if (res < 0)
 			return (ERR_READ_ANTS_NUMBER);
 		if (*s != '#')
-			break;
+			break ;
 		ft_strdel(&s);
 	}
 	if (ft_safe_atoi(s, &lem->num_ants) != FT_ATOI_OK || lem->num_ants < 1)

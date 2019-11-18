@@ -123,7 +123,8 @@ t_result		add_room_to_path(t_path *path, t_roomdata *room);
 t_result		find_all_paths(t_lemin *lem);
 
 int				calc_total_len(t_patharr *paths, int count);
-t_result		dijkstra_algo(const char *matrix, t_roomarr *rooms);
+t_result		dijkstra_algo(const char *matrix, t_roomarr *rooms,
+					t_borders *se);
 
 void			delete_all(t_lemin *lem);
 

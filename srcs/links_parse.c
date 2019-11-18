@@ -12,8 +12,8 @@
 
 #include "lemin.h"
 
-t_result	get_opposite_roomlink(
-	t_linkarr *larr, size_t	room_index, int n, size_t *index)
+t_result		get_opposite_roomlink(
+	t_linkarr *larr, size_t room_index, int n, size_t *index)
 {
 	t_linkdata	*ldata;
 	size_t		size;

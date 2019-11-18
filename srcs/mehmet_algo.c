@@ -84,7 +84,7 @@ t_result			mehmet_algo(
 		{
 			add_room_to_path(path, preroot);
 			if (preroot->cmd == LEM_CMD_END)
-				break;
+				break ;
 			preroot->meh_visit = 1;
 			preroot = get_min_weight_neighbor(matrix, rooms, preroot->index, 0);
 		}

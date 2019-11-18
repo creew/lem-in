@@ -58,6 +58,6 @@ t_result		graph_create(t_lemin *lem)
 		}
 		index++;
 	}
-	dijkstra_algo(lem->matrix, &lem->rooms);
+	dijkstra_algo(lem->matrix, &lem->rooms, &lem->se);
 	return (RET_OK);
 }

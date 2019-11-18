@@ -26,7 +26,7 @@ t_result	remove_path(t_path *path, size_t sindex, size_t eindex,
 	return (RET_OK);
 }
 
-static int 	path_arr_cmp(const void *a, const void *b)
+static int	path_arr_cmp(const void *a, const void *b)
 {
 	t_pathdata	*pdata1;
 	t_pathdata	*pdata2;
@@ -67,12 +67,12 @@ t_pathdata	*find_pathdata_by_room(t_patharr *parr, t_roomdata *room)
 t_result	find_all_paths(t_lemin *lem)
 {
 	int			len;
-	int 		next_len;
+	int			next_len;
 	size_t		index;
 	t_linkdata	link;
 	t_pathdata	*pdata;
 	size_t		pindex;
-	size_t 		psize;
+	size_t		psize;
 	t_roomdata	*afterstart;
 
 	mehmet_algo(lem->matrix, &lem->rooms, &lem->paths, &lem->se);
@@ -81,7 +81,6 @@ t_result	find_all_paths(t_lemin *lem)
 	ft_putnbr(len);
 	ft_putendl("");
 	index = 0;
-
 	while (index < ft_array_size(&lem->paths))
 	{
 		sort_path_arr(&lem->paths);
@@ -94,13 +93,13 @@ t_result	find_all_paths(t_lemin *lem)
 				ft_array_get(pdata->path, 1, (void **)&afterstart);
 				remove_path(pdata->path, pindex, pindex + 1, &link);
 				rem_neigbor_room(lem, &link);
-				dijkstra_algo(lem->matrix, &lem->rooms);
+				dijkstra_algo(lem->matrix, &lem->rooms, &lem->se);
 				mehmet_algo(lem->matrix, &lem->rooms, &lem->paths, &lem->se);
 				next_len = calc_total_len(&lem->paths, lem->num_ants);
 				if (next_len >= len)
 				{
 					add_neigbor_room(lem, &link);
-					dijkstra_algo(lem->matrix, &lem->rooms);
+					dijkstra_algo(lem->matrix, &lem->rooms, &lem->se);
 					mehmet_algo(lem->matrix, &lem->rooms, &lem->paths, &lem->se);
 					sort_path_arr(&lem->paths);
 					pdata = find_pathdata_by_room(&lem->paths, afterstart);
@@ -109,7 +108,7 @@ t_result	find_all_paths(t_lemin *lem)
 				{
 					len = next_len;
 					index = -1;
-					break;
+					break ;
 				}
 				pindex++;
 			}
