@@ -43,7 +43,7 @@ static int	push_one_path(size_t index, t_lemin *lem,
 					if (size == 1)
 					{
 						if (index != 0 && prev->ant_count <=
-						(int)((ft_array_size(pdata->path) - 1) * size) - (int)*sum)
+						(int)((ft_array_size(pdata->path) - 1) * index) - (int)*sum)
 							break ;
 						cur->ant_index = lem->num_ants - prev->ant_count + 1;
 					}
