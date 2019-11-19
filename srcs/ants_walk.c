@@ -21,7 +21,7 @@ static void	print_move(t_roomdata *cur, int *is_not_first, int colorized)
 	*is_not_first = 1;
 	if (colorized)
 	{
-		ft_printf("\e[38;5;%dmL%d-%s\e[0m", cur->ant_index % 255,
+		ft_printf("\x1b[38;5;%dmL%d-%s\x1b[0m", cur->ant_index % 255,
 			cur->ant_index, cur->name);
 	}
 	else
