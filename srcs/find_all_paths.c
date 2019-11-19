@@ -75,6 +75,25 @@ static t_result		try_recalc(t_lemin *lem, int *prev_len,
 	return (res);
 }
 
+static int			min_neig_start_end(t_matrix *matrix, t_borders *se)
+{
+	size_t	size;
+	int		count_e;
+	int		count_s;
+
+	count_e = 0;
+	count_s = 0;
+	size = matrix->size;
+	while (size--)
+	{
+		if (matrix_get_link(matrix, se->start->index, size))
+			count_s++;
+		if (matrix_get_link(matrix, se->end->index, size))
+			count_e++;
+	}
+	return (ft_min(count_s, count_e));
+}
+
 t_result			find_all_paths(t_lemin *lem)
 {
 	int			len;
@@ -84,6 +103,8 @@ t_result			find_all_paths(t_lemin *lem)
 
 	mehmet_algo(&lem->matrix, &lem->rooms, &lem->paths, &lem->se);
 	len = calc_total_len(&lem->paths, lem->num_ants);
+	if (min_neig_start_end(&lem->matrix, &lem->se) == 1)
+		return (RET_OK);
 	index = -1;
 	while (++index < ft_array_size(&lem->paths))
 	{
@@ -91,13 +112,11 @@ t_result			find_all_paths(t_lemin *lem)
 		{
 			pindex = -1;
 			while (++pindex < pdata->size - 1)
-			{
 				if (try_recalc(lem, &len, pdata, pindex) == RET_RECALC)
 				{
 					index = -1;
 					break ;
 				}
-			}
 		}
 	}
 	return (RET_OK);
