@@ -41,14 +41,43 @@ void		print_error(t_lemin *lem, t_result err)
 	}
 }
 
+static int	parse_option(char *arg, t_lemin *lem)
+{
+	t_uint	flags;
+
+	flags = 0;
+	if (*arg == '-' && *(arg + 1) != '\0')
+	{
+		while (*++arg)
+		{
+			if (*arg == 'd')
+				flags |= 1u;
+			else if (*arg == 'c')
+				flags |= 2u;
+			else
+				return (0);
+		}
+		if (flags & 1u)
+			lem->is_debug = 1;
+		if (flags & 2u)
+			lem->is_colorized = 1;
+		return (1);
+	}
+	return (0);
+}
+
 int			main(int ac, char *av[])
 {
 	t_lemin		lem;
 	t_result	ret;
+	int 		fd;
 
 	init_lem(&lem);
-	if (ac != 2 || (lem.fd = open(av[1], O_RDONLY)) == -1)
-		lem.fd = 0;
+	while (ac-- > 1)
+		if (parse_option(av[ac], &lem) == 0)
+			if (lem.fd == 0)
+				if ((fd = open(av[ac], O_RDONLY)) != -1)
+					lem.fd = fd;
 	ret = read_input(lem.fd, &lem);
 	if (ret == RET_OK)
 		ret = check_all(&lem);

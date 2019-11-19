@@ -16,6 +16,7 @@
 # include "libft.h"
 
 typedef	int				t_result;
+typedef unsigned int	t_uint;
 typedef unsigned char	t_uchar;
 typedef t_ftarray		t_roomarr;
 typedef t_ftarray		t_linkarr;
@@ -90,6 +91,7 @@ typedef struct	s_lemin
 	t_patharr	paths;
 	t_borders	se;
 	int			is_debug;
+	int 		is_colorized;
 	int			fd;
 	t_matrix	matrix;
 }				t_lemin;

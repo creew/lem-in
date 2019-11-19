@@ -28,7 +28,8 @@ static void	print_move(t_roomdata *cur, int *is_not_first, int colorized)
 		ft_printf("L%d-%s", cur->ant_index, cur->name);
 }
 
-static int	push_one_move(t_push_move *pm, int *is_not_first, const size_t *sum)
+static int	push_one_move(t_push_move *pm, int *is_not_first,
+	const size_t *sum, int is_colorized)
 {
 	if (pm->prev->ant_count)
 	{
@@ -43,7 +44,7 @@ static int	push_one_move(t_push_move *pm, int *is_not_first, const size_t *sum)
 			pm->cur->ant_index = pm->prev->ant_index;
 		pm->cur->ant_count++;
 		pm->prev->ant_count--;
-		print_move(pm->cur, is_not_first, 1);
+		print_move(pm->cur, is_not_first, is_colorized);
 	}
 	return (0);
 }
@@ -65,7 +66,7 @@ static int	push_one_path(size_t index, t_lemin *lem,
 			if (ft_array_get(pm.pdata->path, size, (void **)&pm.cur) == 0 &&
 				ft_array_get(pm.pdata->path, size - 1, (void **)&pm.prev) == 0)
 			{
-				if (push_one_move(&pm, is_not_first, sum))
+				if (push_one_move(&pm, is_not_first, sum, lem->is_colorized))
 					break ;
 			}
 		}
