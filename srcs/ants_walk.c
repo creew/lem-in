@@ -14,12 +14,18 @@
 #include "ants_walk.h"
 #include "ft_printf.h"
 
-static void	print_move(t_roomdata *cur, int *is_not_first)
+static void	print_move(t_roomdata *cur, int *is_not_first, int colorized)
 {
 	if (*is_not_first)
 		ft_putstr(" ");
 	*is_not_first = 1;
-	ft_printf("L%d-%s", cur->ant_index, cur->name);
+	if (colorized)
+	{
+		ft_printf("\e[38;5;%dmL%d-%s\e[0m", cur->ant_index % 255,
+			cur->ant_index, cur->name);
+	}
+	else
+		ft_printf("L%d-%s", cur->ant_index, cur->name);
 }
 
 static int	push_one_move(t_push_move *pm, int *is_not_first, const size_t *sum)
@@ -37,7 +43,7 @@ static int	push_one_move(t_push_move *pm, int *is_not_first, const size_t *sum)
 			pm->cur->ant_index = pm->prev->ant_index;
 		pm->cur->ant_count++;
 		pm->prev->ant_count--;
-		print_move(pm->cur, is_not_first);
+		print_move(pm->cur, is_not_first, 1);
 	}
 	return (0);
 }
