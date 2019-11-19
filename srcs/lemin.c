@@ -32,7 +32,7 @@ void		init_lem(t_lemin *lem)
 void		print_error(t_lemin *lem, t_result err)
 {
 	if (!lem->is_debug)
-		ft_putendl_fd("Error\n", 2);
+		ft_putendl_fd("Error", 2);
 	else
 	{
 		ft_putstr_fd("Error ", 2);
