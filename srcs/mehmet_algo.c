@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-static t_roomdata	*get_min_weight_neighbor(const char *matrix,
+static t_roomdata	*get_min_weight_neighbor(t_matrix *matrix,
 	t_roomarr *rooms, size_t index, int excl_one_len)
 {
 	t_roomdata	*data;
@@ -23,19 +23,18 @@ static t_roomdata	*get_min_weight_neighbor(const char *matrix,
 	min = NULL;
 	count = -1;
 	rooms_count = ft_array_size(rooms);
-	matrix += rooms_count * index;
 	while (++count < rooms_count)
 	{
-		if (matrix[count])
+		if (matrix_get_link(matrix, index, count))
 		{
 			if (ft_array_get(rooms, count, (void **)&data) == 0)
 			{
-				if (!data->meh_visit && data->weigth != FT_INTMAX)
-				{
-					if (!excl_one_len || data->weigth > 0)
-						if (min == NULL || data->weigth < min->weigth)
+				if (!(matrix_get_flag(matrix, data->index) & MEHMET_VIS) &&
+					matrix->weights[data->index] != FT_INTMAX)
+					if (!excl_one_len || matrix->weights[data->index] > 0)
+						if (min == NULL || matrix->weights[data->index] <
+							matrix->weights[min->index])
 							min = data;
-				}
 			}
 		}
 	}
@@ -48,13 +47,11 @@ static void			remove_pathlst_callback(void *data)
 }
 
 static t_result		add_zero_len_path(
-	const char *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se)
+	t_matrix *matrix, t_patharr *paths, t_borders *se)
 {
-	size_t		count_rooms;
 	t_path		*path;
 
-	count_rooms = ft_array_size(rooms);
-	if (matrix[se->start->index * count_rooms + se->end->index] == 1)
+	if (matrix_get_link(matrix, se->start->index, se->end->index))
 	{
 		if ((path = ft_array_new(2)) == NULL)
 			return (ERR_ENOMEM);
@@ -66,29 +63,28 @@ static t_result		add_zero_len_path(
 }
 
 t_result			mehmet_algo(
-	char *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se)
+	t_matrix *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se)
 {
-	t_roomdata	*preroot;
+	t_roomdata	*neig;
 	t_path		*path;
 
 	remove_all_paths(paths);
-	se->start->meh_visit = 1;
-	add_zero_len_path(matrix, rooms, paths, se);
-	while ((preroot = get_min_weight_neighbor(matrix, rooms, se->start->index, 1)))
+	matrix_set_flag(matrix, se->start->index, MEHMET_VIS);
+	add_zero_len_path(matrix, paths, se);
+	while ((neig = get_min_weight_neighbor(matrix, rooms, se->start->index, 1)))
 	{
-		path = ft_array_new(0);
-		if (!path)
+		if (!(path = ft_array_new(0)))
 			return (ERR_ENOMEM);
 		add_room_to_path(path, se->start);
-		while (preroot)
+		while (neig)
 		{
-			add_room_to_path(path, preroot);
-			if (preroot->cmd == LEM_CMD_END)
+			add_room_to_path(path, neig);
+			if (neig->cmd == LEM_CMD_END)
 				break ;
-			preroot->meh_visit = 1;
-			preroot = get_min_weight_neighbor(matrix, rooms, preroot->index, 0);
+			matrix_set_flag(matrix, neig->index, MEHMET_VIS);
+			neig = get_min_weight_neighbor(matrix, rooms, neig->index, 0);
 		}
-		if (preroot != NULL && preroot->cmd == LEM_CMD_END)
+		if (neig != NULL && neig->cmd == LEM_CMD_END)
 			add_path_to_arr(paths, path);
 		else
 			ft_array_delete_all(&path, remove_pathlst_callback);

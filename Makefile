@@ -25,7 +25,9 @@ ALL_C =	lemin.c \
         		dijkstra_algo.c \
         		destroy.c \
         		ants_walk.c \
-        		print_given_data.c
+        		print_given_data.c \
+        		matrix_links.c \
+        		matrix.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs
@@ -42,7 +44,7 @@ INCLUDES = ./includes/lemin.h \
 COMP_LIB = make -C libft
 COMP_PRINTF = make -C ft_printf
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 
 all: lib ft_printf $(NAME)
 

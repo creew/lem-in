@@ -15,12 +15,14 @@
 
 # include "libft.h"
 
-typedef	int			t_result;
-typedef t_ftarray	t_roomarr;
-typedef t_ftarray	t_linkarr;
-typedef t_ftarray	t_patharr;
-typedef t_ftarray	t_path;
+typedef	int				t_result;
+typedef unsigned char	t_uchar;
+typedef t_ftarray		t_roomarr;
+typedef t_ftarray		t_linkarr;
+typedef t_ftarray		t_patharr;
+typedef t_ftarray		t_path;
 
+# define RET_RECALC					(1)
 # define RET_OK						(0)
 # define ERR_READ_ANTS_NUMBER		(-1)
 # define ERR_WRONG_ANTS_NUMBER		(-2)
@@ -46,17 +48,25 @@ typedef t_ftarray	t_path;
 # define LEM_CMD_END			(2)
 # define LEM_CMD_UNKNOWN		(3)
 
+# define M_LINK					(1u << 0u)
+# define DIJKSTRA_VIS			(1u << 1u)
+# define MEHMET_VIS				(1u << 2u)
+
+typedef struct	s_matrix
+{
+	t_uchar		*m;
+	int			*weights;
+	size_t		size;
+}				t_matrix;
+
 typedef struct	s_roomdata
 {
 	size_t		index;
 	int			x;
 	int			y;
-	int			weigth;
-	char		cmd;
-	char		visited;
-	char		meh_visit;
 	int			ant_index;
 	int			ant_count;
+	char		cmd;
 	char		name[1];
 }				t_roomdata;
 
@@ -79,7 +89,9 @@ typedef struct	s_lemin
 	t_linkarr	links;
 	t_patharr	paths;
 	t_borders	se;
-	char		*matrix;
+	int			is_debug;
+	int			fd;
+	t_matrix	matrix;
 }				t_lemin;
 
 typedef struct	s_pathdata
@@ -94,8 +106,6 @@ t_result		read_input(int fd, t_lemin *lem);
 t_result		add_lem_room(t_lemin *lem, char *str, char cmd);
 t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name);
 
-t_result		get_opposite_roomlink(
-					t_linkarr *larr, size_t	room_index, int n, size_t *index);
 t_result		add_lem_link(t_lemin *lem, char *str);
 
 int				count_numbers(char *str);
@@ -103,7 +113,7 @@ char			*get_next_word(char *str, int *last);
 
 void			print_rooms(t_roomarr *rooms);
 void			print_links(t_linkarr *links);
-void			print_neighbors(const char *matrix, t_roomarr *rooms);
+void			print_neighbors(t_matrix *matrix, t_roomarr *rooms);
 void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
@@ -113,20 +123,28 @@ t_result		graph_create(t_lemin *lem);
 void			remove_all_paths(t_patharr *parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
-t_result		mehmet_algo(char *matrix, t_roomarr *rooms,
+t_result		mehmet_algo(t_matrix *matrix, t_roomarr *rooms,
 					t_patharr *paths, t_borders *se);
 t_result		add_room_to_path(t_path *path, t_roomdata *room);
 t_result		find_all_paths(t_lemin *lem);
 
 int				calc_total_len(t_patharr *paths, int count);
-t_result		dijkstra_algo(const char *matrix, t_roomarr *rooms,
+t_result		dijkstra_algo(t_matrix *matrix, t_roomarr *rooms,
 					t_borders *se);
 
 void			delete_all(t_lemin *lem);
 
-void			add_neigbor_room(t_lemin *lem, t_linkdata *link);
-void			rem_neigbor_room(t_lemin *lem, t_linkdata *link);
-
 void			print_given_data(t_lemin *lem);
 void			print_solution(t_lemin *lem);
+
+t_result		create_matrix(t_matrix *matrix, size_t size);
+
+void			matrix_set_flag(t_matrix *matrix, size_t room, size_t flag);
+t_uchar			matrix_get_flag(t_matrix *matrix, size_t room);
+t_uchar			matrix_get_link(t_matrix *matrix, size_t room1, size_t room2);
+void			matrix_add_neighbor(t_matrix *matrix, t_linkdata *link);
+void			matrix_rem_neighbor(t_matrix *matrix, t_linkdata *link);
+
+void			matrix_cpy(t_matrix *dst, const t_matrix *src);
+t_result		matrix_dup(t_matrix *dst, const t_matrix *src);
 #endif

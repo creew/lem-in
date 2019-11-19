@@ -12,26 +12,42 @@
 
 #include "lemin.h"
 
-void			add_neigbor_room(t_lemin *lem, t_linkdata *link)
+t_result		create_matrix(t_matrix *matrix, size_t size)
 {
-	char	*matrix;
-	size_t	size;
-
-	matrix = lem->matrix;
-	size = ft_array_size(&lem->rooms);
-	matrix[size * link->left->index + link->right->index] = 1;
-	matrix[size * link->right->index + link->left->index] = 1;
+	matrix->m = ft_calloc(size * size, sizeof(char));
+	if (!matrix->m)
+		return (ERR_ENOMEM);
+	matrix->weights = ft_calloc(size, sizeof(int));
+	if (!matrix->weights)
+		return (ERR_ENOMEM);
+	matrix->size = size;
+	return (RET_OK);
 }
 
-void			rem_neigbor_room(t_lemin *lem, t_linkdata *link)
+static t_result	get_opposite_roomlink(
+	t_linkarr *larr, size_t room_index, int n, t_linkdata *link)
 {
-	char	*matrix;
-	size_t	size;
+	t_linkdata	*ldata;
+	size_t		size;
 
-	matrix = lem->matrix;
-	size = ft_array_size(&lem->rooms);
-	matrix[size * link->left->index + link->right->index] = 0;
-	matrix[size * link->right->index + link->left->index] = 0;
+	size = ft_array_size(larr);
+	while (size--)
+	{
+		if (ft_array_get(larr, size, (void **)&ldata) == 0)
+		{
+			if (room_index == ldata->left->index ||
+				room_index == ldata->right->index)
+			{
+				if (!n--)
+				{
+					link->right = room_index == ldata->left->index ?
+						ldata->right : ldata->left;
+					return (RET_OK);
+				}
+			}
+		}
+	}
+	return (ERR_WRONG_LINK);
 }
 
 t_result		graph_create(t_lemin *lem)
@@ -39,25 +55,25 @@ t_result		graph_create(t_lemin *lem)
 	int			count;
 	size_t		rooms_count;
 	size_t		index;
-	size_t		index2;
+	t_linkdata	link;
+	t_result	res;
 
-	index = 0;
-	index2 = 0;
+	index = -1;
 	rooms_count = ft_array_size(&lem->rooms);
-	lem->matrix = ft_calloc(rooms_count * rooms_count, sizeof(char));
-	if (!lem->matrix)
-		return (ERR_ENOMEM);
-	while (index < rooms_count)
+	if ((res = create_matrix(&lem->matrix, rooms_count) != RET_OK))
+		return (res);
+	while (++index < rooms_count)
 	{
-		count = 0;
-		while ((get_opposite_roomlink(
-			&lem->links, index, count++, &index2)) == RET_OK)
+		if (ft_array_get(&lem->rooms, index, (void **)&link.left) == 0)
 		{
-			lem->matrix[index * rooms_count + index2] = 1;
-			lem->matrix[index2 * rooms_count + index] = 1;
+			count = 0;
+			while ((get_opposite_roomlink(
+				&lem->links, index, count++, &link)) == RET_OK)
+			{
+				matrix_add_neighbor(&lem->matrix, &link);
+			}
 		}
-		index++;
 	}
-	dijkstra_algo(lem->matrix, &lem->rooms, &lem->se);
+	dijkstra_algo(&lem->matrix, &lem->rooms, &lem->se);
 	return (RET_OK);
 }

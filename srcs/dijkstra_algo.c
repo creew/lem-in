@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-static t_roomdata	*find_min_weight(t_roomarr *arr)
+static t_roomdata	*find_min_weight(t_matrix *matrix, t_roomarr *arr)
 {
 	t_roomdata	*rdata;
 	t_roomdata	*cur;
@@ -24,9 +24,11 @@ static t_roomdata	*find_min_weight(t_roomarr *arr)
 	{
 		if (ft_array_get(arr, size, (void **)&cur) == 0)
 		{
-			if (cur->visited == 0 && cur->weigth != FT_INTMAX)
+			if (!(matrix_get_flag(matrix, size) & DIJKSTRA_VIS) &&
+				matrix->weights[cur->index] != FT_INTMAX)
 			{
-				if (rdata == NULL || cur->weigth < rdata->weigth)
+				if (rdata == NULL ||
+					matrix->weights[cur->index] < matrix->weights[rdata->index])
 					rdata = cur;
 			}
 		}
@@ -34,18 +36,20 @@ static t_roomdata	*find_min_weight(t_roomarr *arr)
 	return (rdata);
 }
 
-static void			reset_one_elem(void *data)
+static void			reset_matrix_algos(t_matrix *matrix)
 {
-	t_roomdata	*rdata;
+	size_t	size;
 
-	rdata = (t_roomdata *)data;
-	rdata->visited = 0;
-	rdata->meh_visit = 0;
-	rdata->weigth = FT_INTMAX;
+	size = matrix->size;
+	while (size--)
+	{
+		matrix->m[size] &= ~(DIJKSTRA_VIS | MEHMET_VIS);
+		matrix->weights[size] = FT_INTMAX;
+	}
 }
 
 t_result			dijkstra_algo(
-	const char *matrix, t_roomarr *rooms, t_borders *se)
+	t_matrix *matrix, t_roomarr *rooms, t_borders *se)
 {
 	t_roomdata		*rdata;
 	size_t			rooms_count;
@@ -53,23 +57,21 @@ t_result			dijkstra_algo(
 	t_roomdata		*neig;
 
 	rooms_count = ft_array_size(rooms);
-	ft_array_foreach(rooms, reset_one_elem);
-	se->end->weigth = 0;
-	while ((rdata = find_min_weight(rooms)))
+	reset_matrix_algos(matrix);
+	matrix->weights[se->end->index] = 0;
+	while ((rdata = find_min_weight(matrix, rooms)))
 	{
 		count = -1;
 		while (++count < rooms_count)
 		{
-			if (matrix[rdata->index * rooms_count + count])
-			{
+			if (matrix_get_link(matrix, rdata->index, count))
 				if (ft_array_get(rooms, count, (void **)&neig) == 0)
-				{
-					if (rdata->weigth + 1 < neig->weigth)
-						neig->weigth = rdata->weigth + 1;
-				}
-			}
+					if (matrix->weights[rdata->index] + 1 <
+						matrix->weights[neig->index])
+						matrix->weights[neig->index] =
+							matrix->weights[rdata->index] + 1;
 		}
-		rdata->visited = 1;
+		matrix_set_flag(matrix, rdata->index, DIJKSTRA_VIS);
 	}
 	return (RET_OK);
 }

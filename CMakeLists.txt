@@ -28,6 +28,8 @@ add_executable(lem_in
         srcs/destroy.c
         srcs/ants_walk.c
         srcs/print_given_data.c
+        srcs/matrix_links.c
+        srcs/matrix.c
         )
 
 add_dependencies(lem_in libftprintf_target libft_target)

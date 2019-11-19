@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
+#include <unistd.h>
 
 static void	remove_pathlst_callback(void *data)
 {
@@ -41,5 +42,8 @@ void		delete_all(t_lemin *lem)
 	ft_array_remove_all(&lem->rooms, delroomlinkarr);
 	ft_array_remove_all(&lem->links, delroomlinkarr);
 	remove_all_paths(&lem->paths);
-	ft_memdel((void **)&lem->matrix);
+	ft_memdel((void **)&lem->matrix.m);
+	ft_memdel((void **)&lem->matrix.weights);
+	if (lem->fd != 0)
+		close(lem->fd);
 }

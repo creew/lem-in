@@ -43,7 +43,7 @@ void	print_links(t_linkarr *links)
 	}
 }
 
-void	print_neighbors(const char *matrix, t_roomarr *rooms)
+void	print_neighbors(t_matrix *matrix, t_roomarr *rooms)
 {
 	t_roomdata		*data;
 	t_roomdata		*neig;
@@ -61,13 +61,13 @@ void	print_neighbors(const char *matrix, t_roomarr *rooms)
 			ft_printf("name: \"%s\", neighbors: ", data->name);
 			while (++neighb_index < rooms_count)
 			{
-				if (matrix[count * rooms_count + neighb_index])
+				if (matrix_get_link(matrix, count, neighb_index))
 				{
 					if (ft_array_get(rooms, neighb_index, (void **)&neig) == 0)
 						ft_printf("%s, ", neig->name);
 				}
 			}
-			ft_printf("len: %d\n", data->weigth);
+			ft_printf("len: %d\n", matrix->weights[count]);
 		}
 	}
 }

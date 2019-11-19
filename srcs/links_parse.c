@@ -12,32 +12,6 @@
 
 #include "lemin.h"
 
-t_result		get_opposite_roomlink(
-	t_linkarr *larr, size_t room_index, int n, size_t *index)
-{
-	t_linkdata	*ldata;
-	size_t		size;
-
-	size = ft_array_size(larr);
-	while (size--)
-	{
-		if (ft_array_get(larr, size, (void **)&ldata) == 0)
-		{
-			if (room_index == ldata->left->index ||
-				room_index == ldata->right->index)
-			{
-				if (!n--)
-				{
-					*index = room_index == ldata->left->index ?
-						ldata->right->index : ldata->left->index;
-					return (RET_OK);
-				}
-			}
-		}
-	}
-	return (ERR_WRONG_LINK);
-}
-
 static int		is_link_exist(t_linkarr *larr, t_roomdata *l1, t_roomdata *l2)
 {
 	t_linkdata	*ldata;

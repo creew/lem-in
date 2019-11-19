@@ -21,8 +21,6 @@ static void		get_lem_cmd(char *str, char *cmd)
 			*cmd = LEM_CMD_START;
 		else if (ft_strequ(str + 2, "end"))
 			*cmd = LEM_CMD_END;
-		else
-			*cmd = LEM_CMD_UNKNOWN;
 	}
 }
 
