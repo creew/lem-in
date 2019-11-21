@@ -24,7 +24,7 @@ static t_roomdata	*find_min_weight(t_matrix *matrix, t_roomarr *arr)
 	{
 		if (ft_array_get(arr, size, (void **)&cur) == 0)
 		{
-			if (!(matrix_get_flag(matrix, size) & DIJKSTRA_VIS) &&
+			if (!(matrix->m[cur->index].dij_vis) &&
 				matrix->weights[cur->index] != FT_INTMAX)
 			{
 				if (rdata == NULL ||
@@ -43,7 +43,7 @@ static void			reset_matrix_algos(t_matrix *matrix)
 	size = matrix->size;
 	while (size--)
 	{
-		matrix->m[size] &= ~(DIJKSTRA_VIS | MEHMET_VIS);
+		matrix->m[size].dij_vis = 0;
 		matrix->weights[size] = FT_INTMAX;
 	}
 }
@@ -71,7 +71,7 @@ t_result			dijkstra_algo(
 						matrix->weights[neig->index] =
 							matrix->weights[rdata->index] + 1;
 		}
-		matrix_set_flag(matrix, rdata->index, DIJKSTRA_VIS);
+		matrix->m[rdata->index].dij_vis = 1;
 	}
 	return (RET_OK);
 }

@@ -53,9 +53,17 @@ typedef t_ftarray		t_path;
 # define DIJKSTRA_VIS			(1u << 1u)
 # define MEHMET_VIS				(1u << 2u)
 
+typedef struct	s_md
+{
+	t_uchar		dij_vis:1;
+	t_uchar		path_vis:1;
+	char 		in:3;
+	char		ex:3;
+}				t_md;
+
 typedef struct	s_matrix
 {
-	t_uchar		*m;
+	t_md		*m;
 	int			*weights;
 	size_t		size;
 }				t_matrix;
@@ -139,7 +147,7 @@ void			delete_all(t_lemin *lem);
 void			print_given_data(t_lemin *lem);
 void			print_solution(t_lemin *lem);
 
-t_result		create_matrix(t_matrix *matrix, size_t size);
+t_result		matrix_create(t_matrix *matrix, size_t size);
 
 void			matrix_set_flag(t_matrix *matrix, size_t room, size_t flag);
 t_uchar			matrix_get_flag(t_matrix *matrix, size_t room);
@@ -149,4 +157,7 @@ void			matrix_rem_neighbor(t_matrix *matrix, t_linkdata *link);
 
 void			matrix_cpy(t_matrix *dst, const t_matrix *src);
 t_result		matrix_dup(t_matrix *dst, const t_matrix *src);
+
+void			suurballe_algo(
+	t_matrix *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se);
 #endif

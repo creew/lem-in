@@ -22,7 +22,6 @@ add_executable(lem_in
         srcs/graph_create.c
         srcs/calc_total_len.c
         srcs/paths_work.c
-        srcs/mehmet_algo.c
         srcs/find_all_paths.c
         srcs/dijkstra_algo.c
         srcs/destroy.c
@@ -30,6 +29,7 @@ add_executable(lem_in
         srcs/print_given_data.c
         srcs/matrix_links.c
         srcs/matrix.c
+        srcs/suurballe.c
         )
 
 add_dependencies(lem_in libftprintf_target libft_target)

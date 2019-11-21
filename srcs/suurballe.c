@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mehmet_algo.c                                      :+:      :+:    :+:   */
+/*   suurballe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/16 16:31:33 by eklompus          #+#    #+#             */
-/*   Updated: 2019/11/16 16:31:33 by eklompus         ###   ########.fr       */
+/*   Created: 2019/11/21 15:55:51 by eklompus          #+#    #+#             */
+/*   Updated: 2019/11/21 15:55:52 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lemin.h"
 
+
+
+
 static t_roomdata	*get_min_weight_neighbor(t_matrix *matrix,
-	t_roomarr *rooms, size_t index, int excl_one_len)
+											  t_roomarr *rooms, size_t index, int excl_one_len)
 {
 	t_roomdata	*data;
 	t_roomdata	*min;
@@ -33,33 +36,12 @@ static t_roomdata	*get_min_weight_neighbor(t_matrix *matrix,
 					matrix->weights[data->index] != FT_INTMAX)
 					if (!excl_one_len || matrix->weights[data->index] > 0)
 						if (min == NULL || matrix->weights[data->index] <
-							matrix->weights[min->index])
+										   matrix->weights[min->index])
 							min = data;
 			}
 		}
 	}
 	return (min);
-}
-
-static void			remove_pathlst_callback(void *data)
-{
-	(void)data;
-}
-
-static t_result		add_zero_len_path(
-	t_matrix *matrix, t_patharr *paths, t_borders *se)
-{
-	t_path		*path;
-
-	if (matrix_get_link(matrix, se->start->index, se->end->index))
-	{
-		if ((path = ft_array_new(2)) == NULL)
-			return (ERR_ENOMEM);
-		add_room_to_path(path, se->start);
-		add_room_to_path(path, se->end);
-		add_path_to_arr(paths, path);
-	}
-	return (RET_OK);
 }
 
 t_result			mehmet_algo(
@@ -81,6 +63,7 @@ t_result			mehmet_algo(
 			add_room_to_path(path, neig);
 			if (neig->cmd == LEM_CMD_END)
 				break ;
+			matrix[neig->index].m->path_vis = 1;
 			matrix_set_flag(matrix, neig->index, MEHMET_VIS);
 			neig = get_min_weight_neighbor(matrix, rooms, neig->index, 0);
 		}
@@ -90,4 +73,34 @@ t_result			mehmet_algo(
 			ft_array_delete_all(&path, remove_pathlst_callback);
 	}
 	return (RET_OK);
+}
+
+
+static void		make_link_neg(t_matrix *matrix, int from, int to)
+{
+	if (from >= 0 && to < matrix->size)
+	{
+		matrix->weights[to * matrix->size + from] = FT_INTMAX;
+	}
+}
+
+void			suurballe_algo(
+	t_matrix *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se)
+{
+	t_roomdata	*neig;
+	t_roomdata	*prev;
+
+	prev = se->start;
+	if ((neig = get_min_weight_neighbor(matrix, rooms, se->start->index, 1)))
+	{
+		while (neig)
+		{
+			make_link_neg(matrix, prev->index, neig->index);
+			if (neig->cmd == LEM_CMD_END)
+				break ;
+			prev = neig;
+			matrix_set_flag(matrix, neig->index, MEHMET_VIS);
+			neig = get_min_weight_neighbor(matrix, rooms, neig->index, 0);
+		}
+	}
 }

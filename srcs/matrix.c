@@ -12,6 +12,18 @@
 
 #include "lemin.h"
 
+t_result		matrix_create(t_matrix *matrix, size_t size)
+{
+	matrix->m = ft_calloc(size * size, sizeof(*matrix->m));
+	if (!matrix->m)
+		return (ERR_ENOMEM);
+	matrix->weights = ft_calloc(size, sizeof(*matrix->weights));
+	if (!matrix->weights)
+		return (ERR_ENOMEM);
+	matrix->size = size;
+	return (RET_OK);
+}
+
 void			matrix_cpy(t_matrix *dst, const t_matrix *src)
 {
 	size_t	size;
@@ -33,7 +45,7 @@ t_result		matrix_dup(t_matrix *dst, const t_matrix *src)
 	size_t		size;
 
 	size = src->size;
-	if ((res = create_matrix(dst, size)) != RET_OK)
+	if ((res = matrix_create(dst, size)) != RET_OK)
 		return (res);
 	matrix_cpy(dst, src);
 	return (RET_OK);

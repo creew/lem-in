@@ -101,6 +101,17 @@ t_result			find_all_paths(t_lemin *lem)
 	t_pathdata	*pdata;
 	size_t		pindex;
 
+
+	while (42)
+	{
+		suurballe_algo(&lem->matrix, &lem->rooms, &lem->paths, &lem->se);
+
+
+
+
+	}
+
+
 	mehmet_algo(&lem->matrix, &lem->rooms, &lem->paths, &lem->se);
 	len = calc_total_len(&lem->paths, lem->num_ants);
 	if (min_neig_start_end(&lem->matrix, &lem->se) == 1)

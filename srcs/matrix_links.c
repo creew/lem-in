@@ -12,23 +12,16 @@
 
 #include "lemin.h"
 
-void		matrix_set_flag(t_matrix *matrix, size_t room, size_t flag)
-{
-	if (room < matrix->size)
-		matrix->m[room] |= flag;
-}
-
-t_uchar		matrix_get_flag(t_matrix *matrix, size_t room)
-{
-	if (room < matrix->size)
-		return (matrix->m[room]);
-	return (0);
-}
-
 t_uchar		matrix_get_link(t_matrix *matrix, size_t room1, size_t room2)
 {
-	if (room1 < matrix->size && room2 < matrix->size)
-		return (matrix->m[room1 * matrix->size + room2] & M_LINK);
+	size_t	size;
+
+	size = matrix->size;
+	if (room1 < size && room2 < size)
+	{
+		if (matrix->m[size *room1 + room2].ex == 1)
+			return (1);
+	}
 	return (0);
 }
 
@@ -36,13 +29,15 @@ void		matrix_add_neighbor(t_matrix *matrix, t_linkdata *link)
 {
 	size_t	lindex;
 	size_t	rindex;
+	size_t 	size;
 
+	size = matrix->size;
 	lindex = link->left->index;
 	rindex = link->right->index;
 	if (lindex < matrix->size && rindex < matrix->size)
 	{
-		matrix->m[matrix->size * lindex + rindex] |= M_LINK;
-		matrix->m[matrix->size * rindex + lindex] |= M_LINK;
+		matrix->m[size * lindex + rindex].ex = 1;
+		matrix->m[size * rindex + lindex].ex = 1;
 	}
 }
 
@@ -50,12 +45,14 @@ void		matrix_rem_neighbor(t_matrix *matrix, t_linkdata *link)
 {
 	size_t	lindex;
 	size_t	rindex;
+	size_t 	size;
 
+	size = matrix->size;
 	lindex = link->left->index;
 	rindex = link->right->index;
 	if (lindex < matrix->size && rindex < matrix->size)
 	{
-		matrix->m[matrix->size * lindex + rindex] &= ~M_LINK;
-		matrix->m[matrix->size * rindex + lindex] &= ~M_LINK;
+		matrix->m[size * lindex + rindex].ex = 0;
+		matrix->m[size * rindex + lindex].ex = 0;
 	}
 }
