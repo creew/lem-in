@@ -1,0 +1,10 @@
+*.o
+*.out
+.vscode/
+.idea/
+printf
+*.a
+pft/
+test
+cmake-build-debug/
+pfunit/
