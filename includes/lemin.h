@@ -57,14 +57,21 @@ typedef struct	s_md
 {
 	t_uchar		dij_vis:1;
 	t_uchar		path_vis:1;
-	char 		in:3;
-	char		ex:3;
+	t_uchar		splitted:1;
+	char 		in:2;
+	char		ex:2;
 }				t_md;
+
+typedef struct	s_wd
+{
+	int			win:16;
+	int 		wout:16;
+}				t_wd;
 
 typedef struct	s_matrix
 {
 	t_md		*m;
-	int			*weights;
+	t_wd		*weights;
 	size_t		size;
 }				t_matrix;
 

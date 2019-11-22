@@ -12,6 +12,8 @@
 
 #include "lemin.h"
 
+#define BIT_16_MAX	(32767)
+
 static t_roomdata	*find_min_weight(t_matrix *matrix, t_roomarr *arr)
 {
 	t_roomdata	*rdata;
@@ -25,10 +27,10 @@ static t_roomdata	*find_min_weight(t_matrix *matrix, t_roomarr *arr)
 		if (ft_array_get(arr, size, (void **)&cur) == 0)
 		{
 			if (!(matrix->m[cur->index].dij_vis) &&
-				matrix->weights[cur->index] != FT_INTMAX)
+				matrix->weights[cur->index].wout != BIT_16_MAX)
 			{
 				if (rdata == NULL ||
-					matrix->weights[cur->index] < matrix->weights[rdata->index])
+					matrix->weights[cur->index].wout < matrix->weights[rdata->index].wout)
 					rdata = cur;
 			}
 		}
@@ -44,7 +46,7 @@ static void			reset_matrix_algos(t_matrix *matrix)
 	while (size--)
 	{
 		matrix->m[size].dij_vis = 0;
-		matrix->weights[size] = FT_INTMAX;
+		matrix->weights[size].wout = BIT_16_MAX;
 	}
 }
 
@@ -58,7 +60,7 @@ t_result			dijkstra_algo(
 
 	rooms_count = ft_array_size(rooms);
 	reset_matrix_algos(matrix);
-	matrix->weights[se->end->index] = 0;
+	matrix->weights[se->end->index].wout = 0;
 	while ((rdata = find_min_weight(matrix, rooms)))
 	{
 		count = -1;
@@ -66,10 +68,10 @@ t_result			dijkstra_algo(
 		{
 			if (matrix_get_link(matrix, rdata->index, count))
 				if (ft_array_get(rooms, count, (void **)&neig) == 0)
-					if (matrix->weights[rdata->index] + 1 <
-						matrix->weights[neig->index])
-						matrix->weights[neig->index] =
-							matrix->weights[rdata->index] + 1;
+					if (matrix->weights[rdata->index].wout + 1 <
+						matrix->weights[neig->index].wout)
+						matrix->weights[neig->index].wout =
+							matrix->weights[rdata->index].wout = 1;
 		}
 		matrix->m[rdata->index].dij_vis = 1;
 	}

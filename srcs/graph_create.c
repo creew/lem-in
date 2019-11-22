@@ -50,6 +50,7 @@ static t_result	add_all_rooms_links(t_matrix *matrix)
 		while (line--)
 			matrix->m[matrix->size * size + line].in = 1;
 	}
+	return (RET_OK);
 }
 
 t_result		graph_create(t_lemin *lem)
