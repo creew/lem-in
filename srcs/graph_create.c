@@ -38,48 +38,7 @@ static t_result	get_opposite_roomlink(
 	return (ERR_WRONG_LINK);
 }
 
-t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room)
-{
-	t_adjlist	*lst;
-	t_adjdata	*data;
 
-	lst = ft_lstaddblank(adjlist, sizeof(t_adjdata));
-	if (lst)
-	{
-		data = (t_adjdata *)lst->content;
-		data->room = room;
-	}
-	return (lst);
-}
-
-t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *neig)
-{
-	t_neiglist	*lst;
-	t_neigdata	*ndata;
-
-	lst = ft_lstaddblank(&adata->neigs, sizeof(t_neigdata));
-	if (!lst)
-		return (ERR_ENOMEM);
-	ndata = (t_neigdata *)lst->content;
-	ndata->weight = 1;
-	ndata->node	  = neig;
-	return (RET_OK);
-}
-
-t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room)
-{
-	t_adjdata	*adata;
-
-	adata = NULL;
-	while (adjlist)
-	{
-		adata = (t_adjdata *)adjlist->content;
-		if (adata->room == room)
-			return (adata);
-		adjlist = adjlist->next;
-	}
-	return (adata);
-}
 t_result		graph_create(t_lemin *lem)
 {
 	size_t		size;
@@ -103,10 +62,10 @@ t_result		graph_create(t_lemin *lem)
 		{
 			neig = find_adjdata_by_room(lem->adjm, link.right);
 			if (neig)
-				add_neig_to_adjlist(adata, neig);
+				add_neig_to_adjlist(adata, neig, 1);
 		}
 		adjlist = adjlist->next;
 	}
-	dijkstra_algo(lem->adjm);
+	//dijkstra_algo(lem->adjm);
 	return (RET_OK);
 }

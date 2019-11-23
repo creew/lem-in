@@ -33,13 +33,6 @@ t_result			find_all_paths(t_lemin *lem)
 
 
 
-	while (42)
-	{
-		suurballe_algo(lem->adjm, &lem->paths);
-
-
-
-
-	}
+	//suurballe_algo(&lem->adjm, &lem->paths);
 	return (RET_OK);
 }

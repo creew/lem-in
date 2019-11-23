@@ -25,7 +25,8 @@ ALL_C =	lemin.c \
         		destroy.c \
         		ants_walk.c \
         		print_given_data.c \
-        		suurballe.c
+        		suurballe.c \
+        		neigs_work.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs

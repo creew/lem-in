@@ -39,6 +39,7 @@ static void			reset_matrix_algos(t_adjlist *adjlist)
 	{
 		adjdata = (t_adjdata *)adjlist->content;
 		adjdata->dij_vis = WEIGHT_MAX;
+		adjlist = adjlist->next;
 	}
 }
 

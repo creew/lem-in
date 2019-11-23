@@ -83,8 +83,8 @@ int			main(int ac, char *av[])
 		ret = check_all(&lem);
 	if (ret == RET_OK)
 		ret = find_all_paths(&lem);
-	if (ret == RET_OK)
-		print_given_data(&lem);
+	//if (ret == RET_OK)
+	//	print_given_data(&lem);
 	else
 		print_error(&lem, ret);
 	if (lem.is_debug)

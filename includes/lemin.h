@@ -148,7 +148,11 @@ void			print_given_data(t_lemin *lem);
 void			print_solution(t_lemin *lem);
 
 
-void			suurballe_algo(t_adjlist *adjlist, t_patharr *paths);
+void			suurballe_algo(t_adjlist **root, t_patharr *paths);
 
-t_adjdata			*find_node_by_cmd(t_adjlist *adjlist, int cmd);
+t_adjdata		*find_node_by_cmd(t_adjlist *adjlist, int cmd);
+t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room);
+t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *nei, int weight);
+t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room);
+
 #endif
