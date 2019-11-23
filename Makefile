@@ -20,14 +20,12 @@ ALL_C =	lemin.c \
         		graph_create.c \
         		calc_total_len.c \
         		paths_work.c \
-        		mehmet_algo.c \
         		find_all_paths.c \
         		dijkstra_algo.c \
         		destroy.c \
         		ants_walk.c \
         		print_given_data.c \
-        		matrix_links.c \
-        		matrix.c
+        		suurballe.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs
@@ -44,11 +42,11 @@ INCLUDES = ./includes/lemin.h \
 COMP_LIB = make -C libft
 COMP_PRINTF = make -C ft_printf
 
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -g
 
-all: lib ft_printf $(NAME)
+all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) | lib ft_printf
 	gcc $(FLAGS) $^ -L./libft -lft -L./ft_printf -lftprintf -o $@
 
 $(OBJDIR):

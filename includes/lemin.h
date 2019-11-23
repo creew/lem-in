@@ -76,6 +76,12 @@ typedef struct	s_adjdata
 	int 		dij_vis;
 }				t_adjdata;
 
+typedef struct	s_neigdata
+{
+	t_adjdata	*node;
+	int 		weight;
+}				t_neigdata;
+
 typedef struct	s_linkdata
 {
 	t_roomdata	*left;
@@ -120,7 +126,7 @@ char			*get_next_word(char *str, int *last);
 
 void			print_rooms(t_roomarr *rooms);
 void			print_links(t_linkarr *links);
-void			print_neighbors(t_matrix *matrix, t_roomarr *rooms);
+void			print_neighbors(t_adjlist *adjlist);
 void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
@@ -130,8 +136,6 @@ t_result		graph_create(t_lemin *lem);
 void			remove_all_paths(t_patharr *parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
-t_result		mehmet_algo(t_matrix *matrix, t_roomarr *rooms,
-					t_patharr *paths, t_borders *se);
 t_result		add_room_to_path(t_path *path, t_roomdata *room);
 t_result		find_all_paths(t_lemin *lem);
 
@@ -143,19 +147,8 @@ void			delete_all(t_lemin *lem);
 void			print_given_data(t_lemin *lem);
 void			print_solution(t_lemin *lem);
 
-t_result		matrix_create(t_matrix *matrix, size_t size);
 
-void			matrix_set_flag(t_matrix *matrix, size_t room, size_t flag);
-t_uchar			matrix_get_flag(t_matrix *matrix, size_t room);
-t_uchar			matrix_get_link(t_matrix *matrix, size_t room1, size_t room2);
-void			matrix_add_neighbor(t_matrix *matrix, t_linkdata *link);
-void			matrix_rem_neighbor(t_matrix *matrix, t_linkdata *link);
-
-void			matrix_cpy(t_matrix *dst, const t_matrix *src);
-t_result		matrix_dup(t_matrix *dst, const t_matrix *src);
-
-void			suurballe_algo(
-	t_matrix *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se);
+void			suurballe_algo(t_adjlist *adjlist, t_patharr *paths);
 
 t_adjdata			*find_node_by_cmd(t_adjlist *adjlist, int cmd);
 #endif

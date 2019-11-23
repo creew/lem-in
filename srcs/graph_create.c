@@ -55,13 +55,14 @@ t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room)
 t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *neig)
 {
 	t_neiglist	*lst;
-	t_adjdata	**droom;
+	t_neigdata	*ndata;
 
-	lst = ft_lstaddblank(&adata->neigs, sizeof(t_adjdata *));
+	lst = ft_lstaddblank(&adata->neigs, sizeof(t_neigdata));
 	if (!lst)
 		return (ERR_ENOMEM);
-	droom = (t_adjdata **)lst->content;
-	*droom = neig;
+	ndata = (t_neigdata *)lst->content;
+	ndata->weight = 1;
+	ndata->node	  = neig;
 	return (RET_OK);
 }
 
@@ -107,4 +108,5 @@ t_result		graph_create(t_lemin *lem)
 		adjlist = adjlist->next;
 	}
 	dijkstra_algo(lem->adjm);
+	return (RET_OK);
 }

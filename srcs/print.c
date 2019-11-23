@@ -43,32 +43,25 @@ void	print_links(t_linkarr *links)
 	}
 }
 
-void	print_neighbors(t_matrix *matrix, t_roomarr *rooms)
+void	print_neighbors(t_adjlist *adjlist)
 {
-	t_roomdata		*data;
-	t_roomdata		*neig;
-	size_t			count;
-	size_t			neighb_index;
-	size_t			rooms_count;
+	t_adjdata		*adata;
+	t_neiglist		*nlist;
+	t_neigdata		*ndata;
 
-	rooms_count = ft_array_size(rooms);
-	count = -1;
-	while (++count < rooms_count)
+	while (adjlist)
 	{
-		if (ft_array_get(rooms, count, (void **)&data) == 0)
+		adata = (t_adjdata *)adjlist->content;
+		ft_printf("name: \"%s\", neighbors: ", adata->room->name);
+		nlist = adata->neigs;
+		while (nlist)
 		{
-			neighb_index = -1;
-			ft_printf("name: \"%s\", neighbors: ", data->name);
-			while (++neighb_index < rooms_count)
-			{
-				if (matrix_get_link(matrix, count, neighb_index))
-				{
-					if (ft_array_get(rooms, neighb_index, (void **)&neig) == 0)
-						ft_printf("%s, ", neig->name);
-				}
-			}
-			ft_printf("len: %d\n", matrix->weights[count]);
+			ndata = (t_neigdata *)nlist->content;
+			ft_printf("%s, ", ndata->node->room->name);
+			nlist = nlist->next;
 		}
+		adjlist = adjlist->next;
+		ft_printf("len: %d\n", adata->weight);
 	}
 }
 

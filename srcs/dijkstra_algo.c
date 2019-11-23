@@ -61,7 +61,7 @@ t_result			dijkstra_algo(t_adjlist *adjlist)
 {
 	t_adjdata		*adata;
 	t_neiglist		*nlist;
-	t_adjdata		*ndata;
+	t_neigdata		*ndata;
 
 	reset_matrix_algos(adjlist);
 	adata = find_node_by_cmd(adjlist, LEM_CMD_START);
@@ -71,9 +71,9 @@ t_result			dijkstra_algo(t_adjlist *adjlist)
 		nlist = adata->neigs;
 		while (nlist)
 		{
-			ndata = *(t_adjdata **)nlist->content;
-			if (adata->weight + 1 < ndata->weight)
-				ndata->weight = adata->weight + 1;
+			ndata = (t_neigdata *)nlist->content;
+			if (adata->weight + ndata->weight < ndata->node->weight)
+				ndata->node->weight = adata->weight + ndata->weight;
 			nlist = nlist->next;
 		}
 		adata->dij_vis = 1;

@@ -12,17 +12,18 @@
 
 #include "lemin.h"
 
-static void			mark_elem_unvisited(void *data)
+static void			mark_elem_unvisited(void *data, void *param)
 {
 	t_pathdata	*pdata;
 
+	(void)param;
 	pdata = (t_pathdata *)data;
 	pdata->visited = 0;
 }
 
 static void			mark_all_unvisited(t_patharr *paths)
 {
-	ft_array_foreach(paths, mark_elem_unvisited);
+	ft_array_foreach(paths, mark_elem_unvisited, NULL);
 }
 
 static t_pathdata	*get_min_path(t_patharr *paths)

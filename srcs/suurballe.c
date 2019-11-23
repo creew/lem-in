@@ -12,100 +12,111 @@
 
 #include "lemin.h"
 
-
-
-
-static t_roomdata	*get_min_weight_neighbor(t_matrix *matrix,
-											  t_roomarr *rooms, size_t index, int excl_one_len)
+static t_adjdata	*get_min_weight_neighbor(t_adjdata *adata, int excl_one_elem)
 {
-	t_roomdata	*data;
-	t_roomdata	*min;
-	size_t		rooms_count;
-	size_t		count;
+	t_neiglist	*nlist;
+	t_adjdata	*min;
+	t_neigdata	*ndata;
 
 	min = NULL;
-	count = -1;
-	rooms_count = ft_array_size(rooms);
-	while (++count < rooms_count)
+	if (adata)
 	{
-		if (matrix_get_link(matrix, index, count))
+		nlist = adata->neigs;
+		while (nlist)
 		{
-			if (ft_array_get(rooms, count, (void **)&data) == 0)
+			ndata = (t_neigdata *)nlist->content;
+			if (!excl_one_elem || ndata->node->weight != 1)
 			{
-				if (!(matrix_get_flag(matrix, data->index) & MEHMET_VIS) &&
-					matrix->weights[data->index] != FT_INTMAX)
-					if (!excl_one_len || matrix->weights[data->index] > 0)
-						if (min == NULL || matrix->weights[data->index] <
-										   matrix->weights[min->index])
-							min = data;
+				if (ndata->node->weight != WEIGHT_MAX)
+				{
+					if (min == NULL || ndata->node->weight < min->weight)
+						min = ndata->node;
+				}
 			}
+
+			nlist = nlist->next;
 		}
 	}
 	return (min);
 }
 
-t_result			mehmet_algo(
-	t_matrix *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se)
+static void		del_one_elem(void *content, size_t content_size)
 {
-	t_roomdata	*neig;
-	t_path		*path;
+	ft_memdel(&content);
+}
 
-	remove_all_paths(paths);
-	matrix_set_flag(matrix, se->start->index, MEHMET_VIS);
-	add_zero_len_path(matrix, paths, se);
-	while ((neig = get_min_weight_neighbor(matrix, rooms, se->start->index, 1)))
+static void		remove_link(t_adjdata *from, t_adjdata *to)
+{
+	t_neiglist	**nlist;
+	t_neiglist	*cur;
+	t_neigdata	*ndata;
+
+	nlist = &from->neigs;
+	while (*nlist)
 	{
-		if (!(path = ft_array_new(0)))
-			return (ERR_ENOMEM);
-		add_room_to_path(path, se->start);
-		while (neig)
+		cur = *nlist;
+		ndata = (t_neigdata *)cur->content;
+		if (ndata->node == to)
 		{
-			add_room_to_path(path, neig);
-			if (neig->cmd == LEM_CMD_END)
-				break ;
-			matrix[neig->index].m->path_vis = 1;
-			matrix_set_flag(matrix, neig->index, MEHMET_VIS);
-			neig = get_min_weight_neighbor(matrix, rooms, neig->index, 0);
+			*nlist = cur->next;
+			ft_lstdelone(&cur, del_one_elem);
 		}
-		if (neig != NULL && neig->cmd == LEM_CMD_END)
-			add_path_to_arr(paths, path);
 		else
-			ft_array_delete_all(&path, remove_pathlst_callback);
-	}
-	return (RET_OK);
-}
-
-
-static void		make_link_neg(t_matrix *matrix, int from, int to)
-{
-	if (from >= 0 && to < matrix->size)
-	{
-		matrix[to * matrix->size + from].m->splitted = 1;
-		matrix[to * matrix->size + from].weights->wout = -1;
-		matrix[to * matrix->size + from].weights->win = 0;
-
-		matrix[from * matrix->size + to].m->splitted = 0;
-		matrix[from * matrix->size + to].weights->wout = WEIGHT_MAX;
-	}
-}
-
-void			suurballe_algo(
-	t_matrix *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se)
-{
-	t_roomdata	*neig;
-	t_roomdata	*prev;
-
-	prev = se->start;
-	if ((neig = get_min_weight_neighbor(matrix, rooms, se->start->index, 1)))
-	{
-		while (neig)
 		{
-			make_link_neg(matrix, prev->index, neig->index);
-			if (neig->cmd == LEM_CMD_END)
-				break ;
-			prev = neig;
-			matrix_set_flag(matrix, neig->index, MEHMET_VIS);
-			neig = get_min_weight_neighbor(matrix, rooms, neig->index, 0);
+			nlist = &(cur->next);
+		}
+	}
+}
+
+static void		make_link_neg(t_adjdata *from, t_adjdata *to)
+{
+	t_neiglist	*nlist;
+	t_neigdata	*ndata;
+
+	nlist = from->neigs;
+	while (nlist)
+	{
+		ndata = (t_neigdata *)nlist->content;
+		if (ndata->node == to)
+			ndata->weight = -ndata->weight;
+		nlist = nlist->next;
+	}
+}
+
+static void		make_duples(t_adjdata *data)
+{
+	t_adjdata	*in;
+	t_adjdata	*out;
+
+	in = ft_memalloc(sizeof(*in));
+	in->weight = data->weight;
+	in->room = data->room;
+	in->dij_vis = data->dij_vis;
+
+
+
+
+
+
+}
+
+void			suurballe_algo(t_adjlist *adjlist, t_patharr *paths)
+{
+	t_adjdata	*adata;
+	t_adjdata	*prev;
+	t_adjdata	*cur;
+
+	prev = find_node_by_cmd(adjlist, LEM_CMD_END);
+	if (!prev)
+		return ;
+	if ((cur = get_min_weight_neighbor(prev, 1)))
+	{
+		while (cur)
+		{
+			remove_link(cur, prev);
+			make_link_neg(prev, cur);
+
+			cur = get_min_weight_neighbor(prev, 0);
 		}
 	}
 }
