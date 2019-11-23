@@ -13,7 +13,7 @@
 #include "lemin.h"
 
 static t_result	get_opposite_roomlink(
-	t_linkarr *larr, size_t room_index, int n, t_linkdata *link)
+	t_linkarr *larr, t_roomdata *room, int n, t_linkdata *link)
 {
 	t_linkdata	*ldata;
 	size_t		size;
@@ -23,12 +23,12 @@ static t_result	get_opposite_roomlink(
 	{
 		if (ft_array_get(larr, size, (void **)&ldata) == 0)
 		{
-			if (room_index == ldata->left->index ||
-				room_index == ldata->right->index)
+			if (room == ldata->left ||
+				room == ldata->right)
 			{
 				if (!n--)
 				{
-					link->right = room_index == ldata->left->index ?
+					link->right = room == ldata->left ?
 						ldata->right : ldata->left;
 					return (RET_OK);
 				}
@@ -38,44 +38,73 @@ static t_result	get_opposite_roomlink(
 	return (ERR_WRONG_LINK);
 }
 
-static t_result	add_all_rooms_links(t_matrix *matrix)
+t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room)
 {
-	size_t		size;
-	size_t 		line;
+	t_adjlist	*lst;
+	t_adjdata	*data;
 
-	size = matrix->size;
-	while (size--)
+	lst = ft_lstaddblank(adjlist, sizeof(t_adjdata));
+	if (lst)
 	{
-		line = matrix->size;
-		while (line--)
-			matrix->m[matrix->size * size + line].in = 1;
+		data = (t_adjdata *)lst->content;
+		data->room = room;
 	}
+	return (lst);
+}
+
+t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *neig)
+{
+	t_neiglist	*lst;
+	t_adjdata	**droom;
+
+	lst = ft_lstaddblank(&adata->neigs, sizeof(t_adjdata *));
+	if (!lst)
+		return (ERR_ENOMEM);
+	droom = (t_adjdata **)lst->content;
+	*droom = neig;
 	return (RET_OK);
 }
 
+t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room)
+{
+	t_adjdata	*adata;
+
+	adata = NULL;
+	while (adjlist)
+	{
+		adata = (t_adjdata *)adjlist->content;
+		if (adata->room == room)
+			return (adata);
+		adjlist = adjlist->next;
+	}
+	return (adata);
+}
 t_result		graph_create(t_lemin *lem)
 {
-	int			count;
-	size_t		rooms_count;
-	size_t		index;
+	size_t		size;
 	t_linkdata	link;
-	t_result	res;
+	t_adjdata	*adata;
+	t_adjdata	*neig;
+	t_adjlist	*adjlist;
 
-	index = -1;
-	rooms_count = ft_array_size(&lem->rooms);
-	if ((res = matrix_create(&lem->matrix, rooms_count) != RET_OK))
-		return (res);
-	add_all_rooms_links(&lem->matrix);
-	while (++index < rooms_count)
+	size = ft_array_size(&lem->rooms);
+	while (size--)
+		if (ft_array_get(&lem->rooms, size, (void **)&link.left) == 0)
+			add_adjdata(&lem->adjm, link.left);
+	adjlist = lem->adjm;
+	while (adjlist)
 	{
-		if (ft_array_get(&lem->rooms, index, (void **)&link.left) == 0)
+		adata = (t_adjdata *)adjlist->content;
+		size = 0;
+		link.left = adata->room;
+		while ((get_opposite_roomlink(
+			&lem->links, adata->room, size++, &link)) == RET_OK)
 		{
-			count = 0;
-			while ((get_opposite_roomlink(
-				&lem->links, index, count++, &link)) == RET_OK)
-				matrix_add_neighbor(&lem->matrix, &link);
+			neig = find_adjdata_by_room(lem->adjm, link.right);
+			if (neig)
+				add_neig_to_adjlist(adata, neig);
 		}
+		adjlist = adjlist->next;
 	}
-	dijkstra_algo(&lem->matrix, &lem->rooms, &lem->se);
-	return (RET_OK);
+	dijkstra_algo(lem->adjm);
 }

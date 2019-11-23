@@ -12,68 +12,71 @@
 
 #include "lemin.h"
 
-#define BIT_16_MAX	(32767)
-
-static t_roomdata	*find_min_weight(t_matrix *matrix, t_roomarr *arr)
+static t_adjdata	*find_min_weight(t_adjlist *adjlist)
 {
-	t_roomdata	*rdata;
-	t_roomdata	*cur;
-	size_t		size;
+	t_adjdata	*min;
+	t_adjdata	*cur;
 
-	rdata = NULL;
-	size = arr->num_elems;
-	while (size--)
+	min = NULL;
+	while (adjlist)
 	{
-		if (ft_array_get(arr, size, (void **)&cur) == 0)
+		cur = (t_adjdata *)adjlist->content;
+		if (cur->weight != WEIGHT_MAX && !cur->dij_vis)
 		{
-			if (!(matrix->m[cur->index].dij_vis) &&
-				matrix->weights[cur->index].wout != BIT_16_MAX)
-			{
-				if (rdata == NULL ||
-					matrix->weights[cur->index].wout < matrix->weights[rdata->index].wout)
-					rdata = cur;
-			}
+			if (min == NULL || cur->weight < min->weight)
+				min = cur;
 		}
+		adjlist = adjlist->next;
 	}
-	return (rdata);
+	return (min);
 }
 
-static void			reset_matrix_algos(t_matrix *matrix)
+static void			reset_matrix_algos(t_adjlist *adjlist)
 {
-	size_t	size;
+	t_adjdata	*adjdata;
 
-	size = matrix->size;
-	while (size--)
+	while (adjlist)
 	{
-		matrix->m[size].dij_vis = 0;
-		matrix->weights[size].wout = BIT_16_MAX;
+		adjdata = (t_adjdata *)adjlist->content;
+		adjdata->dij_vis = WEIGHT_MAX;
 	}
 }
 
-t_result			dijkstra_algo(
-	t_matrix *matrix, t_roomarr *rooms, t_borders *se)
+t_adjdata			*find_node_by_cmd(t_adjlist *adjlist, int cmd)
 {
-	t_roomdata		*rdata;
-	size_t			rooms_count;
-	size_t			count;
-	t_roomdata		*neig;
+	t_adjdata	*adata;
 
-	rooms_count = ft_array_size(rooms);
-	reset_matrix_algos(matrix);
-	matrix->weights[se->end->index].wout = 0;
-	while ((rdata = find_min_weight(matrix, rooms)))
+	while (adjlist)
 	{
-		count = -1;
-		while (++count < rooms_count)
+		adata = (t_adjdata *)adjlist->content;
+		if (adata->room->cmd == cmd)
 		{
-			if (matrix_get_link(matrix, rdata->index, count))
-				if (ft_array_get(rooms, count, (void **)&neig) == 0)
-					if (matrix->weights[rdata->index].wout + 1 <
-						matrix->weights[neig->index].wout)
-						matrix->weights[neig->index].wout =
-							matrix->weights[rdata->index].wout = 1;
+			return (adata);
 		}
-		matrix->m[rdata->index].dij_vis = 1;
+		adjlist = adjlist->next;
+	}
+}
+
+t_result			dijkstra_algo(t_adjlist *adjlist)
+{
+	t_adjdata		*adata;
+	t_neiglist		*nlist;
+	t_adjdata		*ndata;
+
+	reset_matrix_algos(adjlist);
+	adata = find_node_by_cmd(adjlist, LEM_CMD_START);
+	adata->weight = 0;
+	while ((adata = find_min_weight(adjlist)) != NULL)
+	{
+		nlist = adata->neigs;
+		while (nlist)
+		{
+			ndata = *(t_adjdata **)nlist->content;
+			if (adata->weight + 1 < ndata->weight)
+				ndata->weight = adata->weight + 1;
+			nlist = nlist->next;
+		}
+		adata->dij_vis = 1;
 	}
 	return (RET_OK);
 }

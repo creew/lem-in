@@ -22,6 +22,8 @@ typedef t_ftarray		t_roomarr;
 typedef t_ftarray		t_linkarr;
 typedef t_ftarray		t_patharr;
 typedef t_ftarray		t_path;
+typedef t_list			t_neiglist;
+typedef t_list			t_adjlist;
 
 # define RET_RECALC					(1)
 # define RET_OK						(0)
@@ -53,27 +55,7 @@ typedef t_ftarray		t_path;
 # define DIJKSTRA_VIS			(1u << 1u)
 # define MEHMET_VIS				(1u << 2u)
 
-typedef struct	s_md
-{
-	t_uchar		dij_vis:1;
-	t_uchar		path_vis:1;
-	t_uchar		splitted:1;
-	char 		in:2;
-	char		ex:2;
-}				t_md;
-
-typedef struct	s_wd
-{
-	int			win:16;
-	int 		wout:16;
-}				t_wd;
-
-typedef struct	s_matrix
-{
-	t_md		*m;
-	t_wd		*weights;
-	size_t		size;
-}				t_matrix;
+# define WEIGHT_MAX				(FT_INTMAX)
 
 typedef struct	s_roomdata
 {
@@ -85,6 +67,14 @@ typedef struct	s_roomdata
 	char		cmd;
 	char		name[1];
 }				t_roomdata;
+
+typedef struct	s_adjdata
+{
+	t_roomdata	*room;
+	t_neiglist	*neigs;
+	int 		weight;
+	int 		dij_vis;
+}				t_adjdata;
 
 typedef struct	s_linkdata
 {
@@ -105,10 +95,10 @@ typedef struct	s_lemin
 	t_linkarr	links;
 	t_patharr	paths;
 	t_borders	se;
+	t_adjlist	*adjm;
 	int			is_debug;
 	int 		is_colorized;
 	int			fd;
-	t_matrix	matrix;
 }				t_lemin;
 
 typedef struct	s_pathdata
@@ -146,8 +136,7 @@ t_result		add_room_to_path(t_path *path, t_roomdata *room);
 t_result		find_all_paths(t_lemin *lem);
 
 int				calc_total_len(t_patharr *paths, int count);
-t_result		dijkstra_algo(t_matrix *matrix, t_roomarr *rooms,
-					t_borders *se);
+t_result		dijkstra_algo(t_adjlist *adjlist);
 
 void			delete_all(t_lemin *lem);
 
@@ -167,4 +156,6 @@ t_result		matrix_dup(t_matrix *dst, const t_matrix *src);
 
 void			suurballe_algo(
 	t_matrix *matrix, t_roomarr *rooms, t_patharr *paths, t_borders *se);
+
+t_adjdata			*find_node_by_cmd(t_adjlist *adjlist, int cmd);
 #endif

@@ -17,7 +17,7 @@ t_result		matrix_create(t_matrix *matrix, size_t size)
 	matrix->m = ft_calloc(size * size, sizeof(*matrix->m));
 	if (!matrix->m)
 		return (ERR_ENOMEM);
-	matrix->weights = ft_calloc(size * 2, sizeof(*matrix->weights));
+	matrix->weights = ft_calloc(size, sizeof(*matrix->weights));
 	if (!matrix->weights)
 		return (ERR_ENOMEM);
 	matrix->size = size;
@@ -34,7 +34,7 @@ void			matrix_cpy(t_matrix *dst, const t_matrix *src)
 	{
 		ft_memcpy(dst->m, src->m, size * size * sizeof(*src->m));
 		count = -1;
-		while (++count < (size * 2))
+		while (++count < size)
 			dst->weights[count] = src->weights[count];
 	}
 }

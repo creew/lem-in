@@ -73,5 +73,7 @@ t_result		add_lem_link(t_lemin *lem, char *str)
 		return (ERR_WRONG_LINK_ROOM);
 	if (ft_strequ(r1, r2))
 		return (ERR_WRONG_LINK_TO_LINK);
-	return (add_lemlink_list(&lem->links, room1, room2));
+	if (room1->index < room2->index)
+		return (add_lemlink_list(&lem->links, room1, room2));
+	return (add_lemlink_list(&lem->links, room2, room1));
 }

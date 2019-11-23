@@ -80,7 +80,12 @@ static void		make_link_neg(t_matrix *matrix, int from, int to)
 {
 	if (from >= 0 && to < matrix->size)
 	{
-		matrix->weights[to * matrix->size + from] = FT_INTMAX;
+		matrix[to * matrix->size + from].m->splitted = 1;
+		matrix[to * matrix->size + from].weights->wout = -1;
+		matrix[to * matrix->size + from].weights->win = 0;
+
+		matrix[from * matrix->size + to].m->splitted = 0;
+		matrix[from * matrix->size + to].weights->wout = WEIGHT_MAX;
 	}
 }
 
