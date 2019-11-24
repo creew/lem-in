@@ -46,7 +46,7 @@ static void		del_one_elem(void *content, size_t content_size)
 	ft_memdel(&content);
 }
 
-static t_result	remove_link(t_adjdata *from, t_adjdata *to, int *weigth)
+t_result		remove_link(t_adjdata *from, t_adjdata *to, int *weigth)
 {
 	t_neiglist	**nlist;
 	t_neiglist	*cur;
@@ -127,7 +127,7 @@ static void		make_duples(t_adjlist **root, t_adjdata *prev, t_adjdata *data, t_a
 	}
 }
 
-void			suurballe_algo(t_adjlist **root, t_patharr *paths)
+t_path			*suurballe_algo(t_adjlist **root)
 {
 	t_adjdata	*prev;
 	t_adjdata	*cur;
@@ -135,7 +135,7 @@ void			suurballe_algo(t_adjlist **root, t_patharr *paths)
 
 	prev = find_node_by_cmd(*root, LEM_CMD_END);
 	if (!prev)
-		return ;
+		return (NULL);
 	if ((cur = get_min_weight_neighbor(prev, 1)))
 	{
 		while (cur)

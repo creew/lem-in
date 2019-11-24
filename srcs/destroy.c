@@ -27,9 +27,9 @@ static void	remove_pdata(void *data)
 	ft_memdel(&data);
 }
 
-void		remove_all_paths(t_patharr *parr)
+void		remove_all_paths(t_patharr **parr)
 {
-	ft_array_remove_all(parr, remove_pdata);
+	ft_array_delete_all(parr, remove_pdata);
 }
 
 static void	delroomlinkarr(void *data)

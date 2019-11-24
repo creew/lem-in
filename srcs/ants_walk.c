@@ -57,20 +57,23 @@ static int	push_one_path(size_t index, t_lemin *lem,
 
 	pm.index = index;
 	pm.num_ants = lem->num_ants;
-	if (ft_array_get(&lem->paths, index, (void **)&pm.pdata) == 0)
+	if (lem->paths)
 	{
-		size = ft_array_size(pm.pdata->path);
-		while (size > 1)
+		if (ft_array_get(lem->paths, index, (void **)&pm.pdata) == 0)
 		{
-			size--;
-			if (ft_array_get(pm.pdata->path, size, (void **)&pm.cur) == 0 &&
-				ft_array_get(pm.pdata->path, size - 1, (void **)&pm.prev) == 0)
+			size = ft_array_size(pm.pdata->path);
+			while (size > 1)
 			{
-				if (push_one_move(&pm, is_not_first, sum, lem->is_colorized))
-					break ;
+				size--;
+				if (ft_array_get(pm.pdata->path, size, (void **)&pm.cur) == 0 &&
+					ft_array_get(pm.pdata->path, size - 1, (void **)&pm.prev) == 0)
+				{
+					if (push_one_move(&pm, is_not_first, sum, lem->is_colorized))
+						break ;
+				}
 			}
+			*sum = *sum + (ft_array_size(pm.pdata->path) - 1);
 		}
-		*sum = *sum + (ft_array_size(pm.pdata->path) - 1);
 	}
 	return (0);
 }
@@ -83,17 +86,20 @@ void		print_solution(t_lemin *lem)
 	int			is_not_first;
 
 	lem->se.start->ant_count = lem->num_ants;
-	while (lem->se.end->ant_count != lem->num_ants)
+	if (lem->paths)
 	{
-		count = 0;
-		total_size = 0;
-		is_not_first = 0;
-		path_count = ft_array_size(&lem->paths);
-		while (count < path_count)
+		while (lem->se.end->ant_count != lem->num_ants)
 		{
-			push_one_path(count, lem, &is_not_first, &total_size);
-			count++;
+			count = 0;
+			total_size = 0;
+			is_not_first = 0;
+			path_count = ft_array_size(lem->paths);
+			while (count < path_count)
+			{
+				push_one_path(count, lem, &is_not_first, &total_size);
+				count++;
+			}
+			ft_putendl("");
 		}
-		ft_putendl("");
 	}
 }

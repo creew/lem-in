@@ -70,10 +70,12 @@ void	print_neighbors(t_adjlist *adjlist, char *title)
 void	print_paths(t_patharr *parr)
 {
 	size_t		count;
-	t_pathdata	*pdata;
-	t_roomdata	*room;
+	t_pathdata *pdata;
+	t_roomdata *room;
 	size_t		pcount;
 
+	if (!parr)
+		return ;
 	count = -1;
 	while (++count < ft_array_size(parr))
 	{

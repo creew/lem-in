@@ -71,10 +71,11 @@ typedef struct	s_roomdata
 
 typedef struct	s_adjdata
 {
-	t_roomdata	*room;
-	t_neiglist	*neigs;
-	int 		weight;
-	int 		dij_vis;
+	t_roomdata			*room;
+	t_neiglist			*neigs;
+	int 				weight;
+	struct s_adjdata	*prev;
+	int 				dij_vis;
 }				t_adjdata;
 
 typedef struct	s_neigdata
@@ -100,7 +101,7 @@ typedef struct	s_lemin
 	int			num_ants;
 	t_roomarr	rooms;
 	t_linkarr	links;
-	t_patharr	paths;
+	t_patharr	*paths;
 	t_borders	se;
 	t_adjlist	*adjm;
 	int			is_debug;
@@ -134,7 +135,7 @@ t_result		check_all(t_lemin *lem);
 
 t_result		graph_create(t_lemin *lem);
 
-void			remove_all_paths(t_patharr *parr);
+void			remove_all_paths(t_patharr **parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
 t_result		add_room_to_path(t_path *path, t_roomdata *room);
@@ -149,7 +150,7 @@ void			print_given_data(t_lemin *lem);
 void			print_solution(t_lemin *lem);
 
 
-void			suurballe_algo(t_adjlist **root, t_patharr *paths);
+t_path			*suurballe_algo(t_adjlist **root);
 
 t_adjdata		*find_node_by_cmd(t_adjlist *adjlist, int cmd);
 t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room);
@@ -159,4 +160,7 @@ t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room);
 void			reset_adjlist_values(t_adjlist *adjlist);
 
 void			bellman_ford(t_adjlist *adjlist);
+t_path			*get_shortest_path(t_adjlist *alist);
+t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms);
+t_result		remove_link(t_adjdata *from, t_adjdata *to, int *weigth);
 #endif

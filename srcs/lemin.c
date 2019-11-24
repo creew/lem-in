@@ -18,7 +18,7 @@ void		print_all(t_lemin *lem)
 	print_rooms(&lem->rooms);
 	print_links(&lem->links);
 	print_neighbors(lem->adjm, NULL);
-	print_paths(&lem->paths);
+	print_paths(lem->paths);
 }
 
 void		init_lem(t_lemin *lem)
@@ -26,7 +26,6 @@ void		init_lem(t_lemin *lem)
 	ft_bzero(lem, sizeof(*lem));
 	ft_array_init(&lem->rooms, 128);
 	ft_array_init(&lem->links, 128);
-	ft_array_init(&lem->paths, 128);
 }
 
 void		print_error(t_lemin *lem, t_result err)
@@ -83,8 +82,8 @@ int			main(int ac, char *av[])
 		ret = check_all(&lem);
 	if (ret == RET_OK)
 		ret = find_all_paths(&lem);
-	//if (ret == RET_OK)
-	//	print_given_data(&lem);
+	if (ret == RET_OK)
+		print_given_data(&lem);
 	else
 		print_error(&lem, ret);
 	if (lem.is_debug)

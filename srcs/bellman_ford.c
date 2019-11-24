@@ -12,7 +12,13 @@
 
 #include "lemin.h"
 
-void	bellman_ford(t_adjlist *adjlist)
+static int	update_bf()
+{
+
+
+}
+
+void		bellman_ford(t_adjlist *adjlist)
 {
 	size_t		size;
 	t_adjlist	*adj;
@@ -24,7 +30,6 @@ void	bellman_ford(t_adjlist *adjlist)
 	reset_adjlist_values(adjlist);
 	adjdata = find_node_by_cmd(adjlist, LEM_CMD_START);
 	adjdata->weight = 0;
-
 	visited = 1;
 	size = ft_lstsize(adjlist);
 	while (size > 1 && visited)
@@ -41,6 +46,7 @@ void	bellman_ford(t_adjlist *adjlist)
 				if (adjdata->weight != WEIGHT_MAX && adjdata->weight + ndata->weight < ndata->node->weight)
 				{
 					ndata->node->weight = adjdata->weight + ndata->weight;
+					ndata->node->prev = adjdata;
 					visited = 1;
 				}
 				neiglist = neiglist->next;

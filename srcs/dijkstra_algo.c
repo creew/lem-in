@@ -74,7 +74,10 @@ t_result			dijkstra_algo(t_adjlist *adjlist)
 		{
 			ndata = (t_neigdata *)nlist->content;
 			if (adata->weight + ndata->weight < ndata->node->weight)
+			{
 				ndata->node->weight = adata->weight + ndata->weight;
+				ndata->node->prev = adata;
+			}
 			nlist = nlist->next;
 		}
 		adata->dij_vis = 1;

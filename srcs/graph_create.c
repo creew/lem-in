@@ -38,6 +38,18 @@ static t_result	get_opposite_roomlink(
 	return (ERR_WRONG_LINK);
 }
 
+t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms)
+{
+	size_t		size;
+	t_roomdata	*room;
+	size = ft_array_size(rooms);
+	while (size--)
+	{
+		if (ft_array_get(rooms, size, (void **) &room) == 0)
+			add_adjdata(adjlist, room);
+	}
+	return (*adjlist);
+}
 
 t_result		graph_create(t_lemin *lem)
 {
@@ -47,11 +59,7 @@ t_result		graph_create(t_lemin *lem)
 	t_adjdata	*neig;
 	t_adjlist	*adjlist;
 
-	size = ft_array_size(&lem->rooms);
-	while (size--)
-		if (ft_array_get(&lem->rooms, size, (void **)&link.left) == 0)
-			add_adjdata(&lem->adjm, link.left);
-	adjlist = lem->adjm;
+	adjlist = create_adjlist(&lem->adjm, &lem->rooms);
 	while (adjlist)
 	{
 		adata = (t_adjdata *)adjlist->content;
