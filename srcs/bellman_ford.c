@@ -12,47 +12,54 @@
 
 #include "lemin.h"
 
-static int	update_bf()
+static int	update_bf(t_adjlist *adj)
 {
-
-
-}
-
-void		bellman_ford(t_adjlist *adjlist)
-{
-	size_t		size;
-	t_adjlist	*adj;
 	t_adjdata	*adjdata;
 	t_neiglist	*neiglist;
 	t_neigdata	*ndata;
 	int			visited;
 
+	visited = 0;
+	while (adj)
+	{
+		adjdata = (t_adjdata *)adj->content;
+		neiglist = adjdata->neigs;
+		while (neiglist)
+		{
+			ndata = (t_neigdata *)neiglist->content;
+			if (adjdata->weight != WEIGHT_MAX &&
+				adjdata->weight + ndata->weight < ndata->node->weight)
+			{
+				ndata->node->weight = adjdata->weight + ndata->weight;
+				ndata->node->prev = adjdata;
+				visited = 1;
+			}
+			neiglist = neiglist->next;
+		}
+		adj = adj->next;
+	}
+	return (visited);
+}
+
+int		bellman_ford(t_adjlist *adjlist)
+{
+	size_t		size;
+	t_adjdata	*adjdata;
+	int			visited;
+	int 		updated;
+
 	reset_adjlist_values(adjlist);
 	adjdata = find_node_by_cmd(adjlist, LEM_CMD_START);
 	adjdata->weight = 0;
 	visited = 1;
+	updated = 0;
 	size = ft_lstsize(adjlist);
 	while (size > 1 && visited)
 	{
-		visited = 0;
-		adj = adjlist;
-		while (adj)
-		{
-			adjdata = (t_adjdata *)adj->content;
-			neiglist = adjdata->neigs;
-			while (neiglist)
-			{
-				ndata = (t_neigdata *)neiglist->content;
-				if (adjdata->weight != WEIGHT_MAX && adjdata->weight + ndata->weight < ndata->node->weight)
-				{
-					ndata->node->weight = adjdata->weight + ndata->weight;
-					ndata->node->prev = adjdata;
-					visited = 1;
-				}
-				neiglist = neiglist->next;
-			}
-			adj = adj->next;
-		}
+		visited = update_bf(adjlist);
+		if (visited)
+			updated = 1;
 		size--;
 	}
+	return (updated);
 }

@@ -67,12 +67,28 @@ void	print_neighbors(t_adjlist *adjlist, char *title)
 	}
 }
 
+void 	print_path(t_path *path)
+{
+	size_t		pcount;
+	t_roomdata *room;
+
+	pcount = -1;
+	while (++pcount < ft_array_size(path))
+	{
+		if (ft_array_get(path, pcount, (void **) &room) == 0)
+		{
+			if (pcount != 0)
+				ft_putstr(", ");
+			ft_printf("\"%s\"", room->name);
+		}
+	}
+	ft_putendl("");
+}
+
 void	print_paths(t_patharr *parr)
 {
 	size_t		count;
 	t_pathdata *pdata;
-	t_roomdata *room;
-	size_t		pcount;
 
 	if (!parr)
 		return ;
@@ -80,18 +96,6 @@ void	print_paths(t_patharr *parr)
 	while (++count < ft_array_size(parr))
 	{
 		if (ft_array_get(parr, count, (void **)&pdata) == 0)
-		{
-			pcount = -1;
-			while (++pcount < ft_array_size(pdata->path))
-			{
-				if (ft_array_get(pdata->path, pcount, (void **)&room) == 0)
-				{
-					if (pcount != 0)
-						ft_putstr(", ");
-					ft_printf("\"%s\"", room->name);
-				}
-			}
-			ft_putendl("");
-		}
+			print_path(pdata->path);
 	}
 }

@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-static t_adjdata	*get_min_weight_neighbor(t_adjdata *adata, int excl_one_elem)
+static t_adjdata	*get_min_weight_neighbor(t_adjdata *adata)
 {
 	t_neiglist	*nlist;
 	t_adjdata	*min;
@@ -25,15 +25,11 @@ static t_adjdata	*get_min_weight_neighbor(t_adjdata *adata, int excl_one_elem)
 		while (nlist)
 		{
 			ndata = (t_neigdata *)nlist->content;
-			if (!excl_one_elem || ndata->node->weight != 1)
+			if (ndata->node->weight != WEIGHT_MAX)
 			{
-				if (ndata->node->weight != WEIGHT_MAX)
-				{
-					if (min == NULL || ndata->node->weight < min->weight)
-						min = ndata->node;
-				}
+				if (min == NULL || ndata->node->weight < min->weight)
+					min = ndata->node;
 			}
-
 			nlist = nlist->next;
 		}
 	}
@@ -136,11 +132,11 @@ t_path			*suurballe_algo(t_adjlist **root)
 	prev = find_node_by_cmd(*root, LEM_CMD_END);
 	if (!prev)
 		return (NULL);
-	if ((cur = get_min_weight_neighbor(prev, 1)))
+	if ((cur = get_min_weight_neighbor(prev)))
 	{
 		while (cur)
 		{
-			next = get_min_weight_neighbor(cur, 0);
+			next = get_min_weight_neighbor(cur);
 			remove_link(cur, prev, NULL);
 			make_link_neg(prev, cur);
 			if (cur->room->cmd == LEM_CMD_START)

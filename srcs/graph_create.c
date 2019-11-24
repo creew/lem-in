@@ -51,6 +51,17 @@ t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms)
 	return (*adjlist);
 }
 
+static void		del_one_adj(void *data, size_t size)
+{
+	(void)data;
+	(void)size;
+}
+
+void			delete_adjlist(t_list **adjlist)
+{
+	ft_lstdel(adjlist, del_one_adj);
+}
+
 t_result		graph_create(t_lemin *lem)
 {
 	size_t		size;

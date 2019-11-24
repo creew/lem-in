@@ -116,8 +116,10 @@ t_patharr	*recalc_values(t_lemin *lem, t_patharr *paths, t_path *path)
 	add_path_to_adjlist(adjlist, path);
 	sol = ft_array_new(10);
 	get_all_paths(sol, adjlist);
+	delete_adjlist(&adjlist);
 	return (sol);
 }
+
 
 t_result			find_all_paths(t_lemin *lem)
 {
@@ -127,26 +129,37 @@ t_result			find_all_paths(t_lemin *lem)
 	int 		prev_len;
 	int			len;
 	t_patharr	*newsol;
+	t_patharr   *onesol;
+	int 		count;
+	int 		bf_updated;
 
-	//print_neighbors(lem->adjm, "after dijkstra");
+	bf_updated = 1;
 	sol = ft_array_new(10);
 	path = get_shortest_path(lem->adjm);
 	add_path_to_arr(sol, path);
 	prev_len = calc_total_len(sol, lem->num_ants);
-	//print_paths(sol);
-	while (42)
+    onesol = sol;
+    count = 0;
+	ft_printf("start\n");
+	print_paths(sol);
+	while (bf_updated)
 	{
 		suurballe_algo(&lem->adjm);
 		//print_neighbors(lem->adjm, "after suurballe");
-		bellman_ford(lem->adjm);
+		bf_updated = bellman_ford(lem->adjm);
+
 		newp = get_shortest_path(lem->adjm);
+		ft_printf("New short: %d\n", count++);
+		print_path(newp);
 		newsol = recalc_values(lem, sol, newp);
+		ft_printf("Stage: %d\n", count++);
+		print_paths(newsol);
+		delete_path(&newp);
 		len = calc_total_len(newsol, lem->num_ants);
 		if (len < prev_len)
 		{
+		    onesol = newsol;
 			prev_len = len;
-			remove_all_paths(&sol);
-			sol = newsol;
 		}
 		else
 		{
@@ -154,8 +167,9 @@ t_result			find_all_paths(t_lemin *lem)
 			break;
 		}
 	}
-	//print_paths(sol);
-	lem->paths = sol;
+	ft_printf("End: \n");
+	print_paths(onesol);
+	lem->paths = onesol;
 	//print_neighbors(lem->adjm, "after bellman");
 	return (RET_OK);
 }

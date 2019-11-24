@@ -129,6 +129,7 @@ char			*get_next_word(char *str, int *last);
 void			print_rooms(t_roomarr *rooms);
 void			print_links(t_linkarr *links);
 void			print_neighbors(t_adjlist *adjlist, char *title);
+void 			print_path(t_path *path);
 void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
@@ -159,8 +160,10 @@ t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room);
 
 void			reset_adjlist_values(t_adjlist *adjlist);
 
-void			bellman_ford(t_adjlist *adjlist);
+int				bellman_ford(t_adjlist *adjlist);
 t_path			*get_shortest_path(t_adjlist *alist);
 t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms);
+void			delete_adjlist(t_list **adjlist);
 t_result		remove_link(t_adjdata *from, t_adjdata *to, int *weigth);
+void			delete_path(t_path **path);
 #endif

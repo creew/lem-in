@@ -34,3 +34,13 @@ t_result	add_room_to_path(t_path *path, t_roomdata *room)
 {
 	return (ft_array_add(path, (void *)room) == 0 ? RET_OK : ERR_ENOMEM);
 }
+
+static void	del_one_path(void *data)
+{
+	(void)data;
+}
+
+void		delete_path(t_path **path)
+{
+	ft_array_delete_all(path, del_one_path);
+}
