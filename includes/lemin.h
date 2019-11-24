@@ -45,6 +45,7 @@ typedef t_list			t_adjlist;
 # define ERR_NO_PATH				(-16)
 # define ERR_INCORRECT_PATH_REMOVE	(-17)
 # define ERR_CMD_NOT_FOUNDED		(-18)
+# define ERR_NO_LINK_TO_DEL			(-19)
 
 # define LEM_CMD_NONE			(0)
 # define LEM_CMD_START			(1)
@@ -126,7 +127,7 @@ char			*get_next_word(char *str, int *last);
 
 void			print_rooms(t_roomarr *rooms);
 void			print_links(t_linkarr *links);
-void			print_neighbors(t_adjlist *adjlist);
+void			print_neighbors(t_adjlist *adjlist, char *title);
 void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
@@ -155,4 +156,7 @@ t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room);
 t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *nei, int weight);
 t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room);
 
+void			reset_adjlist_values(t_adjlist *adjlist);
+
+void			bellman_ford(t_adjlist *adjlist);
 #endif

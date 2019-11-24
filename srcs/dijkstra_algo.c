@@ -31,14 +31,15 @@ static t_adjdata	*find_min_weight(t_adjlist *adjlist)
 	return (min);
 }
 
-static void			reset_matrix_algos(t_adjlist *adjlist)
+void				reset_adjlist_values(t_adjlist *adjlist)
 {
 	t_adjdata	*adjdata;
 
 	while (adjlist)
 	{
 		adjdata = (t_adjdata *)adjlist->content;
-		adjdata->dij_vis = WEIGHT_MAX;
+		adjdata->weight = WEIGHT_MAX;
+		adjdata->dij_vis = 0;
 		adjlist = adjlist->next;
 	}
 }
@@ -51,11 +52,10 @@ t_adjdata			*find_node_by_cmd(t_adjlist *adjlist, int cmd)
 	{
 		adata = (t_adjdata *)adjlist->content;
 		if (adata->room->cmd == cmd)
-		{
 			return (adata);
-		}
 		adjlist = adjlist->next;
 	}
+	return (NULL);
 }
 
 t_result			dijkstra_algo(t_adjlist *adjlist)
@@ -64,7 +64,7 @@ t_result			dijkstra_algo(t_adjlist *adjlist)
 	t_neiglist		*nlist;
 	t_neigdata		*ndata;
 
-	reset_matrix_algos(adjlist);
+	reset_adjlist_values(adjlist);
 	adata = find_node_by_cmd(adjlist, LEM_CMD_START);
 	adata->weight = 0;
 	while ((adata = find_min_weight(adjlist)) != NULL)

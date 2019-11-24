@@ -66,6 +66,6 @@ t_result		graph_create(t_lemin *lem)
 		}
 		adjlist = adjlist->next;
 	}
-	//dijkstra_algo(lem->adjm);
+	dijkstra_algo(lem->adjm);
 	return (RET_OK);
 }

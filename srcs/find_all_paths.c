@@ -31,8 +31,11 @@ static t_result		remove_path(t_path *path, size_t sindex, size_t eindex,
 t_result			find_all_paths(t_lemin *lem)
 {
 
+	print_neighbors(lem->adjm, "after dijkstra");
 
-
-	//suurballe_algo(&lem->adjm, &lem->paths);
+	suurballe_algo(&lem->adjm, &lem->paths);
+	print_neighbors(lem->adjm, "after suurballe");
+	bellman_ford(lem->adjm);
+	print_neighbors(lem->adjm, "after bellman");
 	return (RET_OK);
 }

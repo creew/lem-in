@@ -46,12 +46,14 @@ static void		del_one_elem(void *content, size_t content_size)
 	ft_memdel(&content);
 }
 
-static void		remove_link(t_adjdata *from, t_adjdata *to)
+static t_result	remove_link(t_adjdata *from, t_adjdata *to, int *weigth)
 {
 	t_neiglist	**nlist;
 	t_neiglist	*cur;
 	t_neigdata	*ndata;
+	int         count;
 
+	count = 0;
 	nlist = &from->neigs;
 	while (*nlist)
 	{
@@ -60,13 +62,15 @@ static void		remove_link(t_adjdata *from, t_adjdata *to)
 		if (ndata->node == to)
 		{
 			*nlist = cur->next;
+			if (weigth)
+			    *weigth = ndata->weight;
 			ft_lstdelone(&cur, del_one_elem);
+			count++;
 		}
 		else
-		{
 			nlist = &(cur->next);
-		}
 	}
+	return (count == 1 ? RET_OK : ERR_NO_LINK_TO_DEL);
 }
 
 static void		make_link_neg(t_adjdata *from, t_adjdata *to)
@@ -91,6 +95,7 @@ static void		make_duples(t_adjlist **root, t_adjdata *prev, t_adjdata *data, t_a
 	t_neiglist	*cur;
 	t_neigdata	*ndata;
 	t_neiglist	*newlst;
+	int 		weigth;
 
 	if (next)
 	{
@@ -116,31 +121,30 @@ static void		make_duples(t_adjlist **root, t_adjdata *prev, t_adjdata *data, t_a
 					nlist = &cur->next;
 			}
 			add_neig_to_adjlist(out, data, 0);
-			remove_link(prev, data);
-			add_neig_to_adjlist(prev, out, 1);
+			if (remove_link(prev, data, &weigth) == RET_OK)
+				add_neig_to_adjlist(prev, out, weigth);
 		}
-
 	}
 }
 
 void			suurballe_algo(t_adjlist **root, t_patharr *paths)
 {
-	t_adjdata	*adata;
 	t_adjdata	*prev;
 	t_adjdata	*cur;
 	t_adjdata	*next;
-
 
 	prev = find_node_by_cmd(*root, LEM_CMD_END);
 	if (!prev)
 		return ;
 	if ((cur = get_min_weight_neighbor(prev, 1)))
 	{
-		while (cur && cur->room->cmd != LEM_CMD_START)
+		while (cur)
 		{
 			next = get_min_weight_neighbor(cur, 0);
-			remove_link(cur, prev);
+			remove_link(cur, prev, NULL);
 			make_link_neg(prev, cur);
+			if (cur->room->cmd == LEM_CMD_START)
+				break;
 			make_duples(root, prev, cur, next);
 			prev = cur;
 			cur = next;

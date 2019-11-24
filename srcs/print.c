@@ -43,12 +43,14 @@ void	print_links(t_linkarr *links)
 	}
 }
 
-void	print_neighbors(t_adjlist *adjlist)
+void	print_neighbors(t_adjlist *adjlist, char *title)
 {
 	t_adjdata		*adata;
 	t_neiglist		*nlist;
 	t_neigdata		*ndata;
 
+	if (title)
+		ft_printf("------- Stage: %s ---------\n", title);
 	while (adjlist)
 	{
 		adata = (t_adjdata *)adjlist->content;
