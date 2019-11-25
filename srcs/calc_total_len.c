@@ -30,19 +30,16 @@ static t_pathdata	*get_min_path(t_patharr *paths)
 {
 	t_pathdata	*pd;
 	t_pathdata	*pmin;
-	size_t		size;
+	size_t		index;
 
 	pmin = NULL;
-	size = ft_array_size(paths);
-	while (size--)
+	index = -1;
+	while (ft_array_get(paths, ++index, (void **)&pd) == 0)
 	{
-		if (ft_array_get(paths, size, (void **)&pd) == 0)
+		if (pd->visited == 0)
 		{
-			if (pd->visited == 0)
-			{
-				if (pmin == NULL || pd->size < pmin->size)
-					pmin = pd;
-			}
+			if (pmin == NULL || pd->size < pmin->size)
+				pmin = pd;
 		}
 	}
 	return (pmin);

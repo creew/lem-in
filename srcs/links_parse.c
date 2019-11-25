@@ -15,17 +15,14 @@
 static int		is_link_exist(t_linkarr *larr, t_roomdata *l1, t_roomdata *l2)
 {
 	t_linkdata	*ldata;
-	size_t		size;
+	size_t		index;
 
-	size = ft_array_size(larr);
-	while (size--)
+	index = -1;
+	while (ft_array_get(larr, ++index, (void **)&ldata) == 0)
 	{
-		if (ft_array_get(larr, size, (void **)&ldata) == 0)
-		{
-			if ((l1 == ldata->left && l2 == ldata->right) ||
-				(l1 == ldata->right && l2 == ldata->left))
-				return (1);
-		}
+		if ((l1 == ldata->left && l2 == ldata->right) ||
+			(l1 == ldata->right && l2 == ldata->left))
+			return (1);
 	}
 	return (0);
 }

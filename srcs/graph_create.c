@@ -17,22 +17,18 @@ static t_result	get_opposite_roomlink(
 	t_linkarr *larr, t_roomdata *room, int n, t_linkdata *link)
 {
 	t_linkdata	*ldata;
-	size_t		size;
+	size_t		index;
 
-	size = ft_array_size(larr);
-	while (size--)
+	index = -1;
+	while (ft_array_get(larr, ++index, (void **)&ldata) == 0)
 	{
-		if (ft_array_get(larr, size, (void **)&ldata) == 0)
+		if (room == ldata->left || room == ldata->right)
 		{
-			if (room == ldata->left ||
-				room == ldata->right)
+			if (!n--)
 			{
-				if (!n--)
-				{
-					link->right = room == ldata->left ?
-						ldata->right : ldata->left;
-					return (RET_OK);
-				}
+				link->right = room == ldata->left ?
+					ldata->right : ldata->left;
+				return (RET_OK);
 			}
 		}
 	}
@@ -41,15 +37,12 @@ static t_result	get_opposite_roomlink(
 
 t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms)
 {
-	size_t		size;
+	size_t		index;
 	t_roomdata	*room;
 
-	size = ft_array_size(rooms);
-	while (size--)
-	{
-		if (ft_array_get(rooms, size, (void **)&room) == 0)
-			add_adjdata(adjlist, room);
-	}
+	index = -1;
+	while (ft_array_get(rooms, ++index, (void **)&room) == 0)
+		add_adjdata(adjlist, room);
 	return (*adjlist);
 }
 

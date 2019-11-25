@@ -70,19 +70,16 @@ t_result		remove_neig_from_adjlist(t_adjdata *from, t_adjdata *to,
 
 	count = 0;
 	index = -1;
-	while (++index < ft_array_size(&from->neigs))
+	while (ft_array_get(&from->neigs, ++index, (void **)&ndata) == 0)
 	{
-		if (ft_array_get(&from->neigs, index, (void **)&ndata) == 0)
+		if (ndata->node == to)
 		{
-			if (ndata->node == to)
+			if (weigth)
+				*weigth = ndata->weight;
+			if (ft_array_remove(&from->neigs, index, free) == 0)
 			{
-				if (weigth)
-					*weigth = ndata->weight;
-				if (ft_array_remove(&from->neigs, index, free) == 0)
-				{
-					index--;
-					count++;
-				}
+				index--;
+				count++;
 			}
 		}
 	}

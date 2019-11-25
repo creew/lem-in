@@ -22,22 +22,19 @@ static void		add_path_to_adjlist(t_adjlist *alist, t_path *path)
 
 	prev = NULL;
 	count = -1;
-	while (++count < ft_array_size(path))
+	while (ft_array_get(path, ++count, (void **)&room) == 0)
 	{
-		if (ft_array_get(path, count, (void **)&room) == 0)
+		if (prev != NULL)
 		{
-			if (prev != NULL)
+			acur = find_adjdata_by_room(alist, room);
+			aprev = find_adjdata_by_room(alist, prev);
+			if (acur && aprev)
 			{
-				acur = find_adjdata_by_room(alist, room);
-				aprev = find_adjdata_by_room(alist, prev);
-				if (acur && aprev)
-				{
-					if (remove_neig_from_adjlist(acur, aprev, NULL) != RET_OK)
-						add_neig_to_adjlist(aprev, acur, 1);
-				}
+				if (remove_neig_from_adjlist(acur, aprev, NULL) != RET_OK)
+					add_neig_to_adjlist(aprev, acur, 1);
 			}
-			prev = room;
 		}
+		prev = room;
 	}
 }
 
@@ -60,7 +57,7 @@ t_result		*get_all_paths(t_patharr *parr, t_adjlist *alist)
 		{
 			add_room_to_path(path, nndata->node->room);
 			if (ft_array_get(&nndata->node->neigs, 0, (void **)&nndata) != 0)
-				break;
+				break ;
 		}
 		add_path_to_arr(parr, path);
 	}

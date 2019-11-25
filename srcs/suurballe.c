@@ -37,17 +37,14 @@ static void		copy_values(t_adjdata *out, t_adjdata *in, t_adjdata *next)
 	out->room = in->room;
 	out->dij_vis = in->dij_vis;
 	index = -1;
-	while (++index < ft_array_size(&in->neigs))
+	while (ft_array_get(&in->neigs, ++index, (void **)&ndata) == 0)
 	{
-		if (ft_array_get(&in->neigs, index, (void **)&ndata) == 0)
+		if (ndata->node != next)
 		{
-			if (ndata->node != next)
+			if (ft_array_remove(&in->neigs, index, NULL) == 0)
 			{
-				if (ft_array_remove(&in->neigs, index, NULL) == 0)
-				{
-					ft_array_add(&out->neigs, ndata);
-					index--;
-				}
+				ft_array_add(&out->neigs, ndata);
+				index--;
 			}
 		}
 	}

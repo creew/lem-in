@@ -19,12 +19,8 @@ void	print_rooms(t_roomarr *rooms)
 	size_t		count;
 
 	count = -1;
-	while (++count < ft_array_size(rooms))
-	{
-		if (ft_array_get(rooms, count, (void **)&data) == 0)
-			ft_printf("name: \"%s\", x: %d, y: %d\n",
-				data->name, data->x, data->y);
-	}
+	while (ft_array_get(rooms, ++count, (void **)&data) == 0)
+		ft_printf("name: \"%s\", x: %d, y: %d\n", data->name, data->x, data->y);
 }
 
 void	print_links(t_linkarr *links)
@@ -33,13 +29,10 @@ void	print_links(t_linkarr *links)
 	size_t		count;
 
 	count = -1;
-	while (++count < ft_array_size(links))
+	while (ft_array_get(links, ++count, (void **)&linkdata) == 0)
 	{
-		if (ft_array_get(links, count, (void **)&linkdata) == 0)
-		{
-			ft_printf("link 1: \"%s\", link2: \"%s\"\n", linkdata->left->name,
-				linkdata->right->name);
-		}
+		ft_printf("link 1: \"%s\", link2: \"%s\"\n", linkdata->left->name,
+			linkdata->right->name);
 	}
 }
 
@@ -47,7 +40,7 @@ void	print_neighbors(t_adjlist *adjlist, char *title)
 {
 	t_adjdata		*adata;
 	t_neigdata		*ndata;
-	size_t 			count;
+	size_t			count;
 
 	if (title)
 		ft_printf("------- Stage: %s ---------\n", title);
@@ -56,13 +49,8 @@ void	print_neighbors(t_adjlist *adjlist, char *title)
 		adata = (t_adjdata *)adjlist->content;
 		ft_printf("name: \"%s\", neighbors: ", adata->room->name);
 		count = -1;
-		while (++count < ft_array_size(&adata->neigs))
-		{
-			if (ft_array_get(&adata->neigs, count, (void **)&ndata) == 0)
-			{
-				ft_printf("%s, ", ndata->node->room->name);
-			}
-		}
+		while (ft_array_get(&adata->neigs, ++count, (void **)&ndata) == 0)
+			ft_printf("%s, ", ndata->node->room->name);
 		adjlist = adjlist->next;
 		ft_printf("len: %d\n", adata->weight);
 	}
@@ -74,14 +62,12 @@ void	print_path(t_path *path)
 	t_roomdata	*room;
 
 	pcount = -1;
-	while (++pcount < ft_array_size(path))
+	ft_printf("path len: %d: ", ft_array_size(path));
+	while (ft_array_get(path, ++pcount, (void **)&room) == 0)
 	{
-		if (ft_array_get(path, pcount, (void **)&room) == 0)
-		{
-			if (pcount != 0)
-				ft_putstr(", ");
-			ft_printf("\"%s\"", room->name);
-		}
+		if (pcount != 0)
+			ft_putstr(", ");
+		ft_printf("\"%s\"", room->name);
 	}
 	ft_putendl("");
 }
@@ -94,9 +80,7 @@ void	print_paths(t_patharr *parr)
 	if (!parr)
 		return ;
 	count = -1;
-	while (++count < ft_array_size(parr))
-	{
-		if (ft_array_get(parr, count, (void **)&pdata) == 0)
-			print_path(pdata->path);
-	}
+	ft_printf("Paths number: %d\n", ft_array_size(parr));
+	while (ft_array_get(parr, ++count, (void **)&pdata) == 0)
+		print_path(pdata->path);
 }
