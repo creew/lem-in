@@ -67,15 +67,15 @@ void	print_neighbors(t_adjlist *adjlist, char *title)
 	}
 }
 
-void 	print_path(t_path *path)
+void	print_path(t_path *path)
 {
 	size_t		pcount;
-	t_roomdata *room;
+	t_roomdata	*room;
 
 	pcount = -1;
 	while (++pcount < ft_array_size(path))
 	{
-		if (ft_array_get(path, pcount, (void **) &room) == 0)
+		if (ft_array_get(path, pcount, (void **)&room) == 0)
 		{
 			if (pcount != 0)
 				ft_putstr(", ");
@@ -88,7 +88,7 @@ void 	print_path(t_path *path)
 void	print_paths(t_patharr *parr)
 {
 	size_t		count;
-	t_pathdata *pdata;
+	t_pathdata	*pdata;
 
 	if (!parr)
 		return ;

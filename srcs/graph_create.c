@@ -42,10 +42,11 @@ t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms)
 {
 	size_t		size;
 	t_roomdata	*room;
+
 	size = ft_array_size(rooms);
 	while (size--)
 	{
-		if (ft_array_get(rooms, size, (void **) &room) == 0)
+		if (ft_array_get(rooms, size, (void **)&room) == 0)
 			add_adjdata(adjlist, room);
 	}
 	return (*adjlist);

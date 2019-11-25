@@ -39,6 +39,7 @@ static void	delroomlinkarr(void *data)
 
 void		delete_all(t_lemin *lem)
 {
+	delete_adjlist(&lem->adjm);
 	ft_array_remove_all(&lem->rooms, delroomlinkarr);
 	ft_array_remove_all(&lem->links, delroomlinkarr);
 	remove_all_paths(&lem->paths);

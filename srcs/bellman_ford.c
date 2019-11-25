@@ -41,12 +41,12 @@ static int	update_bf(t_adjlist *adj)
 	return (visited);
 }
 
-int		bellman_ford(t_adjlist *adjlist)
+int			bellman_ford(t_adjlist *adjlist)
 {
 	size_t		size;
 	t_adjdata	*adjdata;
 	int			visited;
-	int 		updated;
+	int			updated;
 
 	reset_adjlist_values(adjlist);
 	adjdata = find_node_by_cmd(adjlist, LEM_CMD_START);

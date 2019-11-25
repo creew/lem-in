@@ -105,7 +105,7 @@ typedef struct	s_lemin
 	t_borders	se;
 	t_adjlist	*adjm;
 	int			is_debug;
-	int 		is_colorized;
+	int			 is_colorize;
 	int			fd;
 }				t_lemin;
 
@@ -151,7 +151,7 @@ void			print_given_data(t_lemin *lem);
 void			print_solution(t_lemin *lem);
 
 
-t_path			*suurballe_algo(t_adjlist **root);
+void			suurballe_algo(t_adjlist **root);
 
 t_adjdata		*find_node_by_cmd(t_adjlist *adjlist, int cmd);
 t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room);
@@ -164,6 +164,6 @@ int				bellman_ford(t_adjlist *adjlist);
 t_path			*get_last_shortest_path(t_adjlist *alist);
 t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms);
 void			delete_adjlist(t_list **adjlist);
-t_result		remove_link(t_adjdata *from, t_adjdata *to, int *weigth);
+t_result remove_neig_from_adjlist(t_adjdata *from, t_adjdata *to, int *weigth);
 void			delete_path(t_path **path);
 #endif

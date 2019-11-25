@@ -13,7 +13,7 @@
 #include "lemin.h"
 #include "ft_printf.h"
 
-t_path				*get_last_shortest_path(t_adjlist *alist)
+t_path			*get_last_shortest_path(t_adjlist *alist)
 {
 	t_adjdata	*end;
 	t_path		*path;
@@ -38,7 +38,7 @@ t_path				*get_last_shortest_path(t_adjlist *alist)
 	return (path);
 }
 
-static void			add_path_to_adjlist(t_adjlist *alist, t_path *path)
+static void		add_path_to_adjlist(t_adjlist *alist, t_path *path)
 {
 	size_t		count;
 	t_roomdata	*room;
@@ -58,7 +58,7 @@ static void			add_path_to_adjlist(t_adjlist *alist, t_path *path)
 				aprev = find_adjdata_by_room(alist, prev);
 				if (acur && aprev)
 				{
-					if (remove_link(acur, aprev, NULL) != RET_OK)
+					if (remove_neig_from_adjlist(acur, aprev, NULL) != RET_OK)
 						add_neig_to_adjlist(aprev, acur, 1);
 				}
 			}
@@ -67,7 +67,7 @@ static void			add_path_to_adjlist(t_adjlist *alist, t_path *path)
 	}
 }
 
-t_result	*get_all_paths(t_patharr *parr, t_adjlist *alist)
+t_result		*get_all_paths(t_patharr *parr, t_adjlist *alist)
 {
 	t_adjdata	*start;
 	t_list		*neighs;
@@ -98,7 +98,7 @@ t_result	*get_all_paths(t_patharr *parr, t_adjlist *alist)
 	return (RET_OK);
 }
 
-t_patharr	*recalc_values(t_lemin *lem, t_patharr *paths, t_path *path)
+t_patharr		*recalc_values(t_lemin *lem, t_patharr *paths, t_path *path)
 {
 	t_adjlist	*adjlist;
 	t_pathdata	*pdata;
@@ -120,7 +120,7 @@ t_patharr	*recalc_values(t_lemin *lem, t_patharr *paths, t_path *path)
 	return (sol);
 }
 
-static	int 		path_cmp(const void *d1, const void *d2)
+static	int 	path_cmp(const void *d1, const void *d2)
 {
 	t_pathdata	*p1;
 	t_pathdata	*p2;
@@ -130,7 +130,7 @@ static	int 		path_cmp(const void *d1, const void *d2)
 	return ((int)p1->size - (int)p2->size);
 }
 
-t_result			find_all_paths(t_lemin *lem)
+t_result		find_all_paths(t_lemin *lem)
 {
 	t_patharr	*sol;
 	t_path		*path;
@@ -139,7 +139,6 @@ t_result			find_all_paths(t_lemin *lem)
 	int			len;
 	t_patharr	*newsol;
 	t_patharr   *onesol;
-	int 		count;
 	int 		bf_updated;
 
 	bf_updated = 1;
@@ -147,42 +146,30 @@ t_result			find_all_paths(t_lemin *lem)
 	path = get_last_shortest_path(lem->adjm);
 	add_path_to_arr(sol, path);
 	prev_len = calc_total_len(sol, lem->num_ants);
-	//ft_printf("start len: %d\n", prev_len);
     onesol = sol;
-    count = 0;
-	//ft_printf("start\n");
-	//print_paths(sol);
 	while (bf_updated)
 	{
 		suurballe_algo(&lem->adjm);
-		//print_neighbors(lem->adjm, "after suurballe");
 		bf_updated = bellman_ford(lem->adjm);
 		if (bf_updated)
 		{
 			newp = get_last_shortest_path(lem->adjm);
-			//ft_printf("New short: %d\n", count);
-			//print_path(newp);
 			newsol = recalc_values(lem, sol, newp);
-			//ft_printf("Stage: %d\n", count);
-			//print_paths(newsol);
 			delete_path(&newp);
-			ft_bubble_sort(newsol->data, newsol->num_elems, sizeof(*newsol->data), path_cmp);
+			ft_bubble_sort(newsol->data, newsol->num_elems,
+				sizeof(*newsol->data), path_cmp);
 			len = calc_total_len(newsol, lem->num_ants);
-			//ft_printf("len stage %d: %d\n", count++, len);
-			sol = newsol;
 			if (len < prev_len)
 			{
+				remove_all_paths(&sol);
 				onesol = newsol;
 				prev_len = len;
 			}
 			else
 				break;
-
+			sol = newsol;
 		}
 	}
-	//ft_printf("End: count: %d \n", ft_array_size(onesol));
-	//print_paths(onesol);
 	lem->paths = onesol;
-	//print_neighbors(lem->adjm, "after bellman");
 	return (RET_OK);
 }

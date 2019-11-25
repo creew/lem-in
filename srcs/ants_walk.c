@@ -53,7 +53,7 @@ static int	push_one_path(size_t index, t_lemin *lem,
 	int *is_not_first, size_t *sum)
 {
 	t_push_move		pm;
-	size_t			size;
+	size_t			i;
 
 	pm.index = index;
 	pm.num_ants = lem->num_ants;
@@ -61,14 +61,14 @@ static int	push_one_path(size_t index, t_lemin *lem,
 	{
 		if (ft_array_get(lem->paths, index, (void **)&pm.pdata) == 0)
 		{
-			size = ft_array_size(pm.pdata->path);
-			while (size > 1)
+			i = ft_array_size(pm.pdata->path);
+			while (i > 1)
 			{
-				size--;
-				if (ft_array_get(pm.pdata->path, size, (void **)&pm.cur) == 0 &&
-					ft_array_get(pm.pdata->path, size - 1, (void **)&pm.prev) == 0)
+				i--;
+				if (ft_array_get(pm.pdata->path, i, (void **)&pm.cur) == 0 &&
+					ft_array_get(pm.pdata->path, i - 1, (void **)&pm.prev) == 0)
 				{
-					if (push_one_move(&pm, is_not_first, sum, lem->is_colorized))
+					if (push_one_move(&pm, is_not_first, sum, lem->is_colorize))
 						break ;
 				}
 			}
