@@ -13,7 +13,7 @@
 #include "lemin.h"
 #include "ft_printf.h"
 
-t_path				*get_shortest_path(t_adjlist *alist)
+t_path				*get_last_shortest_path(t_adjlist *alist)
 {
 	t_adjdata	*end;
 	t_path		*path;
@@ -120,6 +120,15 @@ t_patharr	*recalc_values(t_lemin *lem, t_patharr *paths, t_path *path)
 	return (sol);
 }
 
+static	int 		path_cmp(const void *d1, const void *d2)
+{
+	t_pathdata	*p1;
+	t_pathdata	*p2;
+
+	p1 = *(t_pathdata **)d1;
+	p2 = *(t_pathdata **)d2;
+	return ((int)p1->size - (int)p2->size);
+}
 
 t_result			find_all_paths(t_lemin *lem)
 {
@@ -135,40 +144,44 @@ t_result			find_all_paths(t_lemin *lem)
 
 	bf_updated = 1;
 	sol = ft_array_new(10);
-	path = get_shortest_path(lem->adjm);
+	path = get_last_shortest_path(lem->adjm);
 	add_path_to_arr(sol, path);
 	prev_len = calc_total_len(sol, lem->num_ants);
+	//ft_printf("start len: %d\n", prev_len);
     onesol = sol;
     count = 0;
-	ft_printf("start\n");
-	print_paths(sol);
+	//ft_printf("start\n");
+	//print_paths(sol);
 	while (bf_updated)
 	{
 		suurballe_algo(&lem->adjm);
 		//print_neighbors(lem->adjm, "after suurballe");
 		bf_updated = bellman_ford(lem->adjm);
+		if (bf_updated)
+		{
+			newp = get_last_shortest_path(lem->adjm);
+			//ft_printf("New short: %d\n", count);
+			//print_path(newp);
+			newsol = recalc_values(lem, sol, newp);
+			//ft_printf("Stage: %d\n", count);
+			//print_paths(newsol);
+			delete_path(&newp);
+			ft_bubble_sort(newsol->data, newsol->num_elems, sizeof(*newsol->data), path_cmp);
+			len = calc_total_len(newsol, lem->num_ants);
+			//ft_printf("len stage %d: %d\n", count++, len);
+			sol = newsol;
+			if (len < prev_len)
+			{
+				onesol = newsol;
+				prev_len = len;
+			}
+			else
+				break;
 
-		newp = get_shortest_path(lem->adjm);
-		ft_printf("New short: %d\n", count++);
-		print_path(newp);
-		newsol = recalc_values(lem, sol, newp);
-		ft_printf("Stage: %d\n", count++);
-		print_paths(newsol);
-		delete_path(&newp);
-		len = calc_total_len(newsol, lem->num_ants);
-		if (len < prev_len)
-		{
-		    onesol = newsol;
-			prev_len = len;
-		}
-		else
-		{
-			remove_all_paths(&newsol);
-			break;
 		}
 	}
-	ft_printf("End: \n");
-	print_paths(onesol);
+	//ft_printf("End: count: %d \n", ft_array_size(onesol));
+	//print_paths(onesol);
 	lem->paths = onesol;
 	//print_neighbors(lem->adjm, "after bellman");
 	return (RET_OK);

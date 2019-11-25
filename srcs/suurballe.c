@@ -132,11 +132,11 @@ t_path			*suurballe_algo(t_adjlist **root)
 	prev = find_node_by_cmd(*root, LEM_CMD_END);
 	if (!prev)
 		return (NULL);
-	if ((cur = get_min_weight_neighbor(prev)))
+	if ((cur = prev->prev))
 	{
 		while (cur)
 		{
-			next = get_min_weight_neighbor(cur);
+			next = cur->prev;
 			remove_link(cur, prev, NULL);
 			make_link_neg(prev, cur);
 			if (cur->room->cmd == LEM_CMD_START)

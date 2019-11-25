@@ -161,7 +161,7 @@ t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room);
 void			reset_adjlist_values(t_adjlist *adjlist);
 
 int				bellman_ford(t_adjlist *adjlist);
-t_path			*get_shortest_path(t_adjlist *alist);
+t_path			*get_last_shortest_path(t_adjlist *alist);
 t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms);
 void			delete_adjlist(t_list **adjlist);
 t_result		remove_link(t_adjdata *from, t_adjdata *to, int *weigth);
