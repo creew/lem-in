@@ -13,7 +13,7 @@
 #include "lemin.h"
 #include "ft_printf.h"
 
-t_path			*get_last_shortest_path(t_adjlist *alist)
+static t_path	*get_last_shortest_path(t_adjlist *alist)
 {
 	t_adjdata	*end;
 	t_path		*path;
@@ -38,89 +38,7 @@ t_path			*get_last_shortest_path(t_adjlist *alist)
 	return (path);
 }
 
-static void		add_path_to_adjlist(t_adjlist *alist, t_path *path)
-{
-	size_t		count;
-	t_roomdata	*room;
-	t_roomdata	*prev;
-	t_adjdata	*acur;
-	t_adjdata	*aprev;
-
-	prev = NULL;
-	count = -1;
-	while (++count < ft_array_size(path))
-	{
-		if (ft_array_get(path, count, (void **)&room) == 0)
-		{
-			if (prev != NULL)
-			{
-				acur = find_adjdata_by_room(alist, room);
-				aprev = find_adjdata_by_room(alist, prev);
-				if (acur && aprev)
-				{
-					if (remove_neig_from_adjlist(acur, aprev, NULL) != RET_OK)
-						add_neig_to_adjlist(aprev, acur, 1);
-				}
-			}
-			prev = room;
-		}
-	}
-}
-
-t_result		*get_all_paths(t_patharr *parr, t_adjlist *alist)
-{
-	t_adjdata	*start;
-	t_list		*neighs;
-	t_path		*path;
-	t_neiglist	*nlist;
-	t_neigdata	*nndata;
-
-	start = find_node_by_cmd(alist, LEM_CMD_START);
-	if (!start)
-		return (NULL);
-	if ((neighs = start->neigs))
-	{
-		while (neighs)
-		{
-			path = ft_array_new(10);
-			add_room_to_path(path, start->room);
-			nlist = neighs;
-			while (nlist)
-			{
-				nndata = (t_neigdata *)nlist->content;
-				add_room_to_path(path, nndata->node->room);
-				nlist = nndata->node->neigs;
-			}
-			add_path_to_arr(parr, path);
-			neighs = neighs->next;
-		}
-	}
-	return (RET_OK);
-}
-
-t_patharr		*recalc_values(t_lemin *lem, t_patharr *paths, t_path *path)
-{
-	t_adjlist	*adjlist;
-	t_pathdata	*pdata;
-	size_t 		size;
-	t_patharr	*sol;
-
-	size = ft_array_size(paths);
-	adjlist = NULL;
-	create_adjlist(&adjlist, &lem->rooms);
-	while (size--)
-	{
-		if (ft_array_get(paths, size, (void **)&pdata) == 0)
-			add_path_to_adjlist(adjlist, pdata->path);
-	}
-	add_path_to_adjlist(adjlist, path);
-	sol = ft_array_new(10);
-	get_all_paths(sol, adjlist);
-	delete_adjlist(&adjlist);
-	return (sol);
-}
-
-static	int 	path_cmp(const void *d1, const void *d2)
+static int		path_cmp(const void *d1, const void *d2)
 {
 	t_pathdata	*p1;
 	t_pathdata	*p2;
@@ -135,18 +53,18 @@ t_result		find_all_paths(t_lemin *lem)
 	t_patharr	*sol;
 	t_path		*path;
 	t_path		*newp;
-	int 		prev_len;
+	int			prev_len;
 	int			len;
 	t_patharr	*newsol;
-	t_patharr   *onesol;
-	int 		bf_updated;
+	t_patharr	*onesol;
+	int			bf_updated;
 
 	bf_updated = 1;
 	sol = ft_array_new(10);
 	path = get_last_shortest_path(lem->adjm);
 	add_path_to_arr(sol, path);
 	prev_len = calc_total_len(sol, lem->num_ants);
-    onesol = sol;
+	onesol = sol;
 	while (bf_updated)
 	{
 		suurballe_algo(&lem->adjm);
@@ -154,7 +72,7 @@ t_result		find_all_paths(t_lemin *lem)
 		if (bf_updated)
 		{
 			newp = get_last_shortest_path(lem->adjm);
-			newsol = recalc_values(lem, sol, newp);
+			newsol = recalc_values(&lem->rooms, sol, newp);
 			delete_path(&newp);
 			ft_bubble_sort(newsol->data, newsol->num_elems,
 				sizeof(*newsol->data), path_cmp);
@@ -166,7 +84,7 @@ t_result		find_all_paths(t_lemin *lem)
 				prev_len = len;
 			}
 			else
-				break;
+				break ;
 			sol = newsol;
 		}
 	}

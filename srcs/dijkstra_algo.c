@@ -61,24 +61,25 @@ t_adjdata			*find_node_by_cmd(t_adjlist *adjlist, int cmd)
 t_result			dijkstra_algo(t_adjlist *adjlist)
 {
 	t_adjdata		*adata;
-	t_neiglist		*nlist;
 	t_neigdata		*ndata;
+	size_t 			index;
 
 	reset_adjlist_values(adjlist);
 	adata = find_node_by_cmd(adjlist, LEM_CMD_START);
 	adata->weight = 0;
 	while ((adata = find_min_weight(adjlist)) != NULL)
 	{
-		nlist = adata->neigs;
-		while (nlist)
+		index = -1;
+		while (++index < ft_array_size(&adata->neigs))
 		{
-			ndata = (t_neigdata *)nlist->content;
-			if (adata->weight + ndata->weight < ndata->node->weight)
+			if (ft_array_get(&adata->neigs, index, (void **)&ndata) == 0)
 			{
-				ndata->node->weight = adata->weight + ndata->weight;
-				ndata->node->prev = adata;
+				if (adata->weight + ndata->weight < ndata->node->weight)
+				{
+					ndata->node->weight = adata->weight + ndata->weight;
+					ndata->node->prev = adata;
+				}
 			}
-			nlist = nlist->next;
 		}
 		adata->dij_vis = 1;
 	}

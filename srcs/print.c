@@ -46,8 +46,8 @@ void	print_links(t_linkarr *links)
 void	print_neighbors(t_adjlist *adjlist, char *title)
 {
 	t_adjdata		*adata;
-	t_neiglist		*nlist;
 	t_neigdata		*ndata;
+	size_t 			count;
 
 	if (title)
 		ft_printf("------- Stage: %s ---------\n", title);
@@ -55,12 +55,13 @@ void	print_neighbors(t_adjlist *adjlist, char *title)
 	{
 		adata = (t_adjdata *)adjlist->content;
 		ft_printf("name: \"%s\", neighbors: ", adata->room->name);
-		nlist = adata->neigs;
-		while (nlist)
+		count = -1;
+		while (++count < ft_array_size(&adata->neigs))
 		{
-			ndata = (t_neigdata *)nlist->content;
-			ft_printf("%s, ", ndata->node->room->name);
-			nlist = nlist->next;
+			if (ft_array_get(&adata->neigs, count, (void **)&ndata) == 0)
+			{
+				ft_printf("%s, ", ndata->node->room->name);
+			}
 		}
 		adjlist = adjlist->next;
 		ft_printf("len: %d\n", adata->weight);

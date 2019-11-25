@@ -27,7 +27,8 @@ ALL_C =	lemin.c \
         		print_given_data.c \
         		suurballe.c \
         		neigs_work.c \
-        		bellman_ford.c
+        		bellman_ford.c \
+        		recalc_paths.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs

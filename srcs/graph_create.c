@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
+#include <stdlib.h>
 
 static t_result	get_opposite_roomlink(
 	t_linkarr *larr, t_roomdata *room, int n, t_linkdata *link)
@@ -54,8 +55,12 @@ t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms)
 
 static void		del_one_adj(void *data, size_t size)
 {
-	(void)data;
+	t_adjdata *adata;
+
 	(void)size;
+	adata = (t_adjdata *)data;
+	ft_array_remove_all(&adata->neigs, free);
+	ft_memdel(&data);
 }
 
 void			delete_adjlist(t_list **adjlist)

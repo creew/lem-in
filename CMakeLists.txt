@@ -30,7 +30,7 @@ add_executable(lem_in
         srcs/suurballe.c
         srcs/neigs_work.c
         srcs/bellman_ford.c
-        )
+        srcs/recalc_paths.c)
 
 add_dependencies(lem_in libftprintf_target libft_target)
 

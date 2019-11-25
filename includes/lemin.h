@@ -22,7 +22,7 @@ typedef t_ftarray		t_roomarr;
 typedef t_ftarray		t_linkarr;
 typedef t_ftarray		t_patharr;
 typedef t_ftarray		t_path;
-typedef t_list			t_neiglist;
+typedef t_ftarray		t_neigarr;
 typedef t_list			t_adjlist;
 
 # define RET_RECALC					(1)
@@ -72,16 +72,16 @@ typedef struct	s_roomdata
 typedef struct	s_adjdata
 {
 	t_roomdata			*room;
-	t_neiglist			*neigs;
-	int 				weight;
+	t_neigarr			neigs;
+	int					weight;
 	struct s_adjdata	*prev;
-	int 				dij_vis;
+	int					dij_vis;
 }				t_adjdata;
 
 typedef struct	s_neigdata
 {
 	t_adjdata	*node;
-	int 		weight;
+	int			weight;
 }				t_neigdata;
 
 typedef struct	s_linkdata
@@ -105,7 +105,7 @@ typedef struct	s_lemin
 	t_borders	se;
 	t_adjlist	*adjm;
 	int			is_debug;
-	int			 is_colorize;
+	int			is_colorize;
 	int			fd;
 }				t_lemin;
 
@@ -129,7 +129,7 @@ char			*get_next_word(char *str, int *last);
 void			print_rooms(t_roomarr *rooms);
 void			print_links(t_linkarr *links);
 void			print_neighbors(t_adjlist *adjlist, char *title);
-void 			print_path(t_path *path);
+void			print_path(t_path *path);
 void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
@@ -150,20 +150,24 @@ void			delete_all(t_lemin *lem);
 void			print_given_data(t_lemin *lem);
 void			print_solution(t_lemin *lem);
 
-
 void			suurballe_algo(t_adjlist **root);
 
 t_adjdata		*find_node_by_cmd(t_adjlist *adjlist, int cmd);
 t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room);
-t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *nei, int weight);
+t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *neig,
+					int weight);
 t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room);
 
 void			reset_adjlist_values(t_adjlist *adjlist);
 
 int				bellman_ford(t_adjlist *adjlist);
-t_path			*get_last_shortest_path(t_adjlist *alist);
 t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms);
 void			delete_adjlist(t_list **adjlist);
-t_result remove_neig_from_adjlist(t_adjdata *from, t_adjdata *to, int *weigth);
+t_result		remove_neig_from_adjlist(t_adjdata *from, t_adjdata *to,
+					int *weigth);
 void			delete_path(t_path **path);
+void			del_one_neig(void *content);
+
+t_patharr		*recalc_values(t_roomarr *rooms, t_patharr *paths,
+					t_path *path);
 #endif

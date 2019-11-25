@@ -15,26 +15,27 @@
 static int	update_bf(t_adjlist *adj)
 {
 	t_adjdata	*adjdata;
-	t_neiglist	*neiglist;
 	t_neigdata	*ndata;
 	int			visited;
+	size_t		size;
 
 	visited = 0;
 	while (adj)
 	{
 		adjdata = (t_adjdata *)adj->content;
-		neiglist = adjdata->neigs;
-		while (neiglist)
+		size = ft_array_size(&adjdata->neigs);
+		while (size--)
 		{
-			ndata = (t_neigdata *)neiglist->content;
-			if (adjdata->weight != WEIGHT_MAX &&
-				adjdata->weight + ndata->weight < ndata->node->weight)
+			if (ft_array_get(&adjdata->neigs, size, (void **)&ndata) == 0)
 			{
-				ndata->node->weight = adjdata->weight + ndata->weight;
-				ndata->node->prev = adjdata;
-				visited = 1;
+				if (adjdata->weight != WEIGHT_MAX &&
+					adjdata->weight + ndata->weight < ndata->node->weight)
+				{
+					ndata->node->weight = adjdata->weight + ndata->weight;
+					ndata->node->prev = adjdata;
+					visited = 1;
+				}
 			}
-			neiglist = neiglist->next;
 		}
 		adj = adj->next;
 	}

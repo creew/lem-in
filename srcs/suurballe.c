@@ -14,41 +14,42 @@
 
 static void		make_link_neg(t_adjdata *from, t_adjdata *to)
 {
-	t_neiglist	*nlist;
 	t_neigdata	*ndata;
+	size_t		size;
 
-	nlist = from->neigs;
-	while (nlist)
+	size = ft_array_size(&from->neigs);
+	while (size--)
 	{
-		ndata = (t_neigdata *)nlist->content;
-		if (ndata->node == to)
-			ndata->weight = -ndata->weight;
-		nlist = nlist->next;
+		if (ft_array_get(&from->neigs, size, (void **)&ndata) == 0)
+		{
+			if (ndata->node == to)
+				ndata->weight = -ndata->weight;
+		}
 	}
 }
 
 static void		copy_values(t_adjdata *out, t_adjdata *in, t_adjdata *next)
 {
-	t_neiglist	**nlist;
-	t_neiglist	*cur;
 	t_neigdata	*ndata;
+	size_t		index;
 
 	out->weight = in->weight;
 	out->room = in->room;
 	out->dij_vis = in->dij_vis;
-	nlist = &in->neigs;
-	while (*nlist)
+	index = -1;
+	while (++index < ft_array_size(&in->neigs))
 	{
-		cur = *nlist;
-		ndata = (t_neigdata *)cur->content;
-		if (ndata->node != next)
+		if (ft_array_get(&in->neigs, index, (void **)&ndata) == 0)
 		{
-			*nlist = cur->next;
-			cur->next = out->neigs;
-			out->neigs = cur;
+			if (ndata->node != next)
+			{
+				if (ft_array_remove(&in->neigs, index, NULL) == 0)
+				{
+					ft_array_add(&out->neigs, ndata);
+					index--;
+				}
+			}
 		}
-		else
-			nlist = &cur->next;
 	}
 }
 

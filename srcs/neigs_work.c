@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
+#include <stdlib.h>
 
 t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room)
 {
@@ -21,6 +22,7 @@ t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room)
 	if (lst)
 	{
 		data = (t_adjdata *)lst->content;
+		ft_array_init(&data->neigs, 64);
 		data->room = room;
 	}
 	return (lst);
@@ -29,15 +31,18 @@ t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room)
 t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *neig,
 	int weight)
 {
-	t_neiglist	*lst;
 	t_neigdata	*ndata;
 
-	lst = ft_lstaddblank(&adata->neigs, sizeof(t_neigdata));
-	if (!lst)
+	ndata = (t_neigdata *)ft_memalloc(sizeof(*ndata));
+	if (!ndata)
 		return (ERR_ENOMEM);
-	ndata = (t_neigdata *)lst->content;
 	ndata->weight = weight;
 	ndata->node = neig;
+	if (ft_array_add(&adata->neigs, ndata))
+	{
+		ft_memdel((void **)&ndata);
+		return (ERR_ENOMEM);
+	}
 	return (RET_OK);
 }
 
@@ -56,36 +61,30 @@ t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room)
 	return (adata);
 }
 
-static void		del_one_elem(void *content, size_t content_size)
-{
-	(void)content_size;
-	ft_memdel(&content);
-}
-
 t_result		remove_neig_from_adjlist(t_adjdata *from, t_adjdata *to,
 	int *weigth)
 {
-	t_neiglist	**nlist;
-	t_neiglist	*cur;
 	t_neigdata	*ndata;
 	int			count;
+	size_t		index;
 
 	count = 0;
-	nlist = &from->neigs;
-	while (*nlist)
+	index = -1;
+	while (++index < ft_array_size(&from->neigs))
 	{
-		cur = *nlist;
-		ndata = (t_neigdata *)cur->content;
-		if (ndata->node == to)
+		if (ft_array_get(&from->neigs, index, (void **)&ndata) == 0)
 		{
-			*nlist = cur->next;
-			if (weigth)
-				*weigth = ndata->weight;
-			ft_lstdelone(&cur, del_one_elem);
-			count++;
+			if (ndata->node == to)
+			{
+				if (weigth)
+					*weigth = ndata->weight;
+				if (ft_array_remove(&from->neigs, index, free) == 0)
+				{
+					index--;
+					count++;
+				}
+			}
 		}
-		else
-			nlist = &(cur->next);
 	}
 	return (count == 1 ? RET_OK : ERR_NO_LINK_TO_DEL);
 }
