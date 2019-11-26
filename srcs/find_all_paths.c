@@ -76,7 +76,6 @@ static int		try_new_path(t_lemin *lem, int *prev_len, t_patharr **prev_sol,
 	t_patharr	*newsol;
 
 	newp = get_last_shortest_path(lem->adjm);
-	print_path(newp);
 	newsol = recalc_values(&lem->rooms, *prev_sol, newp);
 	delete_path(&newp);
 	ft_bubble_sort(newsol->data, newsol->num_elems,
