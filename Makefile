@@ -1,15 +1,3 @@
-#******************************************************************************#
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: eklompus <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/11/04 12:15:31 by eklompus          #+#    #+#              #
-#    Updated: 2019/11/17 15:55:14 by eleonard         ###   ########.fr        #
-#                                                                              #
-#******************************************************************************#
-
 ALL_C =	lemin.c \
         		read_input.c \
         		rooms_parse.c \
@@ -30,12 +18,12 @@ ALL_C =	lemin.c \
         		bellman_ford.c \
         		recalc_paths.c
 
-SRCDIR = ./srcs
-OBJDIR = ./objs
+SRCDIR = ./srcs/
+OBJDIR = ./objs/
 
 ALL_OBJ = $(ALL_C:%.c=%.o)
 
-OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
+OBJS = $(addprefix $(OBJDIR), $(ALL_OBJ))
 
 NAME = lem-in
 
@@ -49,30 +37,30 @@ FLAGS = -Wall -Wextra -g
 
 all: $(NAME)
 
-$(NAME): $(OBJS) | lib ft_printf
-	gcc $(FLAGS) $^ -L./libft -lft -L./ft_printf -lftprintf -o $@
+$(NAME): lib ft_printf $(OBJS)
+	gcc $(FLAGS) $(OBJS) -L./libft -lft -L./ft_printf -lftprintf -o $@
 
-$(OBJDIR):
-	/bin/mkdir -p $(OBJDIR)
+objdir:
+	@/bin/mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES) ./libft/libft.a ./ft_printf/libftprintf.a | $(OBJDIR)
+$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES) ./libft/libft.a ./ft_printf/libftprintf.a | objdir
 	gcc $(FLAGS) -I./includes -I./libft/includes -I./ft_printf/includes -c $< -o $@
 
 lib:
-	$(COMP_LIB)
+	@$(COMP_LIB)
 
 ft_printf:
-	$(COMP_PRINTF)
+	@$(COMP_PRINTF)
 
 clean:
-	/bin/rm -rf $(OBJDIR)
-	$(COMP_LIB) clean
-	$(COMP_PRINTF) clean
+	@/bin/rm -rf $(OBJDIR)
+	@$(COMP_LIB) clean
+	@$(COMP_PRINTF) clean
 
 fclean: clean
-	/bin/rm -rf $(NAME)
-	$(COMP_LIB) fclean
-	$(COMP_PRINTF) fclean
+	@/bin/rm -rf $(NAME)
+	@$(COMP_LIB) fclean
+	@$(COMP_PRINTF) fclean
 
 re: fclean all
 
