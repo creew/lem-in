@@ -67,15 +67,15 @@ t_result		*get_all_paths(t_patharr *parr, t_adjlist *alist)
 t_patharr		*recalc_values(t_roomarr *rooms, t_patharr *paths, t_path *path)
 {
 	t_adjlist	*adjlist;
-	t_pathdata	*pdata;
+	t_path		*pdpath;
 	size_t		index;
 	t_patharr	*sol;
 
 	adjlist = NULL;
 	create_adjlist(&adjlist, rooms);
 	index = -1;
-	while (ft_array_get(paths, ++index, (void **)&pdata) == 0)
-		add_path_to_adjlist(adjlist, pdata->path);
+	while (ft_array_get(paths, ++index, (void **)&pdpath) == 0)
+		add_path_to_adjlist(adjlist, pdpath);
 	add_path_to_adjlist(adjlist, path);
 	sol = ft_array_new(10);
 	if (sol)

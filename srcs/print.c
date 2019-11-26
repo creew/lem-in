@@ -75,12 +75,12 @@ void	print_path(t_path *path)
 void	print_paths(t_patharr *parr)
 {
 	size_t		count;
-	t_pathdata	*pdata;
+	t_path		*pdata;
 
 	if (!parr)
 		return ;
 	count = -1;
 	ft_printf("Paths number: %d\n", ft_array_size(parr));
 	while (ft_array_get(parr, ++count, (void **)&pdata) == 0)
-		print_path(pdata->path);
+		print_path(pdata);
 }

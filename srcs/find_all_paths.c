@@ -40,12 +40,12 @@ static t_path	*get_last_shortest_path(t_adjlist *alist)
 
 static int		path_cmp(const void *d1, const void *d2)
 {
-	t_pathdata	*p1;
-	t_pathdata	*p2;
+	t_path	*p1;
+	t_path	*p2;
 
-	p1 = *(t_pathdata **)d1;
-	p2 = *(t_pathdata **)d2;
-	return ((int)p1->size - (int)p2->size);
+	p1 = *(t_path **)d1;
+	p2 = *(t_path **)d2;
+	return ((int)ft_array_size(p1) - (int)ft_array_size(p2));
 }
 
 t_result		find_all_paths(t_lemin *lem)

@@ -20,11 +20,10 @@ static void	remove_pathlst_callback(void *data)
 
 static void	remove_pdata(void *data)
 {
-	t_pathdata *pdata;
+	t_path		*path;
 
-	pdata = (t_pathdata *)data;
-	ft_array_delete_all(&pdata->path, remove_pathlst_callback);
-	ft_memdel(&data);
+	path = (t_path *)data;
+	ft_array_delete_all(&path, remove_pathlst_callback);
 }
 
 void		remove_all_paths(t_patharr **parr)

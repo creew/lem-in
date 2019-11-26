@@ -109,13 +109,6 @@ typedef struct	s_lemin
 	int			fd;
 }				t_lemin;
 
-typedef struct	s_pathdata
-{
-	int			visited;
-	size_t		size;
-	t_path		*path;
-}				t_pathdata;
-
 t_result		read_input(int fd, t_lemin *lem);
 
 t_result		add_lem_room(t_lemin *lem, char *str, char cmd);

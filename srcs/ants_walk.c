@@ -36,7 +36,7 @@ static int	push_one_move(t_push_move *pm, int *is_not_first,
 		if (pm->prev->cmd == LEM_CMD_START)
 		{
 			if (pm->index != 0 && pm->prev->ant_count <=
-			(int)((ft_array_size(pm->pdata->path) - 1) * pm->index) - (int)*sum)
+			(int)((ft_array_size(pm->path) - 1) * pm->index) - (int)*sum)
 				return (1);
 			pm->cur->ant_index = pm->num_ants - pm->prev->ant_count + 1;
 		}
@@ -59,20 +59,20 @@ static int	push_one_path(size_t index, t_lemin *lem,
 	pm.num_ants = lem->num_ants;
 	if (lem->paths)
 	{
-		if (ft_array_get(lem->paths, index, (void **)&pm.pdata) == 0)
+		if (ft_array_get(lem->paths, index, (void **)&pm.path) == 0)
 		{
-			i = ft_array_size(pm.pdata->path);
+			i = ft_array_size(pm.path);
 			while (i > 1)
 			{
 				i--;
-				if (ft_array_get(pm.pdata->path, i, (void **)&pm.cur) == 0 &&
-					ft_array_get(pm.pdata->path, i - 1, (void **)&pm.prev) == 0)
+				if (ft_array_get(pm.path, i, (void **)&pm.cur) == 0 &&
+					ft_array_get(pm.path, i - 1, (void **)&pm.prev) == 0)
 				{
 					if (push_one_move(&pm, is_not_first, sum, lem->is_colorize))
 						break ;
 				}
 			}
-			*sum = *sum + (ft_array_size(pm.pdata->path) - 1);
+			*sum = *sum + (ft_array_size(pm.path) - 1);
 		}
 	}
 	return (0);
