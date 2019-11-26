@@ -35,16 +35,20 @@ COMP_PRINTF = make -C ft_printf
 
 FLAGS = -Wall -Wextra -g
 
-all: $(NAME)
+all: lib ft_printf $(NAME)
 
-$(NAME): lib ft_printf $(OBJS)
+$(NAME): ./libft/libft.a ./ft_printf/libftprintf.a $(OBJS)
 	gcc $(FLAGS) $(OBJS) -L./libft -lft -L./ft_printf -lftprintf -o $@
 
 objdir:
 	@/bin/mkdir -p $(OBJDIR)
 
-$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES) ./libft/libft.a ./ft_printf/libftprintf.a | objdir
+$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES) | objdir
 	gcc $(FLAGS) -I./includes -I./libft/includes -I./ft_printf/includes -c $< -o $@
+
+./ft_printf/libftprintf.a: ft_printf
+
+./libft/libft.a: lib
 
 lib:
 	@$(COMP_LIB)
