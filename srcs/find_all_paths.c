@@ -38,6 +38,27 @@ static t_path	*get_last_shortest_path(t_adjlist *alist)
 	return (path);
 }
 
+static int		is_last_path_correct(t_adjlist *alist)
+{
+	t_adjdata	*end;
+
+	end = find_node_by_cmd(alist, LEM_CMD_END);
+	if (end)
+	{
+		if (end->prev)
+		{
+			while (end)
+			{
+				if (end->prev == NULL || end->room->cmd == LEM_CMD_START)
+					return (1);
+				end = end->prev;
+
+			}
+		}
+	}
+	return (0);
+}
+
 static int		path_cmp(const void *d1, const void *d2)
 {
 	t_path	*p1;
@@ -59,19 +80,19 @@ t_result		find_all_paths(t_lemin *lem)
 	t_patharr	*onesol;
 	int			bf_updated;
 
-	bf_updated = 1;
 	sol = ft_array_new(10);
 	path = get_last_shortest_path(lem->adjm);
 	add_path_to_arr(sol, path);
 	prev_len = calc_total_len(sol, lem->num_ants);
 	onesol = sol;
-	while (bf_updated)
+	while (42)
 	{
 		suurballe_algo(&lem->adjm);
 		bf_updated = bellman_ford(lem->adjm);
-		if (bf_updated)
+		if (bf_updated && is_last_path_correct(lem->adjm))
 		{
 			newp = get_last_shortest_path(lem->adjm);
+			print_path(newp);
 			newsol = recalc_values(&lem->rooms, sol, newp);
 			delete_path(&newp);
 			ft_bubble_sort(newsol->data, newsol->num_elems,
@@ -87,6 +108,8 @@ t_result		find_all_paths(t_lemin *lem)
 				break ;
 			sol = newsol;
 		}
+		else
+			break;
 	}
 	lem->paths = onesol;
 	return (RET_OK);

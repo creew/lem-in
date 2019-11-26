@@ -61,7 +61,7 @@ t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room)
 	return (adata);
 }
 
-t_result		remove_neig_from_adjlist(t_adjdata *from, t_adjdata *to,
+t_result		remove_neig_from_adjlist(t_adjdata *from, t_adjdata *what,
 	int *weigth)
 {
 	t_neigdata	*ndata;
@@ -72,7 +72,7 @@ t_result		remove_neig_from_adjlist(t_adjdata *from, t_adjdata *to,
 	index = -1;
 	while (ft_array_get(&from->neigs, ++index, (void **)&ndata) == 0)
 	{
-		if (ndata->node == to)
+		if (ndata->node == what)
 		{
 			if (weigth)
 				*weigth = ndata->weight;

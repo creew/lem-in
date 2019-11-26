@@ -40,6 +40,7 @@ void				reset_adjlist_values(t_adjlist *adjlist)
 		adjdata = (t_adjdata *)adjlist->content;
 		adjdata->weight = WEIGHT_MAX;
 		adjdata->dij_vis = 0;
+		adjdata->prev = NULL;
 		adjlist = adjlist->next;
 	}
 }
