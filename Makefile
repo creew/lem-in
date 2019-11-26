@@ -33,7 +33,7 @@ INCLUDES = ./includes/lemin.h \
 COMP_LIB = make -C libft
 COMP_PRINTF = make -C ft_printf
 
-FLAGS = -Wall -Wextra -g
+FLAGS = -Wall -Wextra -Werror
 
 all: lib ft_printf $(NAME)
 
