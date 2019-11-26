@@ -75,8 +75,11 @@ t_result		read_input(int fd, t_lemin *lem)
 			break ;
 		ft_strdel(&s);
 	}
-	if (ft_safe_atoi(s, &lem->num_ants) != FT_ATOI_OK || lem->num_ants < 1)
-		return (ERR_WRONG_ANTS_NUMBER);
+	if (res == 0)
+		return (ERR_READ_ANTS_NUMBER);
+	res = ft_safe_atoi(s, &lem->num_ants);
 	ft_strdel(&s);
+	if (res != FT_ATOI_OK || lem->num_ants < 1)
+		return (ERR_WRONG_ANTS_NUMBER);
 	return (read_rooms_and_links(fd, lem));
 }
