@@ -12,60 +12,23 @@
 
 #include "lemin.h"
 
-static void			mark_elem_unvisited(void *data)
-{
-	t_pathdata	*pdata;
-
-	pdata = (t_pathdata *)data;
-	pdata->visited = 0;
-}
-
-static void			mark_all_unvisited(t_patharr *paths)
-{
-	ft_array_foreach(paths, mark_elem_unvisited);
-}
-
-static t_pathdata	*get_min_path(t_patharr *paths)
-{
-	t_pathdata	*pd;
-	t_pathdata	*pmin;
-	size_t		size;
-
-	pmin = NULL;
-	size = ft_array_size(paths);
-	while (size--)
-	{
-		if (ft_array_get(paths, size, (void **)&pd) == 0)
-		{
-			if (pd->visited == 0)
-			{
-				if (pmin == NULL || pd->size < pmin->size)
-					pmin = pd;
-			}
-		}
-	}
-	return (pmin);
-}
-
 int					calc_total_len(t_patharr *paths, int count)
 {
 	int			sum_size;
-	t_pathdata	*pdata;
-	int			threads;
+	t_path		*path;
 	int			total_len;
+	size_t		index;
 
 	sum_size = 0;
-	threads = 0;
 	total_len = FT_INTMAX;
-	mark_all_unvisited(paths);
-	while ((pdata = get_min_path(paths)) != NULL)
+	index = -1;
+	while (ft_array_get(paths, ++index, (void **)&path) == 0)
 	{
-		pdata->visited = 1;
-		sum_size += ((int)pdata->size - 1);
-		if (((count + sum_size + threads) / (threads + 1) - 1) >= total_len)
+		sum_size += ((int)ft_array_size(path) - 1);
+		if (((count + sum_size + (int)index) / ((int)index + 1) - 1)
+			>= total_len)
 			break ;
-		total_len = (count + sum_size + threads) / (threads + 1) - 1;
-		threads++;
+		total_len = (count + sum_size + (int)index) / ((int)index + 1) - 1;
 	}
 	return (total_len);
 }

@@ -22,6 +22,8 @@ typedef t_ftarray		t_roomarr;
 typedef t_ftarray		t_linkarr;
 typedef t_ftarray		t_patharr;
 typedef t_ftarray		t_path;
+typedef t_ftarray		t_neigarr;
+typedef t_list			t_adjlist;
 
 # define RET_RECALC					(1)
 # define RET_OK						(0)
@@ -43,6 +45,7 @@ typedef t_ftarray		t_path;
 # define ERR_NO_PATH				(-16)
 # define ERR_INCORRECT_PATH_REMOVE	(-17)
 # define ERR_CMD_NOT_FOUNDED		(-18)
+# define ERR_NO_LINK_TO_DEL			(-19)
 
 # define LEM_CMD_NONE			(0)
 # define LEM_CMD_START			(1)
@@ -53,12 +56,7 @@ typedef t_ftarray		t_path;
 # define DIJKSTRA_VIS			(1u << 1u)
 # define MEHMET_VIS				(1u << 2u)
 
-typedef struct	s_matrix
-{
-	t_uchar		*m;
-	int			*weights;
-	size_t		size;
-}				t_matrix;
+# define WEIGHT_MAX				(FT_INTMAX)
 
 typedef struct	s_roomdata
 {
@@ -70,6 +68,21 @@ typedef struct	s_roomdata
 	char		cmd;
 	char		name[1];
 }				t_roomdata;
+
+typedef struct	s_adjdata
+{
+	t_roomdata			*room;
+	t_neigarr			neigs;
+	int					weight;
+	struct s_adjdata	*prev;
+	int					dij_vis;
+}				t_adjdata;
+
+typedef struct	s_neigdata
+{
+	t_adjdata	*node;
+	int			weight;
+}				t_neigdata;
 
 typedef struct	s_linkdata
 {
@@ -88,20 +101,13 @@ typedef struct	s_lemin
 	int			num_ants;
 	t_roomarr	rooms;
 	t_linkarr	links;
-	t_patharr	paths;
+	t_patharr	*paths;
 	t_borders	se;
+	t_adjlist	*adjm;
 	int			is_debug;
-	int 		is_colorized;
+	int			is_colorize;
 	int			fd;
-	t_matrix	matrix;
 }				t_lemin;
-
-typedef struct	s_pathdata
-{
-	int			visited;
-	size_t		size;
-	t_path		*path;
-}				t_pathdata;
 
 t_result		read_input(int fd, t_lemin *lem);
 
@@ -115,38 +121,46 @@ char			*get_next_word(char *str, int *last);
 
 void			print_rooms(t_roomarr *rooms);
 void			print_links(t_linkarr *links);
-void			print_neighbors(t_matrix *matrix, t_roomarr *rooms);
+void			print_neighbors(t_adjlist *adjlist, char *title);
+void			print_path(t_path *path);
 void			print_paths(t_patharr *parr);
 
 t_result		check_all(t_lemin *lem);
 
 t_result		graph_create(t_lemin *lem);
 
-void			remove_all_paths(t_patharr *parr);
+void			remove_all_paths(t_patharr **parr);
 t_result		add_path_to_arr(t_patharr *parr, t_path *path);
 
-t_result		mehmet_algo(t_matrix *matrix, t_roomarr *rooms,
-					t_patharr *paths, t_borders *se);
 t_result		add_room_to_path(t_path *path, t_roomdata *room);
 t_result		find_all_paths(t_lemin *lem);
 
 int				calc_total_len(t_patharr *paths, int count);
-t_result		dijkstra_algo(t_matrix *matrix, t_roomarr *rooms,
-					t_borders *se);
+t_result		dijkstra_algo(t_adjlist *adjlist);
 
 void			delete_all(t_lemin *lem);
 
 void			print_given_data(t_lemin *lem);
 void			print_solution(t_lemin *lem);
 
-t_result		create_matrix(t_matrix *matrix, size_t size);
+void			suurballe_algo(t_adjlist **root);
 
-void			matrix_set_flag(t_matrix *matrix, size_t room, size_t flag);
-t_uchar			matrix_get_flag(t_matrix *matrix, size_t room);
-t_uchar			matrix_get_link(t_matrix *matrix, size_t room1, size_t room2);
-void			matrix_add_neighbor(t_matrix *matrix, t_linkdata *link);
-void			matrix_rem_neighbor(t_matrix *matrix, t_linkdata *link);
+t_adjdata		*find_node_by_cmd(t_adjlist *adjlist, int cmd);
+t_adjlist		*add_adjdata(t_adjlist **adjlist, t_roomdata *room);
+t_result		add_neig_to_adjlist(t_adjdata *adata, t_adjdata *neig,
+					int weight);
+t_adjdata		*find_adjdata_by_room(t_adjlist *adjlist, t_roomdata *room);
 
-void			matrix_cpy(t_matrix *dst, const t_matrix *src);
-t_result		matrix_dup(t_matrix *dst, const t_matrix *src);
+void			reset_adjlist_values(t_adjlist *adjlist);
+
+int				bellman_ford(t_adjlist *adjlist);
+t_adjlist		*create_adjlist(t_list **adjlist, t_roomarr *rooms);
+void			delete_adjlist(t_list **adjlist);
+t_result		remove_neig_from_adjlist(t_adjdata *from, t_adjdata *to,
+					int *weigth);
+void			delete_path(t_path **path);
+void			del_one_neig(void *content);
+
+t_patharr		*recalc_values(t_roomarr *rooms, t_patharr *paths,
+					t_path *path);
 #endif

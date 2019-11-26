@@ -18,7 +18,7 @@
 typedef struct	s_push_move {
 	t_roomdata	*cur;
 	t_roomdata	*prev;
-	t_pathdata	*pdata;
+	t_path		*path;
 	size_t		index;
 	int			num_ants;
 }				t_push_move;

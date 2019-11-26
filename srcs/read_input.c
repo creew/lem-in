@@ -27,7 +27,7 @@ static void		get_lem_cmd(char *str, char *cmd)
 static t_result	parse_not_comment_str(t_lemin *lem, char *s,
 				int *is_rooms, char cmd)
 {
-	if (*is_rooms && count_numbers(s) == 3)
+	if (*is_rooms && count_numbers(s) >= 3)
 		return (add_lem_room(lem, s, cmd));
 	*is_rooms = 0;
 	return (add_lem_link(lem, s));
@@ -75,8 +75,11 @@ t_result		read_input(int fd, t_lemin *lem)
 			break ;
 		ft_strdel(&s);
 	}
-	if (ft_safe_atoi(s, &lem->num_ants) != FT_ATOI_OK || lem->num_ants < 1)
-		return (ERR_WRONG_ANTS_NUMBER);
+	if (res == 0)
+		return (ERR_READ_ANTS_NUMBER);
+	res = ft_safe_atoi(s, &lem->num_ants);
 	ft_strdel(&s);
+	if (res != FT_ATOI_OK || lem->num_ants < 1)
+		return (ERR_WRONG_ANTS_NUMBER);
 	return (read_rooms_and_links(fd, lem));
 }

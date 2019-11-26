@@ -19,12 +19,8 @@ void	print_rooms(t_roomarr *rooms)
 	size_t		count;
 
 	count = -1;
-	while (++count < ft_array_size(rooms))
-	{
-		if (ft_array_get(rooms, count, (void **)&data) == 0)
-			ft_printf("name: \"%s\", x: %d, y: %d\n",
-				data->name, data->x, data->y);
-	}
+	while (ft_array_get(rooms, ++count, (void **)&data) == 0)
+		ft_printf("name: \"%s\", x: %d, y: %d\n", data->name, data->x, data->y);
 }
 
 void	print_links(t_linkarr *links)
@@ -33,68 +29,58 @@ void	print_links(t_linkarr *links)
 	size_t		count;
 
 	count = -1;
-	while (++count < ft_array_size(links))
+	while (ft_array_get(links, ++count, (void **)&linkdata) == 0)
 	{
-		if (ft_array_get(links, count, (void **)&linkdata) == 0)
-		{
-			ft_printf("link 1: \"%s\", link2: \"%s\"\n", linkdata->left->name,
-				linkdata->right->name);
-		}
+		ft_printf("link 1: \"%s\", link2: \"%s\"\n", linkdata->left->name,
+			linkdata->right->name);
 	}
 }
 
-void	print_neighbors(t_matrix *matrix, t_roomarr *rooms)
+void	print_neighbors(t_adjlist *adjlist, char *title)
 {
-	t_roomdata		*data;
-	t_roomdata		*neig;
+	t_adjdata		*adata;
+	t_neigdata		*ndata;
 	size_t			count;
-	size_t			neighb_index;
-	size_t			rooms_count;
 
-	rooms_count = ft_array_size(rooms);
-	count = -1;
-	while (++count < rooms_count)
+	if (title)
+		ft_printf("------- Stage: %s ---------\n", title);
+	while (adjlist)
 	{
-		if (ft_array_get(rooms, count, (void **)&data) == 0)
-		{
-			neighb_index = -1;
-			ft_printf("name: \"%s\", neighbors: ", data->name);
-			while (++neighb_index < rooms_count)
-			{
-				if (matrix_get_link(matrix, count, neighb_index))
-				{
-					if (ft_array_get(rooms, neighb_index, (void **)&neig) == 0)
-						ft_printf("%s, ", neig->name);
-				}
-			}
-			ft_printf("len: %d\n", matrix->weights[count]);
-		}
+		adata = (t_adjdata *)adjlist->content;
+		ft_printf("name: \"%s\", neighbors: ", adata->room->name);
+		count = -1;
+		while (ft_array_get(&adata->neigs, ++count, (void **)&ndata) == 0)
+			ft_printf("%s, ", ndata->node->room->name);
+		adjlist = adjlist->next;
+		ft_printf("len: %d\n", adata->weight);
 	}
+}
+
+void	print_path(t_path *path)
+{
+	size_t		pcount;
+	t_roomdata	*room;
+
+	pcount = -1;
+	ft_printf("path len: %d: ", ft_array_size(path));
+	while (ft_array_get(path, ++pcount, (void **)&room) == 0)
+	{
+		if (pcount != 0)
+			ft_putstr(", ");
+		ft_printf("\"%s\"", room->name);
+	}
+	ft_putendl("");
 }
 
 void	print_paths(t_patharr *parr)
 {
 	size_t		count;
-	t_pathdata	*pdata;
-	t_roomdata	*room;
-	size_t		pcount;
+	t_path		*pdata;
 
+	if (!parr)
+		return ;
 	count = -1;
-	while (++count < ft_array_size(parr))
-	{
-		if (ft_array_get(parr, count, (void **)&pdata) == 0)
-		{
-			pcount = -1;
-			while (++pcount < ft_array_size(pdata->path))
-			{
-				if (ft_array_get(pdata->path, pcount, (void **)&room) == 0)
-				{
-					if (pcount != 0)
-						ft_putstr(", ");
-					ft_printf("\"%s\"", room->name);
-				}
-			}
-			ft_putendl("");
-		}
-	}
+	ft_printf("Paths number: %d\n", ft_array_size(parr));
+	while (ft_array_get(parr, ++count, (void **)&pdata) == 0)
+		print_path(pdata);
 }

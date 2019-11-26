@@ -17,33 +17,35 @@ t_result	is_start_end_exists(t_roomarr *arr, t_borders *se)
 	int			start_count;
 	int			end_count;
 	t_roomdata	*rdata;
-	size_t		size;
+	size_t		index;
 
-	size = ft_array_size(arr);
 	start_count = 0;
 	end_count = 0;
-	while (size--)
+	index = -1;
+	while (ft_array_get(arr, ++index, (void **)&rdata) == 0)
 	{
-		if (ft_array_get(arr, size, (void **)&rdata) == 0)
+		if (rdata->cmd == LEM_CMD_START)
 		{
-			if (rdata->cmd == LEM_CMD_START)
-			{
-				se->start = rdata;
-				start_count++;
-			}
-			if (rdata->cmd == LEM_CMD_END)
-			{
-				se->end = rdata;
-				end_count++;
-			}
+			se->start = rdata;
+			start_count++;
+		}
+		if (rdata->cmd == LEM_CMD_END)
+		{
+			se->end = rdata;
+			end_count++;
 		}
 	}
 	return (start_count == 1 && end_count == 1 ? RET_OK : ERR_NO_START_OR_END);
 }
 
-static int	is_path_exists(t_matrix *matrix, t_borders *se)
+static int	is_path_exists(t_adjlist *adjlist)
 {
-	return (matrix->weights[se->start->index] != FT_INTMAX);
+	t_adjdata	*adata;
+
+	adata = find_node_by_cmd(adjlist, LEM_CMD_END);
+	if (adata)
+		return (adata->weight != WEIGHT_MAX);
+	return (0);
 }
 
 t_result	check_all(t_lemin *lem)
@@ -56,7 +58,7 @@ t_result	check_all(t_lemin *lem)
 		return (res);
 	if ((res = graph_create(lem)) != RET_OK)
 		return (res);
-	if (!is_path_exists(&lem->matrix, &lem->se))
+	if (!is_path_exists(lem->adjm))
 		return (ERR_NO_PATH);
 	return (RET_OK);
 }

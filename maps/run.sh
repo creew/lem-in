@@ -5,7 +5,7 @@ CYAN="\x1b[36m";
 USER="Result/";
 USER2="Bfs_one_path/"
 DIFF="Diff/"
-P="../lem-in";
+P="../lem-in -d";
 DIR="./"
 rm -dR Result;
 mkdir Result;

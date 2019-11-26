@@ -12,66 +12,74 @@
 
 #include "lemin.h"
 
-static t_roomdata	*find_min_weight(t_matrix *matrix, t_roomarr *arr)
+static t_adjdata	*find_min_weight(t_adjlist *adjlist)
 {
-	t_roomdata	*rdata;
-	t_roomdata	*cur;
-	size_t		size;
+	t_adjdata	*min;
+	t_adjdata	*cur;
 
-	rdata = NULL;
-	size = arr->num_elems;
-	while (size--)
+	min = NULL;
+	while (adjlist)
 	{
-		if (ft_array_get(arr, size, (void **)&cur) == 0)
+		cur = (t_adjdata *)adjlist->content;
+		if (cur->weight != WEIGHT_MAX && !cur->dij_vis)
 		{
-			if (!(matrix_get_flag(matrix, size) & DIJKSTRA_VIS) &&
-				matrix->weights[cur->index] != FT_INTMAX)
+			if (min == NULL || cur->weight < min->weight)
+				min = cur;
+		}
+		adjlist = adjlist->next;
+	}
+	return (min);
+}
+
+void				reset_adjlist_values(t_adjlist *adjlist)
+{
+	t_adjdata	*adjdata;
+
+	while (adjlist)
+	{
+		adjdata = (t_adjdata *)adjlist->content;
+		adjdata->weight = WEIGHT_MAX;
+		adjdata->dij_vis = 0;
+		adjdata->prev = NULL;
+		adjlist = adjlist->next;
+	}
+}
+
+t_adjdata			*find_node_by_cmd(t_adjlist *adjlist, int cmd)
+{
+	t_adjdata	*adata;
+
+	while (adjlist)
+	{
+		adata = (t_adjdata *)adjlist->content;
+		if (adata->room->cmd == cmd)
+			return (adata);
+		adjlist = adjlist->next;
+	}
+	return (NULL);
+}
+
+t_result			dijkstra_algo(t_adjlist *adjlist)
+{
+	t_adjdata		*adata;
+	t_neigdata		*ndata;
+	size_t			index;
+
+	reset_adjlist_values(adjlist);
+	adata = find_node_by_cmd(adjlist, LEM_CMD_START);
+	adata->weight = 0;
+	while ((adata = find_min_weight(adjlist)) != NULL)
+	{
+		index = -1;
+		while (ft_array_get(&adata->neigs, ++index, (void **)&ndata) == 0)
+		{
+			if (adata->weight + ndata->weight < ndata->node->weight)
 			{
-				if (rdata == NULL ||
-					matrix->weights[cur->index] < matrix->weights[rdata->index])
-					rdata = cur;
+				ndata->node->weight = adata->weight + ndata->weight;
+				ndata->node->prev = adata;
 			}
 		}
-	}
-	return (rdata);
-}
-
-static void			reset_matrix_algos(t_matrix *matrix)
-{
-	size_t	size;
-
-	size = matrix->size;
-	while (size--)
-	{
-		matrix->m[size] &= ~(DIJKSTRA_VIS | MEHMET_VIS);
-		matrix->weights[size] = FT_INTMAX;
-	}
-}
-
-t_result			dijkstra_algo(
-	t_matrix *matrix, t_roomarr *rooms, t_borders *se)
-{
-	t_roomdata		*rdata;
-	size_t			rooms_count;
-	size_t			count;
-	t_roomdata		*neig;
-
-	rooms_count = ft_array_size(rooms);
-	reset_matrix_algos(matrix);
-	matrix->weights[se->end->index] = 0;
-	while ((rdata = find_min_weight(matrix, rooms)))
-	{
-		count = -1;
-		while (++count < rooms_count)
-		{
-			if (matrix_get_link(matrix, rdata->index, count))
-				if (ft_array_get(rooms, count, (void **)&neig) == 0)
-					if (matrix->weights[rdata->index] + 1 <
-						matrix->weights[neig->index])
-						matrix->weights[neig->index] =
-							matrix->weights[rdata->index] + 1;
-		}
-		matrix_set_flag(matrix, rdata->index, DIJKSTRA_VIS);
+		adata->dij_vis = 1;
 	}
 	return (RET_OK);
 }

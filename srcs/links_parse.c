@@ -15,17 +15,14 @@
 static int		is_link_exist(t_linkarr *larr, t_roomdata *l1, t_roomdata *l2)
 {
 	t_linkdata	*ldata;
-	size_t		size;
+	size_t		index;
 
-	size = ft_array_size(larr);
-	while (size--)
+	index = -1;
+	while (ft_array_get(larr, ++index, (void **)&ldata) == 0)
 	{
-		if (ft_array_get(larr, size, (void **)&ldata) == 0)
-		{
-			if ((l1 == ldata->left && l2 == ldata->right) ||
-				(l1 == ldata->right && l2 == ldata->left))
-				return (1);
-		}
+		if ((l1 == ldata->left && l2 == ldata->right) ||
+			(l1 == ldata->right && l2 == ldata->left))
+			return (1);
 	}
 	return (0);
 }
@@ -73,5 +70,7 @@ t_result		add_lem_link(t_lemin *lem, char *str)
 		return (ERR_WRONG_LINK_ROOM);
 	if (ft_strequ(r1, r2))
 		return (ERR_WRONG_LINK_TO_LINK);
-	return (add_lemlink_list(&lem->links, room1, room2));
+	if (room1->index < room2->index)
+		return (add_lemlink_list(&lem->links, room1, room2));
+	return (add_lemlink_list(&lem->links, room2, room1));
 }

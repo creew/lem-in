@@ -14,23 +14,22 @@
 
 t_result	add_path_to_arr(t_patharr *parr, t_path *path)
 {
-	t_pathdata *pdata;
-
-	pdata = (t_pathdata *)ft_memalloc(sizeof(*pdata));
-	if (!pdata)
+	if (ft_array_add(parr, path) != 0)
 		return (ERR_ENOMEM);
-	pdata->visited = 0;
-	pdata->path = path;
-	pdata->size = ft_array_size(path);
-	if (ft_array_add(parr, pdata) != 0)
-	{
-		ft_memdel((void **)&pdata);
-		return (ERR_ENOMEM);
-	}
 	return (RET_OK);
 }
 
 t_result	add_room_to_path(t_path *path, t_roomdata *room)
 {
 	return (ft_array_add(path, (void *)room) == 0 ? RET_OK : ERR_ENOMEM);
+}
+
+static void	del_one_path(void *data)
+{
+	(void)data;
+}
+
+void		delete_path(t_path **path)
+{
+	ft_array_delete_all(path, del_one_path);
 }

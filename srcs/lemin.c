@@ -17,8 +17,8 @@ void		print_all(t_lemin *lem)
 {
 	print_rooms(&lem->rooms);
 	print_links(&lem->links);
-	print_neighbors(&lem->matrix, &lem->rooms);
-	print_paths(&lem->paths);
+	print_neighbors(lem->adjm, NULL);
+	print_paths(lem->paths);
 }
 
 void		init_lem(t_lemin *lem)
@@ -26,7 +26,6 @@ void		init_lem(t_lemin *lem)
 	ft_bzero(lem, sizeof(*lem));
 	ft_array_init(&lem->rooms, 128);
 	ft_array_init(&lem->links, 128);
-	ft_array_init(&lem->paths, 128);
 }
 
 void		print_error(t_lemin *lem, t_result err)
@@ -60,7 +59,7 @@ static int	parse_option(char *arg, t_lemin *lem)
 		if (flags & 1u)
 			lem->is_debug = 1;
 		if (flags & 2u)
-			lem->is_colorized = 1;
+			lem->is_colorize = 1;
 		return (1);
 	}
 	return (0);
@@ -70,7 +69,7 @@ int			main(int ac, char *av[])
 {
 	t_lemin		lem;
 	t_result	ret;
-	int 		fd;
+	int			fd;
 
 	init_lem(&lem);
 	while (ac-- > 1)
