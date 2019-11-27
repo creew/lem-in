@@ -94,7 +94,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) | $(OBJDIR)
 clean:
 	$(COMP_LIB) clean
 	$(COMP_PRINTF) clean
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	$(COMP_LIB) fclean

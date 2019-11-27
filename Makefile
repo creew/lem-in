@@ -18,12 +18,12 @@ ALL_C =	lemin.c \
         		bellman_ford.c \
         		recalc_paths.c
 
-SRCDIR = ./srcs/
-OBJDIR = ./objs/
+SRCDIR = ./srcs
+OBJDIR = ./objs
 
 ALL_OBJ = $(ALL_C:%.c=%.o)
 
-OBJS = $(addprefix $(OBJDIR), $(ALL_OBJ))
+OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
 NAME = lem-in
 VIS_NAME = visu_hex
@@ -38,9 +38,9 @@ COMP_VISU_HEX = make -C $(VIS_DIR)
 
 FLAGS = -Wall -Wextra -Werror
 
-all: $(NAME) $(VIS_DIR)/$(VIS_NAME)
+all: $(NAME) $(VIS_NAME)
 
-$(VIS_DIR)/$(VIS_NAME):  comp_visu_hex
+$(VIS_NAME): comp_visu_hex
 	cp $(VIS_DIR)/$(VIS_NAME) $(VIS_NAME)
 
 $(NAME): ./libft/libft.a ./ft_printf/libftprintf.a $(OBJS)
@@ -49,7 +49,7 @@ $(NAME): ./libft/libft.a ./ft_printf/libftprintf.a $(OBJS)
 $(OBJDIR):
 	/bin/mkdir -p $(OBJDIR)
 
-$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES) | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES) | $(OBJDIR)
 	gcc $(FLAGS) -I./includes -I./libft/includes -I./ft_printf/includes -c $< -o $@
 
 ./ft_printf/libftprintf.a: ft_printf
