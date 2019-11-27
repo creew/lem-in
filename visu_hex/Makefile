@@ -43,9 +43,9 @@ ALL_OBJ = $(ALL_C:%.c=%.o)
 
 OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
-INC_DIR =	./../libft/includes \
-			./includes \
-			./../ft_printf/includes \
+INC_DIR =	./includes \
+			./../libft/includes \
+			./../ft_printf/includes
 
 INC_FLAG = $(addprefix -I,$(INC_DIR)) `sdl2-config --cflags`
 
