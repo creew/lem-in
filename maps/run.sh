@@ -83,9 +83,9 @@ echo "\n\n\033[32m$FILE3\n\033[37m"
 $C $DIR$FILE3 | $P > $USER$FILE3 | leaks lem-in;
 echo "\x1b[36mOutput: cat $USER$FILE3\n"
 
-# echo "\n\n\033[32m$FILE4\n\033[37m"
-# $C $DIR$FILE4 | $P > $USER$FILE4;
-# echo "\x1b[36mOutput: cat $USER$FILE4\n"
+echo "\n\n\033[32m$FILE4\n\033[37m"
+$C $DIR$FILE4 | $P > $USER$FILE4;
+echo "\x1b[36mOutput: cat $USER$FILE4\n"
 
 # echo "\n\n\033[32m$FILE5\n\033[37m"
 # $C $DIR$FILE5 | $P > $USER$FILE5;

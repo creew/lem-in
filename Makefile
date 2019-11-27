@@ -26,16 +26,23 @@ ALL_OBJ = $(ALL_C:%.c=%.o)
 OBJS = $(addprefix $(OBJDIR), $(ALL_OBJ))
 
 NAME = lem-in
+VIS_NAME = visu_hex
+VIS_DIR = visu_hex_dir
 
 INCLUDES = ./includes/lemin.h \
 			./includes/ants_walk.h
 
 COMP_LIB = make -C libft
 COMP_PRINTF = make -C ft_printf
+COMP_VISU_HEX = make -C $(VIS_DIR)
 
 FLAGS = -Wall -Wextra -Werror
 
-all: lib ft_printf $(NAME)
+all: $(NAME) visu_hex
+
+visu_hex:
+	$(COMP_VISU_HEX)
+	cp $(VIS_DIR)/$(VIS_NAME) $(VIS_NAME)
 
 $(NAME): ./libft/libft.a ./ft_printf/libftprintf.a $(OBJS)
 	gcc $(FLAGS) $(OBJS) -L./libft -lft -L./ft_printf -lftprintf -o $@
@@ -60,12 +67,15 @@ clean:
 	@/bin/rm -rf $(OBJDIR)
 	@$(COMP_LIB) clean
 	@$(COMP_PRINTF) clean
+	@$(COMP_VISU_HEX) clean
 
 fclean: clean
 	@/bin/rm -rf $(NAME)
+	@/bin/rm -rf $(VIS_NAME)
 	@$(COMP_LIB) fclean
 	@$(COMP_PRINTF) fclean
+	@$(COMP_VISU_HEX) fclean
 
 re: fclean all
 
-.PHONY: lib ft_printf clean fclean all re
+.PHONY: visu_hex lib ft_printf clean fclean all re

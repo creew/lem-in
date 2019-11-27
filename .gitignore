@@ -4,7 +4,7 @@
 *.a
 /lem-in
 /maps/Result/
-/visu_hex/visu_hex
+/visu_hex_dir/visu_hex
 /checker.sh
 /checker_map
 /checker_map_lem_in

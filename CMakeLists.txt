@@ -50,4 +50,4 @@ add_custom_target(
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/ft_printf
 )
 
-add_subdirectory(visu_hex)
+add_subdirectory(visu_hex_dir)
