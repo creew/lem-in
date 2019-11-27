@@ -26,15 +26,16 @@ void		init_lem(t_lemin *lem)
 	ft_bzero(lem, sizeof(*lem));
 	ft_array_init(&lem->rooms, 128);
 	ft_array_init(&lem->links, 128);
+	ft_array_init(&lem->strarr, 128);
 }
 
 void		print_error(t_lemin *lem, t_result err)
 {
 	if (!lem->is_debug)
-		ft_putendl_fd("Error", 2);
+		ft_putendl_fd("ERROR", 2);
 	else
 	{
-		ft_putstr_fd("Error ", 2);
+		ft_putstr_fd("ERROR ", 2);
 		ft_putnbr_fd(err, 2);
 		ft_putendl_fd("", 2);
 	}

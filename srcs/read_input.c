@@ -25,38 +25,39 @@ static void		get_lem_cmd(char *str, char *cmd)
 }
 
 static t_result	parse_not_comment_str(t_lemin *lem, char *s,
-				int *is_rooms, char cmd)
+				int *is_rooms, char *cmd)
 {
 	int		wcount;
 
 	wcount = count_numbers(s);
-	if (*is_rooms && (wcount == 3 || wcount == 4))
-		return (add_lem_room(lem, s, cmd));
+	if (*is_rooms && wcount == 3)
+		return (add_lem_room(lem, s, *cmd));
 	*is_rooms = 0;
+	*cmd = LEM_CMD_NONE;
 	return (add_lem_link(lem, s));
 }
 
 static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 {
-	int			is_rooms;
+	int			is_room;
 	char		*s;
 	t_result	res;
 	char		cmd;
 
 	cmd = LEM_CMD_NONE;
-	is_rooms = 1;
+	is_room = 1;
 	while ((res = get_next_line(fd, &s)))
 	{
 		if (res < 0)
 			return (ERR_GNL_ERROR);
+		ft_array_add(&lem->strarr, ft_strdup(s));
 		if (*s != '#')
 		{
-			if ((res = parse_not_comment_str(lem, s, &is_rooms, cmd)) != RET_OK)
+			if ((res = parse_not_comment_str(lem, s, &is_room, &cmd)) != RET_OK)
 			{
 				ft_strdel(&s);
 				return (res);
 			}
-			cmd = LEM_CMD_NONE;
 		}
 		else
 			get_lem_cmd(s, &cmd);
@@ -74,6 +75,7 @@ t_result		read_input(int fd, t_lemin *lem)
 	{
 		if (res < 0)
 			return (ERR_READ_ANTS_NUMBER);
+		ft_array_add(&lem->strarr, ft_strdup(s));
 		if (*s != '#')
 			break ;
 		ft_strdel(&s);

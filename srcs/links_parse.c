@@ -48,11 +48,6 @@ static t_result	add_lemlink_list(t_linkarr *larr,
 	return (RET_OK);
 }
 
-/*
-** FIXME: Wrong parsing links like "abc - def" and "a-b-c-def"
-** -----
-*/
-
 t_result		add_lem_link(t_lemin *lem, char *str)
 {
 	char		*r1;

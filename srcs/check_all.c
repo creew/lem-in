@@ -52,7 +52,7 @@ t_result	check_all(t_lemin *lem)
 {
 	t_result	res;
 
-	if (lem->links.num_elems == 0)
+	if (ft_array_size(&lem->links) == 0)
 		return (ERR_NO_LINKS);
 	if ((res = is_start_end_exists(&lem->rooms, &lem->se)) != RET_OK)
 		return (res);

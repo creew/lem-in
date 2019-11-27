@@ -23,6 +23,7 @@ typedef t_ftarray		t_linkarr;
 typedef t_ftarray		t_patharr;
 typedef t_ftarray		t_path;
 typedef t_ftarray		t_neigarr;
+typedef t_ftarray		t_strarr;
 typedef t_list			t_adjlist;
 
 # define RET_RECALC					(1)
@@ -99,6 +100,7 @@ typedef	struct	s_borders
 typedef struct	s_lemin
 {
 	int			num_ants;
+	t_strarr	strarr;
 	t_roomarr	rooms;
 	t_linkarr	links;
 	t_patharr	*paths;

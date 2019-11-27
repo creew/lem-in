@@ -38,6 +38,7 @@ void		delete_all(t_lemin *lem)
 	ft_array_remove_all(&lem->rooms, free);
 	ft_array_remove_all(&lem->links, free);
 	remove_all_paths(&lem->paths);
+	ft_array_remove_all(&lem->strarr, free);
 	if (lem->fd != 0)
 		close(lem->fd);
 }
