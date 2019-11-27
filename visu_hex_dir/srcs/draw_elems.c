@@ -19,16 +19,16 @@ void			draw_links(t_vis *vis)
 	t_linkdata	*link;
 	SDL_Point	start;
 	SDL_Point	end;
-	t_rect		main;
+	t_rect		rect;
 
-	get_main_rect(&main, vis->wwidth, vis->wheight);
+	get_main_rect(&rect, vis->wwidth, vis->wheight);
 	index = -1;
 	while (ft_array_get(&vis->lem.links, ++index, (void **)&link) == 0)
 	{
-		start.x = link->left->x * vis->roomsize + vis->roomsize / 2 + main.x;
-		start.y = link->left->y * vis->roomsize + vis->roomsize / 2 + main.y;
-		end.x = link->right->x * vis->roomsize + vis->roomsize / 2 + main.x;
-		end.y = link->right->y * vis->roomsize + vis->roomsize / 2 + main.y;
+		start.x = link->left->x * vis->roomsize + vis->roomsize / 2 + rect.x;
+		start.y = link->left->y * vis->roomsize + vis->roomsize / 2 + rect.y;
+		end.x = link->right->x * vis->roomsize + vis->roomsize / 2 + rect.x;
+		end.y = link->right->y * vis->roomsize + vis->roomsize / 2 + rect.y;
 		SDL_SetRenderDrawColor(vis->ren, 0xFF, 0x00, 0x00, 0xFF);
 		SDL_RenderDrawLine(vis->ren, start.x, start.y, end.x, end.y);
 	}

@@ -58,14 +58,14 @@ void			recalc_room_size(t_vis *vis, int w, int h)
 	float		wscale;
 	t_point		wh;
 	t_point		min;
-	SDL_Rect	main;
+	SDL_Rect	rect;
 
 	vis->wwidth = w;
 	vis->wheight = h;
 	get_xy_size(&vis->lem, &wh, &min);
-	get_main_rect(&main, w, h);
-	wscale = (float)main.w / (float)(wh.x);
-	hscale = (float)main.h / (float)(wh.y);
+	get_main_rect(&rect, w, h);
+	wscale = (float)rect.w / (float)(wh.x);
+	hscale = (float)rect.h / (float)(wh.y);
 	vis->roomsize = wscale < hscale ? wscale : hscale;
 	rebase_rooms_xy(&vis->lem, &min);
 }

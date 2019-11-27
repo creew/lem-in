@@ -33,17 +33,17 @@ void			draw_rooms(t_vis *vis)
 	size_t		index;
 	t_roomdata	*room;
 	SDL_Rect	roomrect;
-	SDL_Rect	main;
+	SDL_Rect	rect;
 
-	get_main_rect(&main, vis->wwidth, vis->wheight);
+	get_main_rect(&rect, vis->wwidth, vis->wheight);
 	index = -1;
 	while (ft_array_get(&vis->lem.rooms, ++index, (void **)&room) == 0)
 	{
 		roomrect.w = vis->roomsize * 0.95f;
 		roomrect.h = vis->roomsize * 0.95f;
-		roomrect.x = main.x + room->x * vis->roomsize +
+		roomrect.x = rect.x + room->x * vis->roomsize +
 			(vis->roomsize - roomrect.w) / 2;
-		roomrect.y = main.y + room->y * vis->roomsize +
+		roomrect.y = rect.y + room->y * vis->roomsize +
 			(vis->roomsize - roomrect.h) / 2;
 		roundedBoxColor(vis->ren, roomrect.x, roomrect.y,
 			roomrect.x + roomrect.w - 1,
@@ -58,9 +58,9 @@ static void		draw_ant(t_vis *vis, t_lemdata *ldata)
 	SDL_Rect	srcrect;
 	SDL_Rect	roomrect;
 	float		dim;
-	t_rect		main;
+	t_rect		rect;
 
-	get_main_rect(&main, vis->wwidth, vis->wheight);
+	get_main_rect(&rect, vis->wwidth, vis->wheight);
 	srcrect.x = 0 + ((vis->tim_count + ldata->shift) % vis->antsimg.nframes) *
 		(vis->antsimg.w / vis->antsimg.nframes);
 	srcrect.y = 0;
@@ -69,8 +69,8 @@ static void		draw_ant(t_vis *vis, t_lemdata *ldata)
 	dim = vis->roomsize * 0.95f;
 	roomrect.w = (int)(dim);
 	roomrect.h = (int)(dim);
-	roomrect.x = main.x + (int)(ldata->x + (vis->roomsize - dim) / 2);
-	roomrect.y = main.y + (int)(ldata->y + (vis->roomsize - dim) / 2);
+	roomrect.x = rect.x + (int)(ldata->x + (vis->roomsize - dim) / 2);
+	roomrect.y = rect.y + (int)(ldata->y + (vis->roomsize - dim) / 2);
 	SDL_RenderCopyEx(vis->ren, vis->antsimg.texture, &srcrect, &roomrect,
 		ldata->angle, NULL, SDL_FLIP_NONE);
 }
