@@ -27,7 +27,10 @@ static void		get_lem_cmd(char *str, char *cmd)
 static t_result	parse_not_comment_str(t_lemin *lem, char *s,
 				int *is_rooms, char cmd)
 {
-	if (*is_rooms && count_numbers(s) >= 3)
+	int		wcount;
+
+	wcount = count_numbers(s);
+	if (*is_rooms && (wcount == 3 || wcount == 4))
 		return (add_lem_room(lem, s, cmd));
 	*is_rooms = 0;
 	return (add_lem_link(lem, s));
