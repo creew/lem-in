@@ -15,30 +15,28 @@
 static void		get_xy_size(t_lemin *lem, t_point *wh, t_point *min_xy)
 {
 	t_point		max_xy;
-	size_t		size;
 	t_roomdata	*room;
+	size_t		index;
 
-	ft_bzero((void *)&max_xy, sizeof(max_xy));
-	if ((size = ft_array_size(&lem->rooms)))
-		if (ft_array_get(&lem->rooms, --size, (void **)&room) == 0)
+	index = -1;
+	max_xy.x = 0;
+	max_xy.y = 0;
+	if (ft_array_get(&lem->rooms, ++index, (void **)&room) == 0)
+	{
+		min_xy->x = room->x;
+		max_xy.x = room->x;
+		min_xy->y = room->y;
+		max_xy.y = room->y;
+		while (ft_array_get(&lem->rooms, ++index, (void **)&room) == 0)
 		{
-			min_xy->x = room->x;
-			max_xy.x = room->x;
-			min_xy->y = room->y;
-			max_xy.y = room->y;
-			while (size--)
-			{
-				if (ft_array_get(&lem->rooms, size, (void **)&room) == 0)
-				{
-					min_xy->x = ft_min(room->x, min_xy->x);
-					max_xy.x = ft_max(room->x, max_xy.x);
-					min_xy->y = ft_min(room->y, min_xy->y);
-					max_xy.y = ft_max(room->y, max_xy.y);
-				}
-			}
-			wh->x = ft_abs(max_xy.x - min_xy->x) + 1;
-			wh->y = ft_abs(max_xy.y - min_xy->y) + 1;
+			min_xy->x = ft_min(room->x, min_xy->x);
+			max_xy.x = ft_max(room->x, max_xy.x);
+			min_xy->y = ft_min(room->y, min_xy->y);
+			max_xy.y = ft_max(room->y, max_xy.y);
 		}
+		wh->x = ft_abs(max_xy.x - min_xy->x) + 1;
+		wh->y = ft_abs(max_xy.y - min_xy->y) + 1;
+	}
 }
 
 static void		rebase_rooms_xy(t_lemin *lem, t_point *min)

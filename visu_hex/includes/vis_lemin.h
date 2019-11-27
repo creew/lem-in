@@ -58,15 +58,6 @@ typedef t_ftarray		t_lemsarr;
 # define PLAY_PAUSE_IMG	"./resources/play_pause.png"
 # define NES_FONT		"./resources/nes.ttf"
 
-typedef struct	s_fatline
-{
-	SDL_Texture		*texture;
-	SDL_Rect		src;
-	SDL_Rect		dst;
-	SDL_Point		center;
-	float			angle;
-}				t_fatline;
-
 typedef struct	s_img
 {
 	SDL_Texture		*texture;
@@ -196,15 +187,10 @@ void			get_handles_rect(SDL_Rect *rect, int ww, int wh);
 void			get_handle_rect(SDL_Rect *rect, int index, int ww, int wh);
 void			get_info_rect(SDL_Rect *rect, int ww, int wh);
 
-void			draw_arc(SDL_Renderer *ren, SDL_Point c, int q, int r);
-void			draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
-void			draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end,
-					int th);
-void			draw_filled_round_rect(SDL_Renderer *ren, SDL_Rect *rect,
-					int r);
-
 t_result		init_move(t_vis *vis);
 t_result		finish_move(t_vis *vis);
 t_result		do_move(t_vis *vis, size_t count);
+
 SDL_Color		get_color(int r, int g, int b, int a);
+Uint32			get_uint32_color(int r, int g, int b, int a);
 #endif

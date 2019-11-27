@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vis_lemin.h"
+#include <SDL2_gfxPrimitives.h>
 
 static void		draw_room_name(t_vis *vis, SDL_Rect *roomrect, t_roomdata *room)
 {
@@ -44,8 +45,10 @@ void			draw_rooms(t_vis *vis)
 			(vis->roomsize - roomrect.w) / 2;
 		roomrect.y = main.y + room->y * vis->roomsize +
 			(vis->roomsize - roomrect.h) / 2;
-		SDL_SetRenderDrawColor(vis->ren, 0xFF, 0x00, 0x00, 0x00);
-		draw_filled_round_rect(vis->ren, &roomrect, roomrect.w / 5);
+		roundedBoxColor(vis->ren, roomrect.x, roomrect.y,
+			roomrect.x + roomrect.w - 1,
+			roomrect.y + roomrect.h - 1, roomrect.w / 5,
+			get_uint32_color(255, 0, 0, 255));
 		draw_room_name(vis, &roomrect, room);
 	}
 }

@@ -30,12 +30,15 @@ add_executable(
         srcs/calc_sizes.c
         srcs/draw_all.c
         srcs/get_dims.c
-        srcs/draw_arc.c
-        srcs/moves.c srcs/draw_roomants.c srcs/draw_fat_line.c)
+        srcs/moves.c
+        srcs/draw_roomants.c
+)
 
 find_library(SDL2s SDL2 ~/.brew/lib)
 find_library(SDL2i SDL2_image ~/.brew/lib)
 find_library(SDL2t SDL2_ttf ~/.brew/lib)
+find_library(SDL2g SDL2_gfx ~/.brew/lib)
+
 target_link_libraries(vis_lem_in PUBLIC ${SDL2s} ${SDL2i} ${SDL2t} ${FT} ${FTPR} )
 
 add_dependencies(vis_lem_in libftprintf_target libft_target)

@@ -27,7 +27,7 @@ static int	create_renderer(t_vis *vis)
 
 static int	create_window(t_vis *vis)
 {
-	vis->window = SDL_CreateWindow("Hello, SDL 2!", SDL_WINDOWPOS_UNDEFINED,
+	vis->window = SDL_CreateWindow("lem-in visualizer", SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED, vis->wwidth,
 		vis->wheight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (vis->window == NULL)

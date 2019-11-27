@@ -33,10 +33,8 @@ ALL_C =	vis_lemin.c \
 		destroy.c \
 		draw_all.c \
 		get_dims.c \
-		draw_arc.c \
 		moves.c \
-		draw_roomants.c \
-		draw_fat_line.c
+		draw_roomants.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs
@@ -60,6 +58,7 @@ LIBS = 		ft \
 			SDL2 \
 			SDL2_image \
 			SDL2_ttf \
+			SDL2_gfx \
 			m \
 			ftprintf
 

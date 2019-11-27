@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vis_lemin.h"
+#include <SDL2_gfxPrimitives.h>
 
 void			draw_links(t_vis *vis)
 {
@@ -51,8 +52,8 @@ void			draw_handles(t_vis *vis)
 	SDL_Rect	handles;
 
 	get_handles_rect(&handles, vis->wwidth, vis->wheight);
-	SDL_SetRenderDrawColor(vis->ren, 0xFF, 0xFF, 0x00, 0xFF);
-	draw_filled_round_rect(vis->ren, &handles, 10);
+	roundedBoxColor(vis->ren, handles.x, handles.y, handles.x + handles.w - 1,
+		handles.y + handles.h - 1, 10, get_uint32_color(255, 255, 0, 255));
 	draw_handle(vis, 0, 0);
 	draw_handle(vis, vis->paused ? 1 : 3, 1);
 	draw_handle(vis, 4, 2);
