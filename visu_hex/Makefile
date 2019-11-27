@@ -48,13 +48,11 @@ OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 INC_DIR =	./../libft/includes \
 			./includes \
 			./../ft_printf/includes \
-			./include
 
-INC_FLAG = $(addprefix -I,$(INC_DIR))
+INC_FLAG = $(addprefix -I,$(INC_DIR)) `sdl2-config --cflags`
 
 LIB_DIR =	./../libft \
 			./../ft_printf \
-			./lib
 
 LIB_DIR_FLAG = $(addprefix -L,$(LIB_DIR))
 
@@ -65,7 +63,7 @@ LIBS = 		ft \
 			m \
 			ftprintf
 
-LIBS_FLAG = $(addprefix -l,$(LIBS))
+LIBS_FLAG = $(addprefix -l,$(LIBS)) `sdl2-config --libs`
 
 HEADERS = ./includes/vis_lemin.h
 

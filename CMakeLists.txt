@@ -49,3 +49,5 @@ add_custom_target(
         COMMAND make
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/ft_printf
 )
+
+add_subdirectory(visu_hex)
