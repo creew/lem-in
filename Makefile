@@ -38,24 +38,26 @@ COMP_VISU_HEX = make -C $(VIS_DIR)
 
 FLAGS = -Wall -Wextra -Werror
 
-all: $(NAME) visu_hex
+all: $(NAME) $(VIS_DIR)/$(VIS_NAME)
 
-visu_hex:
-	$(COMP_VISU_HEX)
+$(VIS_DIR)/$(VIS_NAME):  comp_visu_hex
 	cp $(VIS_DIR)/$(VIS_NAME) $(VIS_NAME)
 
 $(NAME): ./libft/libft.a ./ft_printf/libftprintf.a $(OBJS)
 	gcc $(FLAGS) $(OBJS) -L./libft -lft -L./ft_printf -lftprintf -o $@
 
-objdir:
-	@/bin/mkdir -p $(OBJDIR)
+$(OBJDIR):
+	/bin/mkdir -p $(OBJDIR)
 
-$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES) | objdir
+$(OBJDIR)%.o: $(SRCDIR)%.c $(INCLUDES) | $(OBJDIR)
 	gcc $(FLAGS) -I./includes -I./libft/includes -I./ft_printf/includes -c $< -o $@
 
 ./ft_printf/libftprintf.a: ft_printf
 
 ./libft/libft.a: lib
+
+comp_visu_hex:
+	$(COMP_VISU_HEX)
 
 lib:
 	@$(COMP_LIB)
