@@ -118,7 +118,6 @@ typedef struct	s_lemin
 	int			fd;
 	t_roomarr	rooms;
 	t_linkarr	links;
-	t_patharr	paths;
 	t_borders	se;
 }				t_lemin;
 

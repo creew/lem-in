@@ -24,6 +24,8 @@ static void		sdl_destroy(t_vis *vis)
 	vis->ren = NULL;
 	SDL_DestroyTexture(vis->antsimg.texture);
 	vis->antsimg.texture = NULL;
+	SDL_DestroyTexture(vis->buttonsimg.texture);
+	vis->buttonsimg.texture = NULL;
 	SDL_DestroyTexture(vis->font_text);
 	vis->font_text = NULL;
 	TTF_CloseFont(vis->font);
@@ -35,10 +37,19 @@ static void		sdl_destroy(t_vis *vis)
 	TTF_Quit();
 }
 
+static void		lem_destroy(t_lemin *lem)
+{
+	ft_array_remove_all(&lem->rooms, free);
+	ft_array_remove_all(&lem->links, free);
+}
+
 int				vis_destroy(t_vis *vis, int is_err)
 {
 	if (is_err)
 		ft_putendl_fd("Error", 2);
 	sdl_destroy(vis);
+	ft_memdel((void **)&vis->lemarr);
+	ft_array_remove_all(&vis->curlems, NULL);
+	lem_destroy(&vis->lem);
 	return (1);
 }
