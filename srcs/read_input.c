@@ -28,12 +28,16 @@ static t_result	parse_not_comment_str(t_lemin *lem, char *s,
 				int *is_rooms, char *cmd)
 {
 	int		wcount;
+	char	rcmd;
 
 	wcount = count_numbers(s);
 	if (*is_rooms && wcount == 3)
-		return (add_lem_room(lem, s, *cmd));
+	{
+		rcmd = *cmd;
+		*cmd = LEM_CMD_NONE;
+		return (add_lem_room(lem, s, rcmd));
+	}
 	*is_rooms = 0;
-	*cmd = LEM_CMD_NONE;
 	return (add_lem_link(lem, s));
 }
 
