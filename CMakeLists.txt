@@ -4,10 +4,8 @@ project(lem_in C)
 set(CMAKE_C_STANDARD 11)
 
 include_directories(.
-        ./libft
         ./libft/includes
         ./ft_printf/includes
-        ./ft_printf
         ./includes
         )
 
@@ -32,22 +30,11 @@ add_executable(lem_in
         srcs/bellman_ford.c
         srcs/recalc_paths.c)
 
-add_dependencies(lem_in libftprintf_target libft_target)
+add_subdirectory(ft_printf libft)
 
-find_library(FTPR ftprintf ./ft_printf)
-find_library(FT ft ./libft)
-target_link_libraries(lem_in PUBLIC ${FTPR} ${FT})
-
-add_custom_target(
-        libft_target
-        COMMAND make
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/libft
-)
-
-add_custom_target(
-        libftprintf_target
-        COMMAND make
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/ft_printf
-)
+target_link_libraries(lem_in
+        ftprintf
+        ft
+        )
 
 add_subdirectory(visu_hex_dir)
